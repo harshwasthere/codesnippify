@@ -7,7 +7,6 @@ import { LoginFormSchemaTypes } from "@/types/zod.types";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Github } from "lucide-react";
 
 export function LoginForm() {
     const form = useForm<LoginFormSchemaTypes>({
@@ -93,7 +92,11 @@ export function LoginForm() {
             </div>
 
             <Button className="flex items-center w-full">
-                <Github className="mr-2 size-4" />
+                {/* {isGithubOAuthPending ? (
+                    <Loader className="mr-2 size-4 animate-spin" />
+                ) : (
+                    <Github className="mr-2 size-4" />
+                )} */}
                 Login with Github
             </Button>
         </section>

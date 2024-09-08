@@ -6,7 +6,6 @@ import { SignupFormSchemaTypes } from "@/types/zod.types";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Github } from "lucide-react";
 import { SignupFormSchema } from "@/lib/zod/schema";
 
 export function SignupForm() {
@@ -116,7 +115,11 @@ export function SignupForm() {
             </div>
 
             <Button className="flex items-center w-full">
-                <Github className="mr-2 size-4" />
+                {/* {isGithubOAuthPending ? (
+                    <Loader className="mr-2 size-4 animate-spin" />
+                ) : (
+                    <Github className="mr-2 size-4" />
+                )} */}
                 Signup with Github
             </Button>
         </section>

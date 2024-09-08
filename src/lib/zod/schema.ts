@@ -74,5 +74,5 @@ export const UpdatePasswordFormSchema = z
     });
 
 export const UpdateNameFormSchema = z.object({
-    name: z.string().min(2, { message: "Name is required" }),
+    newName: z.string().min(2, { message: "Name is required" }),
 });
