@@ -76,3 +76,7 @@ export const UpdatePasswordFormSchema = z
 export const UpdateNameFormSchema = z.object({
     newName: z.string().min(2, { message: "Name is required" }),
 });
+
+export const FolderRenameDialogSchema = z.object({
+    newFolderName: z.string().min(1, { message: "Folder name is required" }),
+});

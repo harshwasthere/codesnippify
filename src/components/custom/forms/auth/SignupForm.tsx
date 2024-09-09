@@ -114,7 +114,7 @@ export function SignupForm() {
                 </div>
             </div>
 
-            <Button className="flex items-center w-full">
+            <Button className="flex items-center w-full bg-foreground hover:bg-foreground/90">
                 {/* {isGithubOAuthPending ? (
                     <Loader className="mr-2 size-4 animate-spin" />
                 ) : (

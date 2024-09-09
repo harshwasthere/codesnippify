@@ -1,5 +1,6 @@
 import { z } from "zod";
 import {
+    FolderRenameDialogSchema,
     ForgotPasswordFormSchema,
     LoginFormSchema,
     SignupFormSchema,
@@ -15,3 +16,6 @@ export type ForgotPasswordFormSchemaTypes = z.infer<typeof ForgotPasswordFormSch
 //onboarding routes
 export type UpdatePasswordFormSchemaTypes = z.infer<typeof UpdatePasswordFormSchema>;
 export type UpdateNameFormSchemaTypes = z.infer<typeof UpdateNameFormSchema>;
+
+//folder
+export type FolderRenameDialogSchemaTypes = z.infer<typeof FolderRenameDialogSchema>;
