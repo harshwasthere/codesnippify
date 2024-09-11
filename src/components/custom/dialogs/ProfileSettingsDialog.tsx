@@ -1,0 +1,198 @@
+"use client";
+
+import React, { ChangeEvent } from "react";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ProfileSettingsFormSchemaTypes } from "@/types/zod.types";
+import { ProfileSettingsFormSchema } from "@/lib/zod/schema";
+import { Profile } from "@/types/global.types";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { CardDescription, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import { Pencil } from "lucide-react";
+
+interface ProfileSettingsDialogProps {
+    isOpen: boolean;
+    onOpenChange: (open: boolean) => void;
+    profile: Profile;
+}
+
+export function ProfileSettingsDialog({
+    isOpen,
+    onOpenChange,
+    profile,
+}: ProfileSettingsDialogProps) {
+    const form = useForm<ProfileSettingsFormSchemaTypes>({
+        resolver: zodResolver(ProfileSettingsFormSchema),
+        mode: "onChange",
+        defaultValues: {
+            newFullName: profile.full_name || "",
+        },
+    });
+
+    const { newFullName } = form.watch();
+
+    const avatarInputRef = React.useRef<HTMLInputElement>(null);
+    const [avatarFileUrl, setAvatarFileUrl] = React.useState<string>("");
+    const [avatarFile, setAvatarFile] = React.useState<File | null>(null);
+
+    const handleAvatarUpload = (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setAvatarFile(file);
+            setAvatarFileUrl(URL.createObjectURL(file));
+        }
+    };
+
+    React.useEffect(() => {
+        if (profile) {
+            form.reset({
+                newFullName: profile.full_name ?? "",
+            });
+            setAvatarFileUrl(profile.avatar_url ?? "");
+        }
+    }, [profile, form]);
+
+    const handleProfileUpdate = async (data: ProfileSettingsFormSchemaTypes) => {
+        const { newFullName } = data;
+        const previousAvatarUrl = profile.avatar_url ?? "";
+
+        // mutate({
+        //     previousAvatarUrl: previousAvatarUrl,
+        //     newAvatarUrl: avatarFileUrl,
+        //     newAvatarFile: avatarFile,
+        //     bucket: "csnip-avatars",
+        //     newName: fullName,
+        // });
+        onOpenChange(false);
+    };
+
+    return (
+        <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
+            <AlertDialogContent className="max-w-96 w-[calc(100%-1.25rem)] p-4 rounded-xl">
+                <AlertDialogHeader className="space-y-0">
+                    <AlertDialogTitle className="text-sm font-bricolage font-semibold">
+                        Settings
+                    </AlertDialogTitle>
+                    <AlertDialogDescription className="text-xs">
+                        Update your profile settings
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <div className="w-full flex flex-col sm:flex-row items-center rounded-sm bg-secondary p-4 dark:bg-secondary/30 gap-4 overflow-hidden">
+                    <div className="relative">
+                        <Avatar className="size-20 rounded-full border-2 border-muted">
+                            <AvatarImage
+                                src={avatarFileUrl}
+                                className="object-cover rounded-sm"
+                                alt="profile-picture"
+                            />
+                            <AvatarFallback className="rounded-sm">AG</AvatarFallback>
+                        </Avatar>
+                        <Button
+                            onClick={() => avatarInputRef.current?.click()}
+                            variant="outline"
+                            size="icon"
+                            className="size-6 absolute top-0 -right-1"
+                        >
+                            <Pencil strokeWidth={1.5} className="size-3" />
+                        </Button>
+                        <input
+                            ref={avatarInputRef}
+                            type="file"
+                            hidden
+                            accept="image/*"
+                            onChange={handleAvatarUpload}
+                        />
+                    </div>
+
+                    <section className="flex w-full h-full flex-col items-center sm:items-start justify-center overflow-hidden gap-2">
+                        <div className="w-full flex flex-col items-center sm:items-start">
+                            <div className="flex items-center gap-1">
+                                <CardTitle className="max-w-44 w-auto text-base font-semibold text-muted-foreground truncate capitalize">
+                                    {profile.full_name}
+                                </CardTitle>
+                                <Badge
+                                    className={cn(
+                                        "z-50 text-[10px]",
+                                        profile.subscription_status === "pro"
+                                            ? " bg-primary/90 hover:bg-primary"
+                                            : "bg-green-600 hover:bg-green-700",
+                                    )}
+                                >
+                                    {profile.subscription_status}
+                                </Badge>
+                            </div>
+                            <CardDescription className="max-w-44 w-auto text-xs truncate first-letter:capitalize">
+                                {profile.email}
+                            </CardDescription>
+                        </div>
+                        <Badge
+                            variant="secondary"
+                            className="w-fit text-[10px] text-primary rounded-sm bg-primary/20"
+                        >
+                            {profile.total_snippets} SNIPPETS CREATED
+                        </Badge>
+                    </section>
+                </div>
+                <Form {...form}>
+                    <form
+                        onSubmit={form.handleSubmit(handleProfileUpdate)}
+                        className="w-full space-y-6"
+                    >
+                        <FormField
+                            control={form.control}
+                            name="newFullName"
+                            render={({ field }) => (
+                                <FormItem className="space-y-2">
+                                    <FormLabel className="text-xs">Name</FormLabel>
+                                    <Input
+                                        {...field}
+                                        type="text"
+                                        placeholder="Name"
+                                        className="bg-secondary text-xs h-8"
+                                    />
+                                    <FormMessage className="text-xs pl-2" />
+                                </FormItem>
+                            )}
+                        />
+
+                        <AlertDialogFooter>
+                            <AlertDialogCancel asChild>
+                                <Button
+                                    variant="secondary"
+                                    size="sm"
+                                    className="w-full text-xs h-8"
+                                >
+                                    Cancel
+                                </Button>
+                            </AlertDialogCancel>
+                            <AlertDialogAction asChild>
+                                <Button
+                                    type="submit"
+                                    disabled={!form.formState.isValid || !newFullName}
+                                    className="w-full text-xs h-8"
+                                >
+                                    Update
+                                </Button>
+                            </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </form>
+                </Form>
+            </AlertDialogContent>
+        </AlertDialog>
+    );
+}
