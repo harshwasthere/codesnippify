@@ -3,6 +3,7 @@ import {
     FolderRenameDialogSchema,
     ForgotPasswordFormSchema,
     LoginFormSchema,
+    ProfileSettingsFormSchema,
     SignupFormSchema,
     UpdateNameFormSchema,
     UpdatePasswordFormSchema,
@@ -19,3 +20,6 @@ export type UpdateNameFormSchemaTypes = z.infer<typeof UpdateNameFormSchema>;
 
 //folder
 export type FolderRenameDialogSchemaTypes = z.infer<typeof FolderRenameDialogSchema>;
+
+//profile settings
+export type ProfileSettingsFormSchemaTypes = z.infer<typeof ProfileSettingsFormSchema>
