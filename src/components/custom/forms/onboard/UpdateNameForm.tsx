@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { UpdateNameFormSchemaTypes } from "@/types/zod.types";
 import { UpdateNameFormSchema } from "@/lib/zod/schema";
+import { useUpdateNameOfUser } from "@/hooks/user/useUpdateNameOfUser";
+import { Loader } from "lucide-react";
 
 export function UpdateNameForm() {
     const form = useForm<UpdateNameFormSchemaTypes>({
@@ -17,16 +19,23 @@ export function UpdateNameForm() {
         },
     });
 
+    const {
+        mutate: mutateUpdateNameOfUser,
+        isPending: updateNamePending,
+        isError: updateNameError,
+    } = useUpdateNameOfUser();
+
     const { newName } = form.watch();
 
     const onSubmit = (data: UpdateNameFormSchemaTypes) => {
-        console.log("UpdateNameForm : ", data);
+        const { newName } = data;
+        mutateUpdateNameOfUser(newName);
         form.reset();
     };
 
     return (
         <Form {...form}>
-            <form onSubmit={() => form.handleSubmit(onSubmit)} className="w-full space-y-2">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
                 <FormField
                     name="newName"
                     control={form.control}
@@ -37,7 +46,7 @@ export function UpdateNameForm() {
                                     type="text"
                                     placeholder="Name"
                                     className="bg-secondary"
-                                    // disabled={isResetPasswordPending}
+                                    disabled={updateNamePending && !updateNameError}
                                     {...field}
                                 />
                             </FormControl>
@@ -49,12 +58,15 @@ export function UpdateNameForm() {
                 <Button
                     type="submit"
                     disabled={
-                        Object.keys(form.formState.errors).length > 0 || !newName
-                        // || isResetPasswordPending
+                        !form.formState.isValid ||
+                        !newName ||
+                        (updateNamePending && !updateNameError)
                     }
                     className="w-full"
                 >
-                    {/* {isResetPasswordPending && <Loader className="mr-2 size-4 animate-spin" />} */}
+                    {updateNamePending && !updateNameError && (
+                        <Loader className="mr-2 size-4 animate-spin" />
+                    )}
                     Update Name
                 </Button>
             </form>

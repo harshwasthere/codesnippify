@@ -43,8 +43,12 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL("/login", request.url));
     }
 
-    if (isOnboardingRoute && isAuthenticated && !haveName() && path !== "/update-name") {
+    if (isOnboardingRoute && isAuthenticated && !(await haveName()) && path !== "/update-name") {
         return NextResponse.redirect(new URL("/update-name", request.url));
+    }
+
+    if (isOnboardingRoute && isAuthenticated && (await haveName()) && path === "/update-name") {
+        return NextResponse.redirect(new URL("/dashboard", request.url));
     }
 
     // protected routes handling
@@ -52,7 +56,7 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL("/login", request.url));
     }
 
-    if (isProtectedRoute && isAuthenticated && !haveName()) {
+    if (isProtectedRoute && isAuthenticated && !(await haveName())) {
         return NextResponse.redirect(new URL("/update-name", request.url));
     }
 

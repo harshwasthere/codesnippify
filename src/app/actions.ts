@@ -81,3 +81,16 @@ export async function fetchUser() {
     if (error) throw error;
     return user;
 }
+
+export async function updateNameOfUser(name: string) {
+    const supabase = createClient();
+    const user = await fetchUser();
+    const user_id = user?.id;
+    if (!user_id) throw new Error("User not found");
+    const { error } = await supabase
+        .from("profiles")
+        .update({ full_name: name })
+        .eq("id", user_id)
+        .select();
+    if (error) throw error;
+}

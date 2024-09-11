@@ -9,17 +9,20 @@ import ThemeAwareToaster from "@/components/custom/toast/ThemeAwareToaster";
 const fontManrope = Manrope({
     subsets: ["latin"],
     variable: "--font-manrope",
+    display: "swap",
 });
 
 const fontBricolageGrotesque = Bricolage_Grotesque({
     subsets: ["latin"],
     variable: "--font-bricolage-grotesque",
+    display: "swap",
 });
 
 const fontFiraMono = Fira_Mono({
     subsets: ["latin"],
     weight: ["400", "500", "700"],
     variable: "--font-fira-mono",
+    display: "swap",
 });
 
 export const metadata: Metadata = {
