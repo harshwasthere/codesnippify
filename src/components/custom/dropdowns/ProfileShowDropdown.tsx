@@ -10,6 +10,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
+import { useLogoutUser } from "@/hooks/auth/useLogoutUser";
 
 interface ProfileSettingsDialogProps {
     setIsProfileSettingsDialogOpen: (open: boolean) => void;
@@ -18,6 +19,7 @@ interface ProfileSettingsDialogProps {
 export function ProfileShowDropdown({
     setIsProfileSettingsDialogOpen,
 }: ProfileSettingsDialogProps) {
+    const { mutate: mutateLogoutUser } = useLogoutUser();
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -69,7 +71,10 @@ export function ProfileShowDropdown({
                         <Settings strokeWidth={1.5} className="mr-2 size-4 group-focus:stroke-2" />
                         <span className="text-xs group-focus:font-medium">Settings</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="group cursor-pointer text-destructive focus:bg-destructive/20 focus:font-bold focus:text-destructive">
+                    <DropdownMenuItem
+                        onClick={() => mutateLogoutUser()}
+                        className="group cursor-pointer text-destructive focus:bg-destructive/20 focus:font-bold focus:text-destructive"
+                    >
                         <LogOut strokeWidth={1.5} className="mr-2 size-4 group-focus:stroke-2" />
                         <span className="text-xs group-focus:font-medium">Log out</span>
                     </DropdownMenuItem>
