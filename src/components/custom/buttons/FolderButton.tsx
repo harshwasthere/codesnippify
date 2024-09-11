@@ -46,8 +46,8 @@ export function FolderButton({ className, folder, onClick }: FolderButtonProps) 
             </div>
 
             <FolderRenameDialog
-                isFolderRenameDialogOpen={isFolderRenameDialogOpen}
-                setIsFolderRenameDialogOpen={setIsFolderRenameDialogOpen}
+                isOpen={isFolderRenameDialogOpen}
+                onOpenChange={setIsFolderRenameDialogOpen}
                 oldFolderName={folder?.name}
                 folderId={folder?.id}
             />

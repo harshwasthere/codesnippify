@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
     AlertDialog,
@@ -12,23 +14,24 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { z } from "zod";
 import { FolderRenameDialogSchemaTypes } from "@/types/zod.types";
 import { FolderRenameDialogSchema } from "@/lib/zod/schema";
-// import { Loader } from "lucide-react";
+
 
 interface FolderRenameDialogProps {
-    isFolderRenameDialogOpen: boolean;
-    setIsFolderRenameDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    isOpen: boolean;
+    onOpenChange: (open: boolean) => void;
     oldFolderName: string;
     folderId: string;
 }
 
 export function FolderRenameDialog({
-    isFolderRenameDialogOpen,
-    setIsFolderRenameDialogOpen,
+    isOpen,
+    onOpenChange,
     oldFolderName,
     folderId,
 }: FolderRenameDialogProps) {
@@ -43,16 +46,13 @@ export function FolderRenameDialog({
     const { newFolderName } = form.watch();
 
     const onSubmit = async (data: FolderRenameDialogSchemaTypes) => {
-        console.log("FolderRenameDialog : ", data, folderId);
-        // mutate({ convoId: convoId, newConvoName: data.newConvoName });
+        // onRename(data.newFolderName, folderId);
+        onOpenChange(false);
     };
 
     return (
-        <AlertDialog open={isFolderRenameDialogOpen} onOpenChange={setIsFolderRenameDialogOpen}>
-            <AlertDialogContent
-                className="max-w-64 w-[calc(100%-1.25rem)] p-4 rounded-xl"
-                overlayClassName="backdrop-blur-sm"
-            >
+        <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
+            <AlertDialogContent className="max-w-64 w-[calc(100%-1.25rem)] p-4 rounded-xl">
                 <AlertDialogHeader className="space-y-0">
                     <AlertDialogTitle className="text-sm font-bricolage font-semibold">
                         Rename Folder
@@ -73,7 +73,6 @@ export function FolderRenameDialog({
                                         type="text"
                                         placeholder="Untitled"
                                         className="bg-secondary text-xs h-8"
-                                        // disabled={isPending}
                                     />
                                     <FormMessage className="text-xs pl-2" />
                                 </FormItem>
@@ -81,31 +80,23 @@ export function FolderRenameDialog({
                         />
 
                         <AlertDialogFooter>
-                            <AlertDialogCancel
-                                className={cn(
-                                    buttonVariants({ variant: "secondary", size: "sm" }),
-                                    "w-full text-xs h-8",
-                                )}
-                            >
-                                Cancel
+                            <AlertDialogCancel asChild>
+                                <Button
+                                    variant="secondary"
+                                    size="sm"
+                                    className="w-full text-xs h-8"
+                                >
+                                    Cancel
+                                </Button>
                             </AlertDialogCancel>
-                            <AlertDialogAction
-                                disabled={
-                                    Object.keys(form.formState.errors).length > 0 || !newFolderName
-                                }
-                                type="submit"
-                                className={cn(
-                                    buttonVariants({ variant: "default", size: "sm" }),
-                                    "w-full text-xs h-8 flex items-center",
-                                )}
-                            >
-                                {/* {isPending && (
-                                    <Loader
-                                        strokeWidth={1.5}
-                                        className="mr-2 size-4 animate-spin"
-                                    />
-                                )} */}
-                                Rename
+                            <AlertDialogAction asChild>
+                                <Button
+                                    type="submit"
+                                    disabled={!form.formState.isValid || !newFolderName}
+                                    className="w-full text-xs h-8"
+                                >
+                                    Rename
+                                </Button>
                             </AlertDialogAction>
                         </AlertDialogFooter>
                     </form>
