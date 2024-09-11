@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/providers/ThemeProvider";
+import QueryProvider from "@/providers/QueryProvider";
 
 const fontManrope = Manrope({
     subsets: ["latin"],
@@ -47,8 +48,10 @@ export default function RootLayout({
                     enableSystem
                     disableTransitionOnChange
                 >
-                    {children}
-                    <Toaster position="bottom-center" reverseOrder={false} />
+                    <QueryProvider>
+                        {children}
+                        <Toaster position="bottom-center" reverseOrder={false} />
+                    </QueryProvider>
                 </ThemeProvider>
             </body>
         </html>
