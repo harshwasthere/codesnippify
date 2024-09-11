@@ -7,6 +7,9 @@ import { LoginFormSchemaTypes } from "@/types/zod.types";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useLoginUser } from "@/hooks/auth/useLoginUser";
+import { useSignInUserWithOAuth } from "@/hooks/auth/useSignInUserWithOAuth";
+import { Loader, Github } from "lucide-react";
 
 export function LoginForm() {
     const form = useForm<LoginFormSchemaTypes>({
@@ -20,15 +23,32 @@ export function LoginForm() {
 
     const { email, password } = form.watch();
 
-    const onSubmit = (data: LoginFormSchemaTypes) => {
-        console.log("LoginForm : ", data);
+    const {
+        mutate: mutateOauthLogin,
+        isPending: oauthLoginPending,
+        isError: oauthLoginError,
+    } = useSignInUserWithOAuth();
+    const {
+        mutate: mutatePasswordLogin,
+        isPending: passwordLoginPending,
+        isError: passwordLoginError,
+    } = useLoginUser();
+
+    const loginPending = oauthLoginPending || passwordLoginPending;
+    const loginError = oauthLoginError || passwordLoginError;
+
+    const handlePasswordLogin = async (data: LoginFormSchemaTypes) => {
+        mutatePasswordLogin(data);
         form.reset();
     };
 
     return (
         <section className="w-full flex flex-col items-center justify-center gap-4">
             <Form {...form}>
-                <form onSubmit={() => form.handleSubmit(onSubmit)} className="w-full space-y-2">
+                <form
+                    onSubmit={form.handleSubmit(handlePasswordLogin)}
+                    className="w-full space-y-2"
+                >
                     <FormField
                         name="email"
                         control={form.control}
@@ -39,7 +59,8 @@ export function LoginForm() {
                                         type="email"
                                         placeholder="Email"
                                         className="bg-secondary"
-                                        // disabled={isLoginPending}
+                                        autoComplete="email"
+                                        disabled={loginPending && !loginError}
                                         {...field}
                                     />
                                 </FormControl>
@@ -57,7 +78,8 @@ export function LoginForm() {
                                         type="password"
                                         placeholder="Password"
                                         className="bg-secondary mb-3"
-                                        // disabled={isLoginPending}
+                                        autoComplete="current-password"
+                                        disabled={loginPending && !loginError}
                                         {...field}
                                     />
                                 </FormControl>
@@ -69,12 +91,16 @@ export function LoginForm() {
                     <Button
                         type="submit"
                         disabled={
-                            Object.keys(form.formState.errors).length > 0 || !email || !password
-                            // || isLoginPending
+                            !form.formState.isValid ||
+                            !email ||
+                            !password ||
+                            (loginPending && !loginError)
                         }
                         className="w-full"
                     >
-                        {/* {isLoginPending && <Loader className="mr-2 size-4 animate-spin" />} */}
+                        {passwordLoginError && !loginError && (
+                            <Loader className="mr-2 size-4 animate-spin" />
+                        )}
                         Login
                     </Button>
                 </form>
@@ -91,12 +117,15 @@ export function LoginForm() {
                 </div>
             </div>
 
-            <Button className="flex items-center w-full bg-foreground hover:bg-foreground/90">
-                {/* {isGithubOAuthPending ? (
+            <Button
+                onClick={() => mutateOauthLogin("github")}
+                className="flex items-center w-full bg-foreground hover:bg-foreground/90 text-background"
+            >
+                {oauthLoginError && !loginError ? (
                     <Loader className="mr-2 size-4 animate-spin" />
                 ) : (
-                    <Github className="mr-2 size-4" />
-                )} */}
+                    <Github className="mr-2 size-4 " />
+                )}
                 Login with Github
             </Button>
         </section>

@@ -81,7 +81,9 @@ export const FolderRenameDialogSchema = z.object({
     newFolderName: z.string().min(1, { message: "Folder name is required" }),
 });
 
-
 export const ProfileSettingsFormSchema = z.object({
-    newFullName: z.string().min(2, { message: "Full name is required." }).max(30 , {message: "Max length exceeded"}),
+    newFullName: z
+        .string()
+        .min(2, { message: "Full name is required." })
+        .max(30, { message: "Max length exceeded" }),
 });

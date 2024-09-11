@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Manrope, Bricolage_Grotesque, Fira_Mono } from "next/font/google";
 import { cn } from "@/lib/utils";
 import "./globals.css";
-import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import QueryProvider from "@/providers/QueryProvider";
+import ThemeAwareToaster from "@/components/custom/toast/ThemeAwareToaster";
 
 const fontManrope = Manrope({
     subsets: ["latin"],
@@ -50,7 +50,7 @@ export default function RootLayout({
                 >
                     <QueryProvider>
                         {children}
-                        <Toaster position="bottom-center" reverseOrder={false} />
+                        <ThemeAwareToaster />
                     </QueryProvider>
                 </ThemeProvider>
             </body>

@@ -15,10 +15,16 @@ export default function LoginPage() {
                 </div>
                 <LoginForm />
                 <div className="flex flex-col items-center">
-                    <Link href="/signup" className="text-muted-foreground/80">
+                    <Link
+                        href="/signup"
+                        className="text-muted-foreground/80 hover:underline hover:text-muted-foreground"
+                    >
                         Don’t have an account? Sign up.
                     </Link>
-                    <Link href="/forgot-password" className="text-muted-foreground">
+                    <Link
+                        href="/forgot-password"
+                        className="text-foreground/70 hover:underline hover:text-foreground"
+                    >
                         Forgot Password?
                     </Link>
                 </div>
