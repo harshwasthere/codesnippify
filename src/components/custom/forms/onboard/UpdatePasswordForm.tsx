@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { UpdatePasswordFormSchemaTypes } from "@/types/zod.types";
 import { UpdatePasswordFormSchema } from "@/lib/zod/schema";
+import { useUpdatePasswordOfUser } from "@/hooks/auth/useUpdatePasswordOfUser";
+import { Loader } from "lucide-react";
 
 export function UpdatePasswordForm() {
     const form = useForm<UpdatePasswordFormSchemaTypes>({
@@ -20,14 +22,20 @@ export function UpdatePasswordForm() {
 
     const { newPassword, confirmNewPassword } = form.watch();
 
-    const onSubmit = (data: UpdatePasswordFormSchemaTypes) => {
-        console.log("UpdatePasswordForm : ", data);
+    const {
+        mutate: mutateUpdatePassword,
+        isPending: updatePasswordPending,
+        isError: updatePasswordError,
+    } = useUpdatePasswordOfUser();
+
+    const handleUpdatePassword = (data: UpdatePasswordFormSchemaTypes) => {
+        mutateUpdatePassword(data);
         form.reset();
     };
 
     return (
         <Form {...form}>
-            <form onSubmit={() => form.handleSubmit(onSubmit)} className="w-full space-y-2">
+            <form onSubmit={form.handleSubmit(handleUpdatePassword)} className="w-full space-y-2">
                 <FormField
                     name="newPassword"
                     control={form.control}
@@ -38,7 +46,7 @@ export function UpdatePasswordForm() {
                                     type="password"
                                     placeholder="Password"
                                     className="bg-secondary mb-3"
-                                    // disabled={isUpdatePasswordPending}
+                                    disabled={updatePasswordPending && !updatePasswordError}
                                     {...field}
                                 />
                             </FormControl>
@@ -57,7 +65,7 @@ export function UpdatePasswordForm() {
                                     type="password"
                                     placeholder="Confirm password"
                                     className="bg-secondary mb-3"
-                                    // disabled={isUpdatePasswordPending}
+                                    disabled={updatePasswordPending && !updatePasswordError}
                                     {...field}
                                 />
                             </FormControl>
@@ -69,14 +77,16 @@ export function UpdatePasswordForm() {
                 <Button
                     type="submit"
                     disabled={
-                        Object.keys(form.formState.errors).length > 0 ||
+                        !form.formState.isValid ||
                         !newPassword ||
-                        !confirmNewPassword
-                        // || isUpdatePasswordPending
+                        !confirmNewPassword ||
+                        (updatePasswordPending && !updatePasswordError)
                     }
                     className="w-full"
                 >
-                    {/* {isUpdatePasswordPending && <Loader className="mr-2 size-4 animate-spin" />} */}
+                    {updatePasswordPending && !updatePasswordError && (
+                        <Loader className="mr-2 size-4 animate-spin" />
+                    )}
                     Update Password
                 </Button>
             </form>

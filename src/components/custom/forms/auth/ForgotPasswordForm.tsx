@@ -7,6 +7,8 @@ import { ForgotPasswordFormSchemaTypes } from "@/types/zod.types";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useSendResetPasswordLink } from "@/hooks/auth/useSendResetPasswordLink";
+import { Loader } from "lucide-react";
 
 export function ForgotPasswordForm() {
     const form = useForm<ForgotPasswordFormSchemaTypes>({
@@ -16,17 +18,25 @@ export function ForgotPasswordForm() {
             email: "",
         },
     });
-
     const { email } = form.watch();
 
-    const onSubmit = (data: ForgotPasswordFormSchemaTypes) => {
-        console.log("ForgotPasswordForm : ", data);
+    const {
+        mutate: mutatesendResetPasswordLink,
+        isPending: sendResetPasswordLinkPending,
+        isError: sendResetPasswordLinkError,
+    } = useSendResetPasswordLink();
+
+    const handleSendResetPasswordLink = (data: ForgotPasswordFormSchemaTypes) => {
+        mutatesendResetPasswordLink(data);
         form.reset();
     };
 
     return (
         <Form {...form}>
-            <form onSubmit={() => form.handleSubmit(onSubmit)} className="w-full space-y-2">
+            <form
+                onSubmit={form.handleSubmit(handleSendResetPasswordLink)}
+                className="w-full space-y-2"
+            >
                 <FormField
                     name="email"
                     control={form.control}
@@ -37,7 +47,9 @@ export function ForgotPasswordForm() {
                                     type="email"
                                     placeholder="Email"
                                     className="bg-secondary"
-                                    // disabled={isResetPasswordPending}
+                                    disabled={
+                                        sendResetPasswordLinkPending && !sendResetPasswordLinkError
+                                    }
                                     {...field}
                                 />
                             </FormControl>
@@ -49,12 +61,15 @@ export function ForgotPasswordForm() {
                 <Button
                     type="submit"
                     disabled={
-                        Object.keys(form.formState.errors).length > 0 || !email
-                        // || isResetPasswordPending
+                        !form.formState.isValid ||
+                        !email ||
+                        (sendResetPasswordLinkPending && !sendResetPasswordLinkError)
                     }
                     className="w-full"
                 >
-                    {/* {isResetPasswordPending && <Loader className="mr-2 size-4 animate-spin" />} */}
+                    {sendResetPasswordLinkPending && !sendResetPasswordLinkError && (
+                        <Loader className="mr-2 size-4 animate-spin" />
+                    )}
                     Send reset link
                 </Button>
             </form>

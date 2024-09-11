@@ -12,7 +12,10 @@ export default function ForgotPasswordPage() {
                 </div>
                 <ForgotPasswordForm />
                 <div className="flex flex-col items-center">
-                    <Link href="/login" className="text-muted-foreground/80">
+                    <Link
+                        href="/login"
+                        className="text-muted-foreground/80 hover:underline hover:text-muted-foreground"
+                    >
                         Remember Password? Log in.
                     </Link>
                 </div>
