@@ -15,7 +15,10 @@ export default function SignupPage() {
                 </div>
                 <SignupForm />
                 <div className="flex flex-col items-center">
-                    <Link href="/login" className="text-muted-foreground/80">
+                    <Link
+                        href="/login"
+                        className="text-muted-foreground/80 hover:underline hover:text-muted-foreground"
+                    >
                         Already have an account? Log in.
                     </Link>
                 </div>

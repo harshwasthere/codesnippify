@@ -7,6 +7,9 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SignupFormSchema } from "@/lib/zod/schema";
+import { useSignInUserWithOAuth } from "@/hooks/auth/useSignInUserWithOAuth";
+import { useSignupUserWithPassword } from "@/hooks/auth/useSignupUserWithPassword";
+import { Github, Loader } from "lucide-react";
 
 export function SignupForm() {
     const form = useForm<SignupFormSchemaTypes>({
@@ -21,15 +24,32 @@ export function SignupForm() {
 
     const { email, password, confirmPassword } = form.watch();
 
-    const onSubmit = (data: SignupFormSchemaTypes) => {
-        console.log("SingupForm : ", data);
+    const {
+        mutate: mutateOauthSignup,
+        isPending: oauthSignupPending,
+        isError: oauthSignupError,
+    } = useSignInUserWithOAuth();
+    const {
+        mutate: mutatePasswordSignup,
+        isPending: passwordSignupPending,
+        isError: passwordSignupError,
+    } = useSignupUserWithPassword();
+
+    const signupPending = oauthSignupPending || passwordSignupPending;
+    const signupError = oauthSignupError || passwordSignupError;
+
+    const handlePasswordSignup = (data: SignupFormSchemaTypes) => {
+        mutatePasswordSignup(data);
         form.reset();
     };
 
     return (
         <section className="w-full flex flex-col items-center justify-center gap-4">
             <Form {...form}>
-                <form onSubmit={() => form.handleSubmit(onSubmit)} className="w-full space-y-2">
+                <form
+                    onSubmit={form.handleSubmit(handlePasswordSignup)}
+                    className="w-full space-y-2"
+                >
                     <FormField
                         name="email"
                         control={form.control}
@@ -40,7 +60,7 @@ export function SignupForm() {
                                         type="email"
                                         placeholder="Email"
                                         className="bg-secondary"
-                                        // disabled={isSignupPending}
+                                        disabled={signupPending && !signupError}
                                         {...field}
                                     />
                                 </FormControl>
@@ -58,7 +78,7 @@ export function SignupForm() {
                                         type="password"
                                         placeholder="Password"
                                         className="bg-secondary mb-3"
-                                        // disabled={isSignupPending}
+                                        disabled={signupPending && !signupError}
                                         {...field}
                                     />
                                 </FormControl>
@@ -77,7 +97,7 @@ export function SignupForm() {
                                         type="password"
                                         placeholder="Confirm password"
                                         className="bg-secondary mb-3"
-                                        // disabled={isSignupPending}
+                                        disabled={signupPending && !signupError}
                                         {...field}
                                     />
                                 </FormControl>
@@ -89,15 +109,17 @@ export function SignupForm() {
                     <Button
                         type="submit"
                         disabled={
-                            Object.keys(form.formState.errors).length > 0 ||
+                            !form.formState.isValid ||
                             !email ||
                             !password ||
-                            !confirmPassword
-                            // || isSignupPending
+                            !confirmPassword ||
+                            (signupPending && !signupError)
                         }
                         className="w-full"
                     >
-                        {/* {isSignupPending && <Loader className="mr-2 size-4 animate-spin" />} */}
+                        {passwordSignupError && !signupError && (
+                            <Loader className="mr-2 size-4 animate-spin" />
+                        )}
                         Signup
                     </Button>
                 </form>
@@ -114,12 +136,15 @@ export function SignupForm() {
                 </div>
             </div>
 
-            <Button className="flex items-center w-full bg-foreground hover:bg-foreground/90">
-                {/* {isGithubOAuthPending ? (
+            <Button
+                onClick={() => mutateOauthSignup("github")}
+                className="flex items-center w-full bg-foreground hover:bg-foreground/90 text-background"
+            >
+                {oauthSignupPending && !signupError ? (
                     <Loader className="mr-2 size-4 animate-spin" />
                 ) : (
                     <Github className="mr-2 size-4" />
-                )} */}
+                )}
                 Signup with Github
             </Button>
         </section>
