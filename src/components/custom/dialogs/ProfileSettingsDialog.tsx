@@ -24,11 +24,13 @@ import { CardDescription, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Pencil } from "lucide-react";
+import { useUpdateUserProfile } from "@/hooks/user/useUpdateUserProfile";
+import toast from "react-hot-toast";
 
 interface ProfileSettingsDialogProps {
     isOpen: boolean;
     onOpenChange: (open: boolean) => void;
-    profile: Profile;
+    profile: Profile | null | undefined;
 }
 
 export function ProfileSettingsDialog({
@@ -36,48 +38,43 @@ export function ProfileSettingsDialog({
     onOpenChange,
     profile,
 }: ProfileSettingsDialogProps) {
+    const {
+        mutate: updateUserProfileMutate,
+        isPending: updateUserProfilePending,
+        isError: updateUserProfileError,
+    } = useUpdateUserProfile();
+
     const form = useForm<ProfileSettingsFormSchemaTypes>({
         resolver: zodResolver(ProfileSettingsFormSchema),
         mode: "onChange",
         defaultValues: {
-            newFullName: profile.full_name || "",
+            newFullName: profile?.full_name ?? "",
         },
     });
+
+    React.useEffect(() => {
+        form.reset({ newFullName: profile?.full_name ?? "" });
+    }, [profile, form]);
 
     const { newFullName } = form.watch();
 
     const avatarInputRef = React.useRef<HTMLInputElement>(null);
-    const [avatarFileUrl, setAvatarFileUrl] = React.useState<string>("");
     const [avatarFile, setAvatarFile] = React.useState<File | null>(null);
 
-    const handleAvatarUpload = (e: ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            setAvatarFile(file);
-            setAvatarFileUrl(URL.createObjectURL(file));
-        }
-    };
+    const handleProfileUpdate = async ({ newFullName }: ProfileSettingsFormSchemaTypes) => {
+        updateUserProfileMutate(
+            {
+                newName: newFullName,
+                newAvatar: avatarFile,
+            },
+            {
+                onSuccess: () => {
+                    toast.success("Profile updated successfully!");
+                },
+            },
+        );
 
-    React.useEffect(() => {
-        if (profile) {
-            form.reset({
-                newFullName: profile.full_name ?? "",
-            });
-            setAvatarFileUrl(profile.avatar_url ?? "");
-        }
-    }, [profile, form]);
-
-    const handleProfileUpdate = async (data: ProfileSettingsFormSchemaTypes) => {
-        const { newFullName } = data;
-        const previousAvatarUrl = profile.avatar_url ?? "";
-
-        // mutate({
-        //     previousAvatarUrl: previousAvatarUrl,
-        //     newAvatarUrl: avatarFileUrl,
-        //     newAvatarFile: avatarFile,
-        //     bucket: "csnip-avatars",
-        //     newName: fullName,
-        // });
+        setAvatarFile(null);
         onOpenChange(false);
     };
 
@@ -96,11 +93,17 @@ export function ProfileSettingsDialog({
                     <div className="relative">
                         <Avatar className="size-20 rounded-full border-2 border-muted">
                             <AvatarImage
-                                src={avatarFileUrl}
+                                src={
+                                    avatarFile
+                                        ? URL.createObjectURL(avatarFile)
+                                        : profile?.avatar_url
+                                }
                                 className="object-cover rounded-sm"
                                 alt="profile-picture"
                             />
-                            <AvatarFallback className="rounded-sm">AG</AvatarFallback>
+                            <AvatarFallback className="rounded-sm">
+                                {profile?.full_name?.charAt(0).toUpperCase()}
+                            </AvatarFallback>
                         </Avatar>
                         <Button
                             onClick={() => avatarInputRef.current?.click()}
@@ -115,7 +118,12 @@ export function ProfileSettingsDialog({
                             type="file"
                             hidden
                             accept="image/*"
-                            onChange={handleAvatarUpload}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                                const file = e.target.files?.[0];
+                                if (file) {
+                                    setAvatarFile(file);
+                                }
+                            }}
                         />
                     </div>
 
@@ -123,28 +131,28 @@ export function ProfileSettingsDialog({
                         <div className="w-full flex flex-col items-center sm:items-start">
                             <div className="flex items-center gap-1">
                                 <CardTitle className="max-w-44 w-auto text-base font-semibold text-muted-foreground truncate capitalize">
-                                    {profile.full_name}
+                                    {profile?.full_name ?? "User name"}
                                 </CardTitle>
                                 <Badge
                                     className={cn(
                                         "z-50 text-[10px]",
-                                        profile.subscription_status === "pro"
+                                        profile?.subscription_status === "pro"
                                             ? " bg-primary/90 hover:bg-primary"
                                             : "bg-green-600 hover:bg-green-700",
                                     )}
                                 >
-                                    {profile.subscription_status}
+                                    {profile?.subscription_status ?? "free"}
                                 </Badge>
                             </div>
                             <CardDescription className="max-w-44 w-auto text-xs truncate first-letter:capitalize">
-                                {profile.email}
+                                {profile?.email ?? "mail@gmail.com"}
                             </CardDescription>
                         </div>
                         <Badge
                             variant="secondary"
                             className="w-fit text-[10px] text-primary rounded-sm bg-primary/20"
                         >
-                            {profile.total_snippets} SNIPPETS CREATED
+                            {profile?.total_snippets} SNIPPETS CREATED
                         </Badge>
                     </section>
                 </div>
@@ -164,6 +172,9 @@ export function ProfileSettingsDialog({
                                         type="text"
                                         placeholder="Name"
                                         className="bg-secondary text-xs h-8"
+                                        disabled={
+                                            updateUserProfilePending && !updateUserProfileError
+                                        }
                                     />
                                     <FormMessage className="text-xs pl-2" />
                                 </FormItem>
@@ -183,7 +194,11 @@ export function ProfileSettingsDialog({
                             <AlertDialogAction asChild>
                                 <Button
                                     type="submit"
-                                    disabled={!form.formState.isValid || !newFullName}
+                                    disabled={
+                                        !form.formState.isValid ||
+                                        !newFullName ||
+                                        (updateUserProfilePending && !updateUserProfileError)
+                                    }
                                     className="w-full text-xs h-8"
                                 >
                                     Update

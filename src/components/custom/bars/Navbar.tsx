@@ -9,8 +9,12 @@ import { Plus, SidebarIcon } from "lucide-react";
 import { ProfileShowDropdown } from "../dropdowns/ProfileShowDropdown";
 import { TagFilterDialog } from "../dialogs/TagFilterDialog";
 import { ProfileSettingsDialog } from "../dialogs/ProfileSettingsDialog";
+import { useFetchUserProfile } from "@/hooks/user/useFetchUserProfile";
 
 export function Navbar() {
+    const { data: userProfile } = useFetchUserProfile();
+    
+
     const [isTagFilterDialogOpen, setIsTagFilterDialogOpen] = React.useState<boolean>(false);
     const [isProfileSettingsDialogOpen, setIsProfileSettingsDialogOpen] =
         React.useState<boolean>(false);
@@ -51,22 +55,14 @@ export function Navbar() {
                     <ThemeToggleButton className="size-8 flex-shrink-0" />
                     <ProfileShowDropdown
                         setIsProfileSettingsDialogOpen={setIsProfileSettingsDialogOpen}
+                        profile={userProfile}
                     />
                 </div>
             </nav>
             <ProfileSettingsDialog
                 isOpen={isProfileSettingsDialogOpen}
                 onOpenChange={setIsProfileSettingsDialogOpen}
-                profile={{
-                    id: "1",
-                    full_name: "ryan garcia",
-                    avatar_url: "https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1",
-                    email: "ryangarcia@gmail.com",
-                    created_at: "2021-09-01T00:00:00.000Z",
-                    updated_at: "2021-09-01T00:00:00.000Z",
-                    subscription_status: "free",
-                    total_snippets: 10,
-                }}
+                profile={userProfile}
             />
         </React.Fragment>
     );

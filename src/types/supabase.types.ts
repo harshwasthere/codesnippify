@@ -11,25 +11,25 @@ export type Database = {
     Tables: {
       folders: {
         Row: {
-          created_at: string | null
+          created_at: string
           id: string
           name: string
-          updated_at: string | null
-          user_id: string | null
+          updated_at: string
+          user_id: string
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
           id?: string
           name: string
-          updated_at?: string | null
-          user_id?: string | null
+          updated_at?: string
+          user_id: string
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
           id?: string
           name?: string
-          updated_at?: string | null
-          user_id?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: [
           {
@@ -43,40 +43,34 @@ export type Database = {
       }
       profiles: {
         Row: {
-          avatar_url: string | null
-          created_at: string | null
-          email: string | null
+          avatar_url: string
+          created_at: string
+          email: string
           full_name: string | null
           id: string
-          subscription_status:
-            | Database["public"]["Enums"]["subscription_status_enum"]
-            | null
-          total_snippets: number | null
-          updated_at: string | null
+          subscription_status: Database["public"]["Enums"]["subscription_status_enum"]
+          total_snippets: number
+          updated_at: string
         }
         Insert: {
-          avatar_url?: string | null
-          created_at?: string | null
-          email?: string | null
+          avatar_url?: string
+          created_at?: string
+          email: string
           full_name?: string | null
           id: string
-          subscription_status?:
-            | Database["public"]["Enums"]["subscription_status_enum"]
-            | null
-          total_snippets?: number | null
-          updated_at?: string | null
+          subscription_status?: Database["public"]["Enums"]["subscription_status_enum"]
+          total_snippets?: number
+          updated_at?: string
         }
         Update: {
-          avatar_url?: string | null
-          created_at?: string | null
-          email?: string | null
+          avatar_url?: string
+          created_at?: string
+          email?: string
           full_name?: string | null
           id?: string
-          subscription_status?:
-            | Database["public"]["Enums"]["subscription_status_enum"]
-            | null
-          total_snippets?: number | null
-          updated_at?: string | null
+          subscription_status?: Database["public"]["Enums"]["subscription_status_enum"]
+          total_snippets?: number
+          updated_at?: string
         }
         Relationships: [
           {
@@ -92,17 +86,17 @@ export type Database = {
         Row: {
           snippet_id: string
           tag_id: string
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           snippet_id: string
           tag_id: string
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           snippet_id?: string
           tag_id?: string
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: [
           {
@@ -131,42 +125,42 @@ export type Database = {
       snippets: {
         Row: {
           code: string
-          created_at: string | null
+          created_at: string
           description: string | null
-          favorite: boolean | null
+          favorite: boolean
           folder_id: string | null
           id: string
           language: string
           title: string
-          trash: boolean | null
-          updated_at: string | null
-          user_id: string | null
+          trash: boolean
+          updated_at: string
+          user_id: string
         }
         Insert: {
           code: string
-          created_at?: string | null
+          created_at?: string
           description?: string | null
-          favorite?: boolean | null
+          favorite?: boolean
           folder_id?: string | null
           id?: string
           language: string
           title: string
-          trash?: boolean | null
-          updated_at?: string | null
-          user_id?: string | null
+          trash?: boolean
+          updated_at?: string
+          user_id: string
         }
         Update: {
           code?: string
-          created_at?: string | null
+          created_at?: string
           description?: string | null
-          favorite?: boolean | null
+          favorite?: boolean
           folder_id?: string | null
           id?: string
           language?: string
           title?: string
-          trash?: boolean | null
-          updated_at?: string | null
-          user_id?: string | null
+          trash?: boolean
+          updated_at?: string
+          user_id?: string
         }
         Relationships: [
           {
@@ -187,22 +181,22 @@ export type Database = {
       }
       tags: {
         Row: {
-          created_at: string | null
+          created_at: string
           id: string
           name: string
-          updated_at: string | null
+          updated_at: string
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
           id?: string
           name: string
-          updated_at?: string | null
+          updated_at?: string
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
           id?: string
           name?: string
-          updated_at?: string | null
+          updated_at?: string
         }
         Relationships: []
       }

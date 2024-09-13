@@ -82,15 +82,37 @@ export async function fetchUser() {
     return user;
 }
 
-export async function updateNameOfUser(name: string) {
+export async function fetchUserProfie() {
     const supabase = createClient();
+
     const user = await fetchUser();
     const user_id = user?.id;
     if (!user_id) throw new Error("User not found");
-    const { error } = await supabase
-        .from("profiles")
-        .update({ full_name: name })
-        .eq("id", user_id)
-        .select();
+
+    const { data, error } = await supabase.from("profiles").select("*").eq("id", user_id).single();
+
+    if (error) throw error;
+    return data;
+}
+
+export async function updateUserProfile({
+    newName,
+    newAvatarUrl,
+    userId,
+}: {
+    newName: string | null;
+    newAvatarUrl: string | null;
+    userId: string;
+}) {
+    if (!newName && !newAvatarUrl) return;
+
+    const supabase = createClient();
+    const data: { full_name?: string; avatar_url?: string } = {};
+
+    if (newName) data.full_name = newName;
+    if (newAvatarUrl) data.avatar_url = newAvatarUrl;
+
+    const { error } = await supabase.from("profiles").update(data).eq("id", userId).select();
+
     if (error) throw error;
 }

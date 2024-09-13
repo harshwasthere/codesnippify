@@ -7,10 +7,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { UpdateNameFormSchemaTypes } from "@/types/zod.types";
 import { UpdateNameFormSchema } from "@/lib/zod/schema";
-import { useUpdateNameOfUser } from "@/hooks/user/useUpdateNameOfUser";
 import { Loader } from "lucide-react";
+import { useUpdateUserProfile } from "@/hooks/user/useUpdateUserProfile";
+import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 export function UpdateNameForm() {
+    const router = useRouter();
     const form = useForm<UpdateNameFormSchemaTypes>({
         resolver: zodResolver(UpdateNameFormSchema),
         mode: "onChange",
@@ -23,13 +26,20 @@ export function UpdateNameForm() {
         mutate: mutateUpdateNameOfUser,
         isPending: updateNamePending,
         isError: updateNameError,
-    } = useUpdateNameOfUser();
+    } = useUpdateUserProfile();
 
     const { newName } = form.watch();
 
-    const onSubmit = (data: UpdateNameFormSchemaTypes) => {
-        const { newName } = data;
-        mutateUpdateNameOfUser(newName);
+    const onSubmit = ({ newName }: UpdateNameFormSchemaTypes) => {
+        mutateUpdateNameOfUser(
+            { newName },
+            {
+                onSuccess: () => {
+                    toast.success("Name updated successfully!");
+                    router.push("/dashboard");
+                },
+            },
+        );
         form.reset();
     };
 
