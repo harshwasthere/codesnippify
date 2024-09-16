@@ -11,7 +11,7 @@ export async function middleware(request: NextRequest) {
     // add public , onbaording and protected routes
     const publicRoutes = ["/login", "/signup", "/forgot-password"];
     const onboardingRoutes = ["/update-password", "/update-name"];
-    const protectedRoutes = ["/dashboard"];
+    const protectedRoutes = ["/snippets", "/favorites", "/folder", "/language", "/trash"];
 
     const path = request.nextUrl.pathname;
 
@@ -35,7 +35,7 @@ export async function middleware(request: NextRequest) {
 
     //  public routes handing
     if (isPublicRoute && isAuthenticated) {
-        return NextResponse.redirect(new URL("/dashboard", request.url));
+        return NextResponse.redirect(new URL("/snippets", request.url));
     }
 
     // onboarding routes handling
@@ -48,7 +48,7 @@ export async function middleware(request: NextRequest) {
     }
 
     if (isOnboardingRoute && isAuthenticated && (await haveName()) && path === "/update-name") {
-        return NextResponse.redirect(new URL("/dashboard", request.url));
+        return NextResponse.redirect(new URL("/snippets", request.url));
     }
 
     // protected routes handling
