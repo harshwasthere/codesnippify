@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useDeleteFolder } from "@/hooks/folder/useDeleteFolder";
 
 interface FolderDeleteDialogProps {
     isFolderDeleteDialogOpen: boolean;
@@ -23,6 +24,12 @@ export function FolderDeleteDialog({
     setIsFolderDeleteDialogOpen,
     folderId,
 }: FolderDeleteDialogProps) {
+    const {
+        mutate: deleteFolderMutate,
+        isPending: deleteFolderPending,
+        isError: deleteFolderError,
+    } = useDeleteFolder();
+
     return (
         <AlertDialog open={isFolderDeleteDialogOpen} onOpenChange={setIsFolderDeleteDialogOpen}>
             <AlertDialogContent
@@ -47,9 +54,8 @@ export function FolderDeleteDialog({
                         Cancel
                     </AlertDialogCancel>
                     <AlertDialogAction
-                        onClick={() => console.log("Delete", folderId)}
-                        // onClick={() => mutate(folderId)}
-                        // disabled={isPending}
+                        onClick={() => deleteFolderMutate({ folderId })}
+                        disabled={deleteFolderPending && !deleteFolderError}
                         className={cn(
                             buttonVariants({ variant: "destructive", size: "sm" }),
                             "w-full text-sm h-8",

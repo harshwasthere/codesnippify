@@ -10,77 +10,71 @@ import {
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
+    AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
-import { z } from "zod";
-import { FolderRenameDialogSchemaTypes } from "@/types/zod.types";
-import { FolderRenameDialogSchema } from "@/lib/zod/schema";
-import { useRenameFolder } from "@/hooks/folder/useRenameFolder";
+import { CreateFolderDialogSchemaTypes } from "@/types/zod.types";
+import { CreateFolderDialogSchema } from "@/lib/zod/schema";
+import { FolderPlus } from "lucide-react";
+import { useCreateFolder } from "@/hooks/folder/useCreateFolder";
 
-interface FolderRenameDialogProps {
-    isOpen: boolean;
-    onOpenChange: (open: boolean) => void;
-    oldFolderName: string;
-    folderId: string;
-}
-
-export function FolderRenameDialog({
-    isOpen,
-    onOpenChange,
-    oldFolderName,
-    folderId,
-}: FolderRenameDialogProps) {
+export function CreateFolderDialog() {
     const {
-        mutate: renameFolderMutate,
-        isPending: renameFolderPending,
-        isError: renameFolderError,
-    } = useRenameFolder();
+        mutate: createFolderMutate,
+        isPending: createFolderPending,
+        isError: createFolderError,
+    } = useCreateFolder();
 
-    const form = useForm<FolderRenameDialogSchemaTypes>({
-        resolver: zodResolver(FolderRenameDialogSchema),
+    const [isOpen, onOpenChange] = React.useState(false);
+    const form = useForm<CreateFolderDialogSchemaTypes>({
+        resolver: zodResolver(CreateFolderDialogSchema),
         mode: "onChange",
         defaultValues: {
-            newFolderName: oldFolderName,
+            folderName: "",
         },
     });
 
-    const { newFolderName } = form.watch();
+    const { folderName } = form.watch();
 
-    const onSubmit = ({ newFolderName }: FolderRenameDialogSchemaTypes) => {
-        renameFolderMutate({ folderId, folderName: newFolderName });
+    const onSubmit = (data: CreateFolderDialogSchemaTypes) => {
+        createFolderMutate(data);
         form.reset();
         onOpenChange(false);
     };
 
     return (
         <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
+            <AlertDialogTrigger asChild>
+                <Button variant="outline" size="icon" className="p-1 size-7 rounded-sm">
+                    <FolderPlus strokeWidth={1.5} className="size-4" />
+                </Button>
+            </AlertDialogTrigger>
             <AlertDialogContent className="max-w-64 w-[calc(100%-1.25rem)] p-4 rounded-xl">
                 <AlertDialogHeader className="space-y-0">
                     <AlertDialogTitle className="text-sm font-bricolage font-semibold">
-                        Rename Folder
+                        Create folder
                     </AlertDialogTitle>
                     <AlertDialogDescription className="text-xs">
-                        Enter the new name for this folder
+                        Enter the name of the new folder
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-3">
                         <FormField
                             control={form.control}
-                            name="newFolderName"
+                            name="folderName"
                             render={({ field }) => (
                                 <FormItem>
                                     <Input
                                         {...field}
                                         type="text"
-                                        placeholder="Untitled"
+                                        placeholder="Folder name"
                                         className="bg-secondary text-xs h-8"
-                                        disabled={renameFolderPending && !renameFolderError}
+                                        disabled={createFolderPending && !createFolderError}
                                     />
                                     <FormMessage className="text-xs pl-2" />
                                 </FormItem>
@@ -102,12 +96,12 @@ export function FolderRenameDialog({
                                     type="submit"
                                     disabled={
                                         !form.formState.isValid ||
-                                        !newFolderName ||
-                                        (renameFolderPending && !renameFolderError)
+                                        !folderName ||
+                                        (createFolderPending && !createFolderError)
                                     }
                                     className="w-full text-xs h-8"
                                 >
-                                    Rename
+                                    Create
                                 </Button>
                             </AlertDialogAction>
                         </AlertDialogFooter>
