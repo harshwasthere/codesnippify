@@ -36,7 +36,7 @@ export function UpdateNameForm() {
             {
                 onSuccess: () => {
                     toast.success("Name updated successfully!");
-                    router.push("/dashboard");
+                    router.push("/snippets");
                 },
             },
         );

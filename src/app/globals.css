@@ -81,3 +81,9 @@
         @apply bg-background text-foreground;
     }
 }
+
+@layer utilities {
+    .code-shiki {
+        @apply flex text-sm h-full tracking-[0.01em] min-w-0 !font-fira-mono overflow-auto flex-1 px-3.5 min-h-0 py-4 rounded-xl;
+    }
+}

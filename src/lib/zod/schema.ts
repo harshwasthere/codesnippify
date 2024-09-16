@@ -1,3 +1,4 @@
+import { langs, LangsEnum } from "@/constants/global.constants";
 import { z } from "zod";
 
 export const LoginFormSchema = z.object({
@@ -78,7 +79,10 @@ export const UpdateNameFormSchema = z.object({
 });
 
 export const FolderRenameDialogSchema = z.object({
-    newFolderName: z.string().min(1, { message: "Folder name is required" }),
+    newFolderName: z
+        .string()
+        .min(1, { message: "Folder name is required" })
+        .max(30, { message: "Max length exceeded" }),
 });
 
 export const ProfileSettingsFormSchema = z.object({
@@ -86,4 +90,25 @@ export const ProfileSettingsFormSchema = z.object({
         .string()
         .min(2, { message: "Full name is required." })
         .max(30, { message: "Max length exceeded" }),
+});
+
+export const CreateFolderDialogSchema = z.object({
+    folderName: z
+        .string()
+        .min(1, { message: "Folder name is required" })
+        .max(30, { message: "Max length exceeded" }),
+});
+
+export const CreateSnippetFormSchema = z.object({
+    title: z
+        .string()
+        .min(3, { message: "Title is required" })
+        .max(50, { message: "Max length exceeded" }),
+
+    description: z.string().max(500, { message: "Max length exceeded" }).optional(),
+    language: z.enum(langs as [string, ...string[]]),
+    code: z.string().min(3, { message: "Code is required" }),
+    tags: z.array(z.string()).refine((tags) => new Set(tags).size === tags.length, {
+        message: "Tags must be unique",
+    }),
 });
