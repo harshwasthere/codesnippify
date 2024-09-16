@@ -10,10 +10,10 @@ import { ProfileShowDropdown } from "../dropdowns/ProfileShowDropdown";
 import { TagFilterDialog } from "../dialogs/TagFilterDialog";
 import { ProfileSettingsDialog } from "../dialogs/ProfileSettingsDialog";
 import { useFetchUserProfile } from "@/hooks/user/useFetchUserProfile";
+import CreateSnippetSheet from "../sheets/CreateSnippetSheet";
 
 export function Navbar() {
     const { data: userProfile } = useFetchUserProfile();
-    
 
     const [isTagFilterDialogOpen, setIsTagFilterDialogOpen] = React.useState<boolean>(false);
     const [isProfileSettingsDialogOpen, setIsProfileSettingsDialogOpen] =
@@ -45,10 +45,7 @@ export function Navbar() {
                         isOpen={isTagFilterDialogOpen}
                         onOpenChange={setIsTagFilterDialogOpen}
                     />
-                    <Button size="sm" className="h-8 flex-shrink-0">
-                        <Plus strokeWidth={1.5} className="size-4 mr-1" />
-                        Snippet
-                    </Button>
+                    <CreateSnippetSheet />
                 </div>
 
                 <div className="flex-shrink-0 flex items-center gap-2">
