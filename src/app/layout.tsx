@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Manrope, Bricolage_Grotesque, Fira_Mono } from "next/font/google";
+import { Manrope, Bricolage_Grotesque } from "next/font/google";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 import { ThemeProvider } from "@/providers/ThemeProvider";
@@ -15,13 +15,6 @@ const fontManrope = Manrope({
 const fontBricolageGrotesque = Bricolage_Grotesque({
     subsets: ["latin"],
     variable: "--font-bricolage-grotesque",
-    display: "swap",
-});
-
-const fontFiraMono = Fira_Mono({
-    subsets: ["latin"],
-    weight: ["400", "500", "700"],
-    variable: "--font-fira-mono",
     display: "swap",
 });
 
@@ -42,7 +35,6 @@ export default function RootLayout({
                     "min-h-screen w-full bg-background font-sans antialiased",
                     fontBricolageGrotesque.variable,
                     fontManrope.variable,
-                    fontFiraMono.variable,
                 )}
             >
                 <ThemeProvider

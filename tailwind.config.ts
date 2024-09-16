@@ -13,7 +13,6 @@ const config: Config = {
             fontFamily: {
                 bricolage: ["var(--font-bricolage-grotesque)", ...fontFamily.sans],
                 manrope: ["var(--font-manrope)", ...fontFamily.sans],
-                "fira-mono": ["var(--font-fira-mono)", ...fontFamily.mono],
             },
             colors: {
                 background: "hsl(var(--background))",
@@ -64,6 +63,6 @@ const config: Config = {
             },
         },
     },
-    plugins: [require("tailwindcss-animate")],
+    plugins: [require("tailwindcss-animate"), require("tailwind-scrollbar")],
 };
 export default config;

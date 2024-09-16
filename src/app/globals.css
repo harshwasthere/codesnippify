@@ -83,7 +83,7 @@
 }
 
 @layer utilities {
-    .code-shiki {
-        @apply flex text-sm h-full tracking-[0.01em] min-w-0 !font-fira-mono overflow-auto flex-1 px-3.5 min-h-0 py-4 rounded-xl;
+    .shiki {
+        @apply absolute left-0 bottom-0 top-0 right-0 w-full h-full p-5 m-0 text-xs font-mono rounded-md outline-none border-none overflow-auto !bg-secondary;
     }
 }

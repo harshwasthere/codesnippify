@@ -40,6 +40,7 @@
         "react-hot-toast": "^2.4.1",
         "shiki": "^1.17.6",
         "tailwind-merge": "^2.5.2",
+        "tailwind-scrollbar": "^3.1.0",
         "tailwindcss-animate": "^1.0.7",
         "use-debounce": "^10.0.3",
         "uuid": "^10.0.0",

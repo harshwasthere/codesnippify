@@ -1,12 +1,12 @@
 import { Folder, Tag } from "@/types/global.types";
 import { bundledLanguagesInfo } from "shiki";
 
-export const langs = (bundledLanguagesInfo.map((lang) =>lang.name));
+export const langs = bundledLanguagesInfo.map((lang) => ({
+    id: lang.id,
+    name: lang.name,
+}));
 
-export const LangsEnum = bundledLanguagesInfo.reduce((acc, lang) => {
-    acc[lang.id] = lang.name;
-    return acc;
-}, {} as Record<string, string>);
+export const langIds = langs.map((lang) => lang.id);
 
 export const dummyTags: Tag[] = [
     {

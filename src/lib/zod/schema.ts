@@ -1,4 +1,4 @@
-import { langs, LangsEnum } from "@/constants/global.constants";
+import { langIds } from "@/constants/global.constants";
 import { z } from "zod";
 
 export const LoginFormSchema = z.object({
@@ -106,7 +106,9 @@ export const CreateSnippetFormSchema = z.object({
         .max(50, { message: "Max length exceeded" }),
 
     description: z.string().max(500, { message: "Max length exceeded" }).optional(),
-    language: z.enum(langs as [string, ...string[]]),
+    language: z
+        .string()
+        .refine((lang) => langIds.includes(lang), { message: "Language is required" }),
     code: z.string().min(3, { message: "Code is required" }),
     tags: z.array(z.string()).refine((tags) => new Set(tags).size === tags.length, {
         message: "Tags must be unique",

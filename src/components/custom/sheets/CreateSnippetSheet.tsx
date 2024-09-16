@@ -13,6 +13,7 @@ import {
     Sheet,
     SheetContent,
     SheetDescription,
+    SheetFooter,
     SheetHeader,
     SheetTitle,
     SheetTrigger,
@@ -34,15 +35,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, ChevronsUpDown, Plus, X } from "lucide-react";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { LangsEnum } from "@/constants/global.constants";
-import { bundledLanguagesInfo } from "shiki";
+import { BundledLanguage, bundledLanguagesInfo } from "shiki";
 import { useTheme } from "next-themes";
 import { codeToHtmlShiki } from "@/lib/shiki/codeToHtmlShiki";
+import { langs } from "@/constants/global.constants";
 
 export default function CreateSnippetSheet() {
     const theme = useTheme().theme;
-    const containerRef = React.useRef(null);
-    const [codeSnippet, setCodeSnippet] = React.useState("");
+    const [snippetCode, setSnippetCode] = React.useState("");
+    const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
     const form = useForm<CreateSnippetFormSchemaTypes>({
         resolver: zodResolver(CreateSnippetFormSchema),
@@ -57,6 +58,13 @@ export default function CreateSnippetSheet() {
     });
 
     const { title, description, code, language, tags } = form.watch();
+    const createSnippetDisabled =
+        !form.formState.isValid ||
+        !title ||
+        !description ||
+        !code ||
+        !language ||
+        tags.length === 0;
 
     const handleCreateSnippet = async (data: CreateSnippetFormSchemaTypes) => {
         console.log(data);
@@ -78,15 +86,6 @@ export default function CreateSnippetSheet() {
         }
     };
 
-    React.useLayoutEffect(() => {
-        if (containerRef?.current) {
-            (containerRef.current as HTMLElement).firstElementChild?.classList.add("code-shiki");
-            (containerRef.current as HTMLElement).querySelectorAll("code")?.forEach((el) => {
-                el.classList.add("font-fira-mono");
-            });
-        }
-    });
-
     return (
         <Sheet>
             <SheetTrigger asChild>
@@ -106,7 +105,10 @@ export default function CreateSnippetSheet() {
                 </SheetHeader>
 
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(handleCreateSnippet)} className="space-y-4">
+                    <form
+                        onSubmit={form.handleSubmit(handleCreateSnippet)}
+                        className="space-y-4 w-full h-full flex flex-col"
+                    >
                         <FormField
                             name="title"
                             control={form.control}
@@ -189,7 +191,9 @@ export default function CreateSnippetSheet() {
                                                     )}
                                                 >
                                                     {field.value
-                                                        ? LangsEnum[field.value]
+                                                        ? langs.find(
+                                                              (lang) => lang.id === field.value,
+                                                          )?.name
                                                         : "Select language"}
                                                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                                 </Button>
@@ -240,29 +244,53 @@ export default function CreateSnippetSheet() {
                             name="code"
                             control={form.control}
                             render={({ field }) => {
+                                textareaRef?.current?.addEventListener("scroll", () => {
+                                    const $shiki = document.querySelector(".shiki");
+                                    if ($shiki && textareaRef?.current) {
+                                        $shiki.scrollTop = textareaRef.current.scrollTop;
+                                        $shiki.scrollLeft = textareaRef.current.scrollLeft;
+                                    }
+                                });
+
                                 codeToHtmlShiki({
                                     code: field.value,
-                                    theme: theme === "dark" ? "vitesse-dark" : "catppuccin-latte",
-                                }).then((value) => setCodeSnippet(value));
+                                    theme: theme,
+                                    lang: form.getValues("language") as BundledLanguage,
+                                }).then((value) => setSnippetCode(value));
 
                                 return (
-                                    <FormItem>
+                                    <FormItem className="w-full h-full flex flex-col">
                                         <FormLabel className="text-xs">Code</FormLabel>
-                                        <div
-                                            className="rounded-xl max-h-28 h-full overflow-auto"
-                                            ref={containerRef}
-                                            dangerouslySetInnerHTML={{ __html: codeSnippet }}
-                                        />
-                                        <Textarea
-                                            placeholder="Snippet description"
-                                            className="bg-secondary text-xs h-28 resize-none"
-                                            {...field}
-                                        />
+                                        <div className="relative w-full h-full">
+                                            <div
+                                                dangerouslySetInnerHTML={{ __html: snippetCode }}
+                                            />
+                                            <Textarea
+                                                ref={textareaRef}
+                                                spellCheck={false}
+                                                placeholder="Snippet code"
+                                                className="absolute left-0 bottom-0 top-0 right-0 w-full h-full p-5 m-0 text-xs font-mono rounded-md outline-none border-none overflow-auto caret-foreground bg-transparent text-transparent whitespace-nowrap scrollbar-none"
+                                                value={field.value}
+                                                onChange={(e) => {
+                                                    field.onChange(e);
+                                                }}
+                                            />
+                                        </div>
                                         <FormMessage className="text-xs" />
                                     </FormItem>
                                 );
                             }}
                         />
+
+                        <SheetFooter>
+                            <Button
+                                type="submit"
+                                className="h-8 bg-primary text-xs"
+                                disabled={createSnippetDisabled}
+                            >
+                                Create
+                            </Button>
+                        </SheetFooter>
                     </form>
                 </Form>
             </SheetContent>

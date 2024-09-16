@@ -16,7 +16,6 @@ import { useRouter } from "next/navigation";
 import { CreateFolderDialog } from "../dialogs/CreateFolderDialog";
 import { useFetchFolders } from "@/hooks/folder/useFetchFolders";
 import { Skeleton } from "@/components/ui/skeleton";
-import { LangsEnum } from "@/constants/global.constants";
 
 interface Lang {
     id: string;
@@ -59,7 +58,7 @@ export function Sidebar() {
         if (!langs) return;
         const filteredLangs = search(langSearchTerm, langs);
         setLanguages(filteredLangs);
-    }, [bundledLanguagesInfo, langSearchTerm]);
+    }, [langSearchTerm]);
 
     const search = <T extends { name: string }>(
         searchTerm: string,
