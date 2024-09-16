@@ -9,7 +9,7 @@ export function useSignupUserWithPassword() {
     return useMutation({
         mutationFn: signUpWithPassword,
         onSuccess: () => {
-            router.push("/dashboard");
+            router.push("/snippets");
             toast.success("Verification link sent to your email");
         },
         onError: (error) => {

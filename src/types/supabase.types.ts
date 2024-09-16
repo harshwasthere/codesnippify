@@ -205,7 +205,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_language_with_snippets_count: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          language: string
+          count: number
+        }[]
+      }
     }
     Enums: {
       subscription_status_enum: "free" | "pro"

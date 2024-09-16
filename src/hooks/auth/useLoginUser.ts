@@ -9,7 +9,7 @@ export function useLoginUser() {
     return useMutation({
         mutationFn: loginUser,
         onSuccess: () => {
-            router.push("/dashboard");
+            router.push("/snippets");
             toast.success("Logged in successfully");
         },
         onError: (error) => {
