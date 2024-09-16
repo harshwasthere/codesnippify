@@ -32,7 +32,7 @@ export async function signInUserWithOAuth(provider: "github") {
     const { data, error } = await supabase.auth.signInWithOAuth({
         provider: provider,
         options: {
-            redirectTo: `${origin}/auth/callback?next=/dashboard`,
+            redirectTo: `${origin}/auth/callback?next=/snippets`,
         },
     });
 
@@ -116,3 +116,62 @@ export async function updateUserProfile({
 
     if (error) throw error;
 }
+
+/* ---------------------------------------------------- folder actions ---------------------------------------------------- */
+
+export async function fetchFolders() {
+    const supabase = createClient();
+
+    const user = await fetchUser();
+    const user_id = user?.id;
+    if (!user_id) throw new Error("User not found");
+
+    const { data, error } = await supabase.from("folders").select("*").eq("user_id", user_id);
+
+    if (error) throw error;
+    return data;
+}
+
+export async function createFolder({ folderName }: { folderName: string }) {
+    const supabase = createClient();
+
+    const user = await fetchUser();
+    const user_id = user?.id;
+    if (!user_id) throw new Error("User not found");
+
+    const { data, error } = await supabase
+        .from("folders")
+        .insert([{ name: folderName, user_id: user.id }])
+        .select();
+
+    if (error) throw error;
+    return data;
+}
+
+export async function updateFolder({
+    folderId,
+    folderName,
+}: {
+    folderId: string;
+    folderName: string;
+}) {
+    const supabase = createClient();
+
+    const { error } = await supabase
+        .from("folders")
+        .update({ name: folderName })
+        .eq("id", folderId)
+        .select();
+
+    if (error) throw error;
+}
+
+export async function deleteFolder({ folderId }: { folderId: string }) {
+    const supabase = createClient();
+
+    const { error } = await supabase.from("folders").delete().eq("id", folderId).select();
+
+    if (error) throw error;
+}
+
+/* ---------------------------------------------------- language actions ---------------------------------------------------- */
