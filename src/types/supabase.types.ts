@@ -205,8 +205,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      get_language_with_snippets_count: {
-        Args: Record<PropertyKey, never>
+      get_languages_with_snippet_count: {
+        Args: {
+          p_user_id: string
+        }
         Returns: {
           language: string
           count: number

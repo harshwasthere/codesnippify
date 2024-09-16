@@ -8,6 +8,11 @@ export const langs = bundledLanguagesInfo.map((lang) => ({
 
 export const langIds = langs.map((lang) => lang.id);
 
+export const langsEnum = langs.reduce((acc, lang) => {
+    acc[lang.id] = lang.name;
+    return acc;
+}, {} as Record<string, string>);
+
 export const dummyTags: Tag[] = [
     {
         id: "1",

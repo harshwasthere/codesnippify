@@ -39,9 +39,16 @@ import { BundledLanguage, bundledLanguagesInfo } from "shiki";
 import { useTheme } from "next-themes";
 import { codeToHtmlShiki } from "@/lib/shiki/codeToHtmlShiki";
 import { langs } from "@/constants/global.constants";
+import { useCreateSnippet } from "@/hooks/snippet/useCreateSnippet";
 
 export default function CreateSnippetSheet() {
     const theme = useTheme().theme;
+    const {
+        mutate: createSnippetMutate,
+        isPending: createSnippetPending,
+        isError: createSnippetError,
+    } = useCreateSnippet();
+
     const [snippetCode, setSnippetCode] = React.useState("");
     const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
@@ -64,10 +71,12 @@ export default function CreateSnippetSheet() {
         !description ||
         !code ||
         !language ||
-        tags.length === 0;
+        tags.length === 0 ||
+        (createSnippetPending && !createSnippetError);
 
     const handleCreateSnippet = async (data: CreateSnippetFormSchemaTypes) => {
-        console.log(data);
+        console.log("hitted here");
+        createSnippetMutate(data);
         form.reset();
     };
 
@@ -120,6 +129,7 @@ export default function CreateSnippetSheet() {
                                         type="text"
                                         placeholder="Snippet title"
                                         className="bg-secondary text-xs h-8"
+                                        disabled={createSnippetPending && !createSnippetError}
                                     />
                                     <FormMessage className="text-xs" />
                                 </FormItem>
@@ -149,6 +159,7 @@ export default function CreateSnippetSheet() {
                                             type="text"
                                             placeholder="Enter tag"
                                             onKeyDown={handleAddTag}
+                                            disabled={createSnippetPending && !createSnippetError}
                                             className="bg-secondary text-xs h-8 max-w-24 ml-1"
                                         />
                                     </div>
@@ -166,6 +177,7 @@ export default function CreateSnippetSheet() {
                                     <Textarea
                                         placeholder="Snippet description"
                                         className="bg-secondary text-xs h-28 resize-none"
+                                        disabled={createSnippetPending && !createSnippetError}
                                         {...field}
                                     />
                                     <FormMessage className="text-xs" />
@@ -189,6 +201,9 @@ export default function CreateSnippetSheet() {
                                                         "w-48 justify-between bg-secondary text-xs h-8 focus:ring-2 focus:ring-primary",
                                                         !field.value && "text-muted-foreground",
                                                     )}
+                                                    disabled={
+                                                        createSnippetPending && !createSnippetError
+                                                    }
                                                 >
                                                     {field.value
                                                         ? langs.find(
@@ -274,6 +289,9 @@ export default function CreateSnippetSheet() {
                                                 onChange={(e) => {
                                                     field.onChange(e);
                                                 }}
+                                                disabled={
+                                                    createSnippetPending && !createSnippetError
+                                                }
                                             />
                                         </div>
                                         <FormMessage className="text-xs" />

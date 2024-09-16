@@ -175,3 +175,70 @@ export async function deleteFolder({ folderId }: { folderId: string }) {
 }
 
 /* ---------------------------------------------------- language actions ---------------------------------------------------- */
+
+export async function fetchLanguagesWithSnippetCount() {
+    const supabase = createClient();
+
+    const user = await fetchUser();
+    const user_id = user?.id;
+    if (!user_id) throw new Error("User not found");
+
+    const { data, error } = await supabase.rpc("get_languages_with_snippet_count", {
+        p_user_id: user_id,
+    });
+
+    if (error) throw error;
+    return data;
+}
+
+export async function createSnippet({
+    title,
+    tags,
+    description,
+    language,
+    code,
+}: {
+    title: string;
+    tags: string[];
+    description?: string;
+    language: string;
+    code: string;
+}) {
+    const supabase = createClient();
+
+    const user = await fetchUser();
+    const user_id = user?.id;
+    if (!user_id) throw new Error("User not found");
+
+    const { data: snippetData, error: snippetError } = await supabase
+        .from("snippets")
+        .insert({ user_id, title, description, language, code })
+        .select()
+        .single();
+
+    if (snippetError) throw snippetError;
+
+    const snippet_id = snippetData?.id;
+    if (!snippet_id) throw new Error("Snippet not found");
+
+    const { data: tagData, error: tagError } = await supabase
+        .from("tags")
+        .upsert(
+            tags.map((tag: string) => ({ name: tag })),
+            { onConflict: "name" },
+        )
+        .select("id, name");
+
+    if (tagError) throw tagError;
+    if (!tagData) throw new Error("Tag not found");
+
+    const snippetTags = tagData.map((tag) => ({
+        snippet_id,
+        tag_id: tag.id,
+        user_id,
+    }));
+
+    const { error: linkError } = await supabase.from("snippet_tags").insert(snippetTags);
+
+    if (linkError) throw linkError;
+}

@@ -26,14 +26,14 @@ export function FolderButton({ className, folder, onClick }: FolderButtonProps) 
             <div
                 className={cn(
                     buttonVariants({ variant: "ghost", size: "sm" }),
-                    "w-full h-8 group gap-2 cursor-pointer",
+                    "w-full h-8 group gap-2 cursor-pointer max-w-[235px]",
                 )}
             >
                 <FolderIcon
                     strokeWidth={1.5}
-                    className="size-5 text-muted-foreground/50 fill-muted-foreground/50 group-hover:stroke-2"
+                    className="size-4 text-muted-foreground/50 fill-muted-foreground/10 group-hover:stroke-2 flex-shrink-0"
                 />
-                <span className="w-full text-start text-foreground/70 group-hover:text-foreground overflow-ellipsis overflow-hidden group-hover:pr-2">
+                <span className="w-full text-start text-foreground/70 group-hover:text-foreground truncate capitalize">
                     {folder?.name}
                 </span>
 

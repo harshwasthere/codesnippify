@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Icons } from "@/assets/icons";
-import { Apple, Atom, FolderPlus, Heart, Icon, SidebarIcon, Trash2Icon } from "lucide-react";
+import { Apple, Atom, Heart, Icon, SidebarIcon, Trash2Icon } from "lucide-react";
 import { SearchInput } from "../inputs/SearchInput";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { FolderButton } from "../buttons/FolderButton";
@@ -16,19 +16,28 @@ import { useRouter } from "next/navigation";
 import { CreateFolderDialog } from "../dialogs/CreateFolderDialog";
 import { useFetchFolders } from "@/hooks/folder/useFetchFolders";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useFetchLangsWithSnippetCount } from "@/hooks/snippet/useFetchLangsWithSnippetCount";
+import { langsEnum } from "@/constants/global.constants";
 
 interface Lang {
-    id: string;
     name: string;
+    count: number;
 }
 
 export function Sidebar() {
     const router = useRouter();
+
     const {
         data: fetchedFolders,
         isLoading: fetchedFoldersLoading,
         isSuccess: fetchedFoldersSuccess,
     } = useFetchFolders();
+    const {
+        data: fetchedLanguages,
+        isLoading: fetchedLanguagesLoading,
+        isSuccess: fetchedLanguagesSuccess,
+    } = useFetchLangsWithSnippetCount();
+
     const [sidebarOpen, setSidebarOpen] = React.useState<boolean>(true);
 
     const [folders, setFolders] = React.useState<Folder[]>([]);
@@ -51,14 +60,15 @@ export function Sidebar() {
     }, [fetchedFolders, folderSearchTerm]);
 
     React.useEffect(() => {
-        const langs = bundledLanguagesInfo.map((lang) => ({
-            id: lang.id,
-            name: lang.name,
+        if (!fetchedLanguages) return;
+        const langs = fetchedLanguages.map((lang) => ({
+            name: lang.language,
+            count: lang.count,
         }));
         if (!langs) return;
         const filteredLangs = search(langSearchTerm, langs);
         setLanguages(filteredLangs);
-    }, [langSearchTerm]);
+    }, [fetchedLanguages, langSearchTerm]);
 
     const search = <T extends { name: string }>(
         searchTerm: string,
@@ -193,12 +203,13 @@ export function Sidebar() {
                                 </div>
                                 <ScrollArea className="flex-grow">
                                     <div className="pl-2 pr-3">
-                                        {languages.length === 0 ? (
-                                            // <div className="flex flex-col gap-2">
-                                            //     {Array.from({ length: 7 }).map((_, index) => (
-                                            //         <Skeleton key={index} className="w-full h-7" />
-                                            //     ))}
-                                            // </div>
+                                        {fetchedLanguagesLoading && !fetchedLanguagesSuccess ? (
+                                            <div className="flex flex-col gap-2">
+                                                {Array.from({ length: 7 }).map((_, index) => (
+                                                    <Skeleton key={index} className="w-full h-7" />
+                                                ))}
+                                            </div>
+                                        ) : languages.length === 0 ? (
                                             <div className="flex flex-col items-center gap-3 mt-10 text-muted-foreground">
                                                 <Icon iconNode={pacMan} className="size-6 " />
                                                 <span className="font-bricolage text-xs ">
@@ -208,17 +219,20 @@ export function Sidebar() {
                                         ) : (
                                             languages.map((language) => (
                                                 <Button
-                                                    key={language.id}
+                                                    key={language.name}
                                                     variant="ghost"
                                                     size="sm"
-                                                    className="w-full h-8 group gap-2 cursor-pointer"
+                                                    className="w-full h-8 group gap-2 cursor-pointer max-w-[235px]"
                                                 >
                                                     <Atom
                                                         strokeWidth={1.5}
-                                                        className="size-5 text-muted-foreground/50 fill-muted-foreground/10 group-hover:stroke-2"
+                                                        className="size-4 text-muted-foreground/50 fill-muted-foreground/10 group-hover:stroke-2 flex-shrink-0"
                                                     />
-                                                    <span className="w-full text-start text-foreground/70 group-hover:text-foreground overflow-ellipsis overflow-hidden group-hover:pr-2">
-                                                        {language?.name}
+                                                    <span className="w-full text-start text-foreground/70 group-hover:text-foreground truncate">
+                                                        {langsEnum[language.name]}
+                                                    </span>
+                                                    <span className="text-primary text-xs bg-primary/20 group-hover:bg-primary/30 p-1 h-5 min-w-5 rounded-full flex items-center justify-center flex-shrink-0">
+                                                        {language?.count}
                                                     </span>
                                                 </Button>
                                             ))
