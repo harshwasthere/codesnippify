@@ -214,6 +214,25 @@ export type Database = {
           count: number
         }[]
       }
+      get_snippets_with_filters: {
+        Args: {
+          search_user_id: string
+          filter_tags: string[]
+          search_folder_id: string
+          show_trash: boolean
+        }
+        Returns: {
+          id: string
+          favorite: boolean
+          title: string
+          description: string
+          language: string
+          code: string
+          created_at: string
+          updated_at: string
+          tags: string[]
+        }[]
+      }
     }
     Enums: {
       subscription_status_enum: "free" | "pro"
