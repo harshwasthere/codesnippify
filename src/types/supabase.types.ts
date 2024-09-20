@@ -14,21 +14,18 @@ export type Database = {
           created_at: string
           id: string
           name: string
-          updated_at: string
           user_id: string
         }
         Insert: {
           created_at?: string
           id?: string
           name: string
-          updated_at?: string
           user_id: string
         }
         Update: {
           created_at?: string
           id?: string
           name?: string
-          updated_at?: string
           user_id?: string
         }
         Relationships: [
@@ -128,12 +125,11 @@ export type Database = {
           created_at: string
           description: string | null
           favorite: boolean
-          folder_id: string | null
+          folder_id: string
           id: string
           language: string
           title: string
           trash: boolean
-          updated_at: string
           user_id: string
         }
         Insert: {
@@ -141,12 +137,11 @@ export type Database = {
           created_at?: string
           description?: string | null
           favorite?: boolean
-          folder_id?: string | null
+          folder_id: string
           id?: string
           language: string
           title: string
           trash?: boolean
-          updated_at?: string
           user_id: string
         }
         Update: {
@@ -154,12 +149,11 @@ export type Database = {
           created_at?: string
           description?: string | null
           favorite?: boolean
-          folder_id?: string | null
+          folder_id?: string
           id?: string
           language?: string
           title?: string
           trash?: boolean
-          updated_at?: string
           user_id?: string
         }
         Relationships: [
@@ -184,63 +178,32 @@ export type Database = {
           created_at: string
           id: string
           name: string
-          updated_at: string
         }
         Insert: {
           created_at?: string
           id?: string
           name: string
-          updated_at?: string
         }
         Update: {
           created_at?: string
           id?: string
           name?: string
-          updated_at?: string
         }
         Relationships: []
       }
     }
     Views: {
-      [_ in never]: never
+      language_counts: {
+        Row: {
+          language: string | null
+          snippet_count: number | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      get_all_tags_of_user: {
-        Args: {
-          search_user_id: string
-        }
-        Returns: {
-          name: string
-        }[]
-      }
-      get_languages_with_snippet_count: {
-        Args: {
-          p_user_id: string
-        }
-        Returns: {
-          language: string
-          count: number
-        }[]
-      }
-      get_snippets_with_filters: {
-        Args: {
-          search_user_id: string
-          filter_tags: string[]
-          search_folder_id?: string
-          show_trash?: boolean
-        }
-        Returns: {
-          id: string
-          favorite: boolean
-          title: string
-          description: string
-          language: string
-          code: string
-          created_at: string
-          updated_at: string
-          tags: string[]
-        }[]
-      }
+      [_ in never]: never
     }
     Enums: {
       subscription_status_enum: "free" | "pro"
