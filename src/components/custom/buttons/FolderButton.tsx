@@ -24,9 +24,12 @@ export function FolderButton({ className, folder, onClick }: FolderButtonProps) 
     return (
         <React.Fragment>
             <div
+                onClick={onClick}
                 className={cn(
                     buttonVariants({ variant: "ghost", size: "sm" }),
-                    "w-full h-8 group gap-2 cursor-pointer max-w-[235px]",
+                    "w-full h-8 group gap-2 cursor-pointer max-w-[235px] ",
+                    isFolderDropdownMenuOpen && "bg-accent text-accent-foreground",
+                    className,
                 )}
             >
                 <FolderIcon

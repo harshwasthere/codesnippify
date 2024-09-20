@@ -61,6 +61,11 @@ const config: Config = {
                 md: "calc(var(--radius) - 2px)",
                 sm: "calc(var(--radius) - 4px)",
             },
+            screens: {
+                xs: "380px",
+                "dashboard-break-1": "1350px",
+                "dashboard-break-2": "1890px",
+            },
         },
     },
     plugins: [require("tailwindcss-animate"), require("tailwind-scrollbar")],

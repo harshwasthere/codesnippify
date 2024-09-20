@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { X } from "lucide-react";
+import { Frown, Loader, X } from "lucide-react";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -15,14 +15,25 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { dummyTags } from "@/constants/global.constants";
+import { useGlobalStore } from "@/providers/GlobalStoreProvider";
+import { useShallow } from "zustand/react/shallow";
+import { useFetchTags } from "@/hooks/tag/useFetchTags";
 
-interface TagFilterDialogProps {
-    isOpen: boolean;
-    onOpenChange: (open: boolean) => void;
-}
+export function TagFilterDialog() {
+    const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
-export function TagFilterDialog({ isOpen, onOpenChange }: TagFilterDialogProps) {
+    const { setFilterTags } = useGlobalStore(
+        useShallow((store) => ({
+            setFilterTags: store.setFilterTags,
+        })),
+    );
+
+    const {
+        data: fetchedTags,
+        isLoading: fetchedTagsLoading,
+        isSuccess: fetchedTagsSuccess,
+    } = useFetchTags();
+
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
     const handleTagSelection = (tagName: string) => {
@@ -31,8 +42,10 @@ export function TagFilterDialog({ isOpen, onOpenChange }: TagFilterDialogProps) 
         );
     };
 
+    console.log(fetchedTags);
+
     return (
-        <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
+        <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
             <AlertDialogTrigger asChild>
                 <Button
                     variant="outline"
@@ -46,27 +59,56 @@ export function TagFilterDialog({ isOpen, onOpenChange }: TagFilterDialogProps) 
                 </Button>
             </AlertDialogTrigger>
             <AlertDialogContent className="max-w-96 w-[calc(100%-1.25rem)] p-4 rounded-xl flex flex-col gap-6">
-                <AlertDialogHeader className="space-y-0">
-                    <AlertDialogTitle className="text-sm font-bricolage font-semibold">
-                        Tags Filter
-                    </AlertDialogTitle>
-                    <AlertDialogDescription className="text-xs text-muted-foreground">
-                        Select tags to filter snippets
-                    </AlertDialogDescription>
+                <AlertDialogHeader className="space-y-0 flex-row items-center justify-between gap-2">
+                    <div>
+                        <AlertDialogTitle className="text-sm font-bricolage font-semibold">
+                            Tags Filter
+                        </AlertDialogTitle>
+                        <AlertDialogDescription className="text-xs text-muted-foreground">
+                            Select tags to filter snippets
+                        </AlertDialogDescription>
+                    </div>
+                    <Button
+                        onClick={() => setSelectedTags([])}
+                        variant="destructive"
+                        size="sm"
+                        className="text-xs h-8 flex items-center text-destructive bg-destructive/20 hover:bg-destructive/30"
+                    >
+                        Clear
+                    </Button>
                 </AlertDialogHeader>
                 <div className="w-full flex flex-wrap gap-2 items-center justify-center">
-                    {dummyTags.map((tag) => (
-                        <TagButton
-                            key={tag.id}
-                            tag={tag}
-                            selected={selectedTags.includes(tag.name)}
-                            onClick={() => handleTagSelection(tag.name)}
-                        />
-                    ))}
+                    {fetchedTagsLoading && !fetchedTagsSuccess ? (
+                        <div className="w-full h-full flex items-center justify-center ">
+                            <Loader
+                                strokeWidth={1.5}
+                                className="size-4 animate-spin text-muted-foreground/50"
+                            />
+                        </div>
+                    ) : fetchedTags?.length === 0 ? (
+                        <div className="w-full h-full flex flex-col items-center justify-center gap-3 text-muted-foreground/20">
+                            <Frown strokeWidth={1.5} className="size-5" />
+                            <span className="font-bricolage text-2xl ">No snippets found</span>
+                        </div>
+                    ) : (
+                        fetchedTags?.map((tag) => (
+                            <TagButton
+                                key={tag.id}
+                                tag={tag}
+                                selected={selectedTags.includes(tag.name)}
+                                onClick={() => handleTagSelection(tag.name)}
+                            />
+                        ))
+                    )}
                 </div>
                 <AlertDialogFooter className="sm:justify-center">
-                    <AlertDialogCancel className="text-xs h-8">Cancel</AlertDialogCancel>
-                    <AlertDialogAction className="text-xs h-8 flex items-center">
+                    <AlertDialogCancel className="text-xs h-8 flex items-center">
+                        Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                        onClick={() => setFilterTags(selectedTags)}
+                        className="text-xs h-8 flex items-center"
+                    >
                         Filter
                     </AlertDialogAction>
                 </AlertDialogFooter>
@@ -89,9 +131,7 @@ function TagButton({ tag, selected, onClick }: TagButtonProps) {
             onClick={onClick}
             className={cn(
                 "p-2 h-7 text-xs flex items-center justify-center gap-1",
-                selected
-                    ? "text-destructive bg-destructive/30 hover:bg-destructive/40"
-                    : "text-primary bg-primary/30 hover:bg-primary/40",
+                selected && "text-primary bg-primary/30 hover:bg-primary/40",
             )}
         >
             {tag.name}

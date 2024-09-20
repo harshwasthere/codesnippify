@@ -205,6 +205,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_all_tags_of_user: {
+        Args: {
+          search_user_id: string
+        }
+        Returns: {
+          name: string
+        }[]
+      }
       get_languages_with_snippet_count: {
         Args: {
           p_user_id: string
@@ -218,8 +226,8 @@ export type Database = {
         Args: {
           search_user_id: string
           filter_tags: string[]
-          search_folder_id: string
-          show_trash: boolean
+          search_folder_id?: string
+          show_trash?: boolean
         }
         Returns: {
           id: string

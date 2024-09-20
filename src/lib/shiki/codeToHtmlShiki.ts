@@ -10,7 +10,7 @@ type Props = {
 export async function codeToHtmlShiki({ code, lang = "javascript", theme = "system" }: Props) {
     const html = await codeToHtml(code, {
         lang,
-        theme: theme === "dark" || theme === "system" ? "vitesse-dark" : "vitesse-light",
+        theme: theme === "dark" || theme === "system" ? "vitesse-dark" : "catppuccin-latte",
     });
 
     return html;

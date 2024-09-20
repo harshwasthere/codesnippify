@@ -11,23 +11,35 @@ import { TagFilterDialog } from "../dialogs/TagFilterDialog";
 import { ProfileSettingsDialog } from "../dialogs/ProfileSettingsDialog";
 import { useFetchUserProfile } from "@/hooks/user/useFetchUserProfile";
 import CreateSnippetSheet from "../sheets/CreateSnippetSheet";
+import { useShallow } from "zustand/react/shallow";
+import { useGlobalStore } from "@/providers/GlobalStoreProvider";
 
 export function Navbar() {
     const { data: userProfile } = useFetchUserProfile();
+    const { toggleSidebar, searchTerm, setSearchTerm } = useGlobalStore(
+        useShallow((store) => ({
+            toggleSidebar: store.toggleSidebar,
+            searchTerm: store.searchTerm,
+            setSearchTerm: store.setSearchTerm,
+        })),
+    );
 
-    const [isTagFilterDialogOpen, setIsTagFilterDialogOpen] = React.useState<boolean>(false);
     const [isProfileSettingsDialogOpen, setIsProfileSettingsDialogOpen] =
         React.useState<boolean>(false);
-    const [snippetSearchTerm, setSnippetSearchTerm] = React.useState<string>("");
     const handleSnippetSearchTermChange = useDebouncedCallback(
-        (e: React.ChangeEvent<HTMLInputElement>) => setSnippetSearchTerm(e.target.value),
+        (e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value),
         400,
     );
 
     return (
         <React.Fragment>
-            <nav className="flex h-14 w-full items-center justify-between gap-2 border-b bg-background p-2">
-                <Button variant="secondary" size="icon" className="size-8 flex-shrink-0">
+            <nav className="flex h-14 w-full items-center justify-between gap-2 border-b bg-background p-2 flex-shrink-0">
+                <Button
+                    variant="secondary"
+                    size="icon"
+                    onClick={toggleSidebar}
+                    className="size-8 flex-shrink-0 z-50"
+                >
                     <SidebarIcon strokeWidth={1.5} className="size-5" />
                 </Button>
 
@@ -41,10 +53,7 @@ export function Navbar() {
                             onChange={handleSnippetSearchTermChange}
                         />
                     </div>
-                    <TagFilterDialog
-                        isOpen={isTagFilterDialogOpen}
-                        onOpenChange={setIsTagFilterDialogOpen}
-                    />
+                    <TagFilterDialog />
                     <CreateSnippetSheet />
                 </div>
 

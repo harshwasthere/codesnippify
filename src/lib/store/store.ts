@@ -7,6 +7,9 @@ import { GlobalStore, GlobalStoreState } from "@/types/store.types";
  * Initial state for the UI store
  */
 const initialGlobalStore: GlobalStoreState = {
+    isSidebarOpen: true,
+    sidebarType: "side",
+
     searchTerm: "",
     filterTags: [],
 };
@@ -27,6 +30,16 @@ export const createGlobalStore = (initialStore: GlobalStoreState = initialGlobal
                     setFilterTags: (tags: string[]) =>
                         set((state) => {
                             state.filterTags = tags;
+                        }),
+
+                    toggleSidebar: () =>
+                        set((state) => {
+                            state.isSidebarOpen = !state.isSidebarOpen;
+                        }),
+
+                    setSidebarType: (type: "sheet" | "side") =>
+                        set((state) => {
+                            state.sidebarType = type;
                         }),
                 })),
             ),

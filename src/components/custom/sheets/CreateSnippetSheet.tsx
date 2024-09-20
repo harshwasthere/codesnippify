@@ -100,7 +100,7 @@ export default function CreateSnippetSheet() {
             <SheetTrigger asChild>
                 <Button size="sm" className="h-8 flex-shrink-0">
                     <Plus strokeWidth={1.5} className="size-4 mr-1" />
-                    Snippet
+                    <span className="max-xs:hidden">Snippet</span>
                 </Button>
             </SheetTrigger>
             <SheetContent className="sm:max-w-xl w-full gap-4 flex flex-col">
@@ -276,7 +276,7 @@ export default function CreateSnippetSheet() {
                                 return (
                                     <FormItem className="w-full h-full flex flex-col">
                                         <FormLabel className="text-xs">Code</FormLabel>
-                                        <div className="relative w-full h-full">
+                                        <div className="relative w-full h-full create-snippet-code">
                                             <div
                                                 dangerouslySetInnerHTML={{ __html: snippetCode }}
                                             />

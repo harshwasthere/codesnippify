@@ -191,6 +191,36 @@ export async function fetchLanguagesWithSnippetCount() {
     return data;
 }
 
+/* ---------------------------------------------------- snippet actions ---------------------------------------------------- */
+
+interface FetchAllSnippetsProps {
+    filter_tags?: string[];
+    search_folder_id?: string;
+    show_trash: boolean;
+}
+
+export async function fetchAllSnippets({
+    filter_tags,
+    search_folder_id,
+    show_trash,
+}: FetchAllSnippetsProps) {
+    const supabase = createClient();
+
+    const user = await fetchUser();
+    const user_id = user?.id;
+    if (!user_id) throw new Error("User not found");
+
+    const { data, error } = await supabase.rpc("get_snippets_with_filters", {
+        search_user_id: user_id,
+        filter_tags: filter_tags ?? [],
+        search_folder_id: search_folder_id,
+        show_trash: show_trash,
+    });
+
+    if (error) throw error;
+    return data;
+}
+
 export async function createSnippet({
     title,
     tags,
@@ -241,4 +271,19 @@ export async function createSnippet({
     const { error: linkError } = await supabase.from("snippet_tags").insert(snippetTags);
 
     if (linkError) throw linkError;
+}
+
+/* ---------------------------------------------------- tags actions ---------------------------------------------------- */
+
+export async function fetchTags() {
+    const supabase = createClient();
+
+    const user = await fetchUser();
+    const user_id = user?.id;
+    if (!user_id) throw new Error("User not found");
+
+    const { data, error } = await supabase.rpc("get_all_tags_of_user", { search_user_id: user_id });
+
+    if (error) throw error;
+    return data;
 }

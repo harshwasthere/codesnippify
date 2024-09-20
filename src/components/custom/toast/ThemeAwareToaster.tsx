@@ -6,14 +6,16 @@ import { Toaster } from "react-hot-toast";
 export default function ThemeAwareToaster() {
     const { theme } = useTheme();
 
+    const darkTheme = theme === "dark" || theme === "system";
+
     return (
         <Toaster
             position="bottom-center"
             reverseOrder={false}
             toastOptions={{
                 style: {
-                    background: theme === "dark" ? "#333" : "#fff",
-                    color: theme === "dark" ? "#fff" : "#333",
+                    background: darkTheme ? "#333" : "#fff",
+                    color: darkTheme ? "#fff" : "#333",
                     fontSize: "14px",
                 },
             }}
