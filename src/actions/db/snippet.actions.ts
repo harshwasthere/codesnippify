@@ -103,10 +103,13 @@ export async function deleteSnippet({ snippetId, userId }: { snippetId: string; 
 }
 
 // toggle favorite status of a snippet for a user (favorite/unfavorite)
-export async function toggleSnippetFavoriteStatus(
-    snippetId: string,
-    currentFavoriteStatus: boolean,
-) {
+export async function toggleSnippetFavoriteStatus({
+    snippetId,
+    currentFavoriteStatus,
+}: {
+    snippetId: string;
+    currentFavoriteStatus: boolean;
+}) {
     const supabase = createClient();
 
     const { error } = await supabase
@@ -118,7 +121,13 @@ export async function toggleSnippetFavoriteStatus(
 }
 
 // toggle trash status of a snippet for a user (trash/restore)
-export async function toggleSnippetTrashStatus(snippetId: string, currentTrashStatus: boolean) {
+export async function toggleSnippetTrashStatus({
+    snippetId,
+    currentTrashStatus,
+}: {
+    snippetId: string;
+    currentTrashStatus: boolean;
+}) {
     const supabase = createClient();
 
     const { error } = await supabase

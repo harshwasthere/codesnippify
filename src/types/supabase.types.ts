@@ -111,6 +111,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "snippet_tags_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "user_tags"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "snippet_tags_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
@@ -125,7 +132,7 @@ export type Database = {
           created_at: string
           description: string | null
           favorite: boolean
-          folder_id: string
+          folder_id: string | null
           id: string
           language: string
           title: string
@@ -137,7 +144,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           favorite?: boolean
-          folder_id: string
+          folder_id?: string | null
           id?: string
           language: string
           title: string
@@ -149,7 +156,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           favorite?: boolean
-          folder_id?: string
+          folder_id?: string | null
           id?: string
           language?: string
           title?: string
@@ -199,11 +206,93 @@ export type Database = {
           snippet_count: number | null
           user_id: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "snippets_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_tags: {
+        Row: {
+          id: string | null
+          name: string | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "snippet_tags_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Functions: {
-      [_ in never]: never
+      create_snippet_with_tags: {
+        Args: {
+          p_user_id: string
+          p_title: string
+          p_language: string
+          p_code: string
+          p_tags: string[]
+          p_description?: string
+        }
+        Returns: string
+      }
+      delete_snippet_with_tags: {
+        Args: {
+          p_snippet_id: string
+          p_user_id: string
+        }
+        Returns: undefined
+      }
+      fetch_snippets_with_tags: {
+        Args: {
+          _user_id: string
+          _folder_id?: string
+          _trash?: boolean
+          _tags?: string[]
+        }
+        Returns: {
+          snippet_id: string
+          title: string
+          description: string
+          language: string
+          code: string
+          favorite: boolean
+          trash: boolean
+          created_at: string
+          folder_name: string
+          tags: string[]
+        }[]
+      }
+      get_user_tags: {
+        Args: {
+          user_id: string
+        }
+        Returns: {
+          id: string
+          name: string
+        }[]
+      }
+      update_snippet_with_tags: {
+        Args: {
+          p_snippet_id: string
+          p_user_id: string
+          p_title: string
+          p_language: string
+          p_code: string
+          p_tags: string[]
+          p_description?: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       subscription_status_enum: "free" | "pro"
