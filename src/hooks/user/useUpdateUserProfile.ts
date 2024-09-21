@@ -1,24 +1,24 @@
-import { fetchUserProfie, updateUserProfile } from "@/app/actions";
+import { fetchUserProfie, updateUserProfile } from "@/actions/db/user.actions";
 import { errorMessage } from "@/lib/utils";
 import { deleteImgFromStorage, uploadImgToStorage } from "@/utils/supabase/storage/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 export async function updateProfile({
+    userId,
     newName,
     newAvatar,
 }: {
+    userId: string;
     newName: string;
     newAvatar?: File | null;
 }) {
-    const profile = await fetchUserProfie();
+    const profile = await fetchUserProfie({ userId });
 
     if (!profile) throw new Error("Profile not found");
-    const userId = profile?.id;
-    if (!userId) throw new Error("User not found");
 
     if (newAvatar) {
-        if (newAvatar.size > 200 * 1024) throw new Error("Avatar size should be max 200KB");
+        if (newAvatar.size > 200 * 1024) throw new Error("Avatar size should be less than 200KB");
 
         const currentAvatarUrl = profile?.avatar_url;
         if (!currentAvatarUrl) throw new Error("Current avatar not found");
@@ -32,14 +32,14 @@ export async function updateProfile({
         if (uploadError) throw uploadError;
         if (!newAvatarUrl) throw new Error("Failed to upload image");
 
+        await updateUserProfile({ fullName: newName, avatarUrl: newAvatarUrl, userId });
+
         if (currentAvatarUrl.startsWith(`${process.env.NEXT_PUBLIC_SUPABASE_URL}`)) {
             const { error: deleteError } = await deleteImgFromStorage(currentAvatarUrl);
             if (deleteError) throw deleteError;
         }
-
-        await updateUserProfile({ newName, newAvatarUrl, userId });
     } else {
-        await updateUserProfile({ newName, newAvatarUrl: null, userId });
+        await updateUserProfile({ fullName: newName, userId });
     }
 }
 
@@ -50,6 +50,7 @@ export function useUpdateUserProfile() {
         mutationFn: updateProfile,
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ["profile"] });
+            toast.success("Profile updated successfully");
         },
         onError: (error) => {
             console.log(error);
