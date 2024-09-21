@@ -1,4 +1,4 @@
-import { sendResetPasswordLink } from "@/app/actions";
+import { sendResetPasswordLink } from "@/actions/auth.actions";
 import { errorMessage } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";

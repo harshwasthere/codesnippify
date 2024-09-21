@@ -1,4 +1,4 @@
-import { signUpWithPassword } from "@/app/actions";
+import { signupUser } from "@/actions/auth.actions";
 import { errorMessage } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -7,9 +7,9 @@ import toast from "react-hot-toast";
 export function useSignupUserWithPassword() {
     const router = useRouter();
     return useMutation({
-        mutationFn: signUpWithPassword,
+        mutationFn: signupUser,
         onSuccess: () => {
-            router.push("/snippets");
+            router.push("/login");
             toast.success("Verification link sent to your email");
         },
         onError: (error) => {

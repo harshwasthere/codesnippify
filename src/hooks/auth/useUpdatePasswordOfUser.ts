@@ -1,4 +1,4 @@
-import { updatePasswordOfUser } from "@/app/actions";
+import { updatePasswordOfUser } from "@/actions/auth.actions";
 import { errorMessage } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";

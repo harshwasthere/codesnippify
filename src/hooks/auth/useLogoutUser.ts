@@ -1,4 +1,4 @@
-import { logoutUser } from "@/app/actions";
+import { logoutUser } from "@/actions/auth.actions";
 import { errorMessage } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
