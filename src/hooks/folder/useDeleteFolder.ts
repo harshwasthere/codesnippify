@@ -1,4 +1,4 @@
-import { deleteFolder } from "@/app/actions";
+import { deleteFolder } from "@/actions/db/folder.actions";
 import { errorMessage } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
