@@ -1,11 +1,11 @@
-import { fetchLanguagesWithSnippetCount } from "@/app/actions";
+import { fetchLanguagesWithSnippetCount } from "@/actions/db/snippet.actions";
 import { useQuery } from "@tanstack/react-query";
 
-export function useFetchLangsWithSnippetCount() {
+export function useFetchLangsWithSnippetCount({ userId }: { userId: string }) {
     return useQuery({
         queryKey: ["languages"],
         queryFn: async () => {
-            return await fetchLanguagesWithSnippetCount();
+            return await fetchLanguagesWithSnippetCount({ userId });
         },
     });
 }

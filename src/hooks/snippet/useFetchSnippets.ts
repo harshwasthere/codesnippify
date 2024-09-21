@@ -1,17 +1,19 @@
-import { fetchAllSnippets } from "@/app/actions";
+import { fetchSnippets } from "@/actions/db/snippet.actions";
 import { useQuery } from "@tanstack/react-query";
 
 interface FetchSnippetsProps {
-    filter_tags?: string[];
-    search_folder_id?: string;
-    show_trash: boolean;
+    userId: string;
+    filterTags?: string[];
+    folderIdToSearch?: string;
+    showTrash: boolean;
 }
 
 export function useFetchSnippets(data: FetchSnippetsProps) {
     return useQuery({
         queryKey: ["snippets"],
         queryFn: async () => {
-            return await fetchAllSnippets(data);
+            return await fetchSnippets(data);
         },
+        enabled: !!data.filterTags,
     });
 }

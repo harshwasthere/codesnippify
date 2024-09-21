@@ -1,18 +1,18 @@
-import { createSnippet } from "@/app/actions";
+import { updateSnippet } from "@/actions/db/snippet.actions";
 import { errorMessage } from "@/lib/utils";
-import { Snippet } from "@/types/global.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-export function useCreateSnippet() {
+export function useUpdateSnippet() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: createSnippet,
+        mutationFn: updateSnippet,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["snippets"] });
             queryClient.invalidateQueries({ queryKey: ["languages"] });
-            toast.success("Snippet created successfully");
+            queryClient.invalidateQueries({ queryKey: ["tags"] });
+            toast.success("Snippet updated successfully");
         },
         onError: (error) => {
             console.error(error);
