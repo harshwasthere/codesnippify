@@ -48,7 +48,7 @@ export function SignupForm() {
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(handlePasswordSignup)}
-                    className="w-full space-y-2"
+                    className="w-full space-y-4"
                 >
                     <FormField
                         name="email"
@@ -77,7 +77,7 @@ export function SignupForm() {
                                     <Input
                                         type="password"
                                         placeholder="Password"
-                                        className="bg-secondary mb-3"
+                                        className="bg-secondary"
                                         disabled={signupPending && !signupError}
                                         {...field}
                                     />

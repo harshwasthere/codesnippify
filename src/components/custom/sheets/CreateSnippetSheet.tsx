@@ -39,7 +39,7 @@ import { BundledLanguage, bundledLanguagesInfo } from "shiki";
 import { useTheme } from "next-themes";
 import { codeToHtmlShiki } from "@/lib/shiki/codeToHtmlShiki";
 import { langs } from "@/constants/global.constants";
-import { useCreateSnippet } from "@/hooks/snippet/useCreateSnippet";
+import { useCreateNewSnippet } from "@/hooks/snippet/useCreateNewSnippet";
 
 export default function CreateSnippetSheet() {
     const theme = useTheme().theme;
@@ -47,7 +47,7 @@ export default function CreateSnippetSheet() {
         mutate: createSnippetMutate,
         isPending: createSnippetPending,
         isError: createSnippetError,
-    } = useCreateSnippet();
+    } = useCreateNewSnippet();
 
     const [snippetCode, setSnippetCode] = React.useState("");
     const textareaRef = React.useRef<HTMLTextAreaElement>(null);
@@ -64,18 +64,16 @@ export default function CreateSnippetSheet() {
         },
     });
 
-    const { title, description, code, language, tags } = form.watch();
+    const { title, code, language, tags } = form.watch();
     const createSnippetDisabled =
         !form.formState.isValid ||
         !title ||
-        !description ||
         !code ||
         !language ||
         tags.length === 0 ||
         (createSnippetPending && !createSnippetError);
 
     const handleCreateSnippet = async (data: CreateSnippetFormSchemaTypes) => {
-        console.log("hitted here");
         createSnippetMutate(data);
         form.reset();
     };

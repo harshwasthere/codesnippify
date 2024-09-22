@@ -30,6 +30,7 @@ export function CreateFolderDialog() {
     } = useCreateFolder();
 
     const [isOpen, onOpenChange] = React.useState(false);
+    
     const form = useForm<CreateFolderDialogSchemaTypes>({
         resolver: zodResolver(CreateFolderDialogSchema),
         mode: "onChange",

@@ -17,16 +17,19 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useGlobalStore } from "@/providers/GlobalStoreProvider";
 import { useShallow } from "zustand/react/shallow";
-import { useFetchTags } from "@/hooks/tag/useFetchTags";
+import { useFetchTags } from "@/hooks/snippet/useFetchTags";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function TagFilterDialog() {
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
-    const { setFilterTags } = useGlobalStore(
+    const { setFilterTags, filterTags } = useGlobalStore(
         useShallow((store) => ({
             setFilterTags: store.setFilterTags,
+            filterTags: store.filterTags,
         })),
     );
+    const [selectedTags, setSelectedTags] = useState<string[]>(filterTags);
 
     const {
         data: fetchedTags,
@@ -34,7 +37,11 @@ export function TagFilterDialog() {
         isSuccess: fetchedTagsSuccess,
     } = useFetchTags();
 
-    const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    React.useEffect(() => {
+        if (fetchedTagsSuccess) {
+            setSelectedTags(filterTags);
+        }
+    }, [fetchedTags, fetchedTagsSuccess, filterTags]);
 
     const handleTagSelection = (tagName: string) => {
         setSelectedTags((prev) =>
@@ -42,7 +49,10 @@ export function TagFilterDialog() {
         );
     };
 
-    console.log(fetchedTags);
+    const handleApplyFilter = async () => {
+        setFilterTags(selectedTags);
+        setIsOpen(false);
+    };
 
     return (
         <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
@@ -58,9 +68,9 @@ export function TagFilterDialog() {
                     </span>
                 </Button>
             </AlertDialogTrigger>
-            <AlertDialogContent className="max-w-96 w-[calc(100%-1.25rem)] p-4 rounded-xl flex flex-col gap-6">
+            <AlertDialogContent className="max-w-96 w-[calc(100%-1.25rem)] p-6 rounded-xl flex flex-col gap-10">
                 <AlertDialogHeader className="space-y-0 flex-row items-center justify-between gap-2">
-                    <div>
+                    <div className="flex flex-col items-start justify-center">
                         <AlertDialogTitle className="text-sm font-bricolage font-semibold">
                             Tags Filter
                         </AlertDialogTitle>
@@ -69,7 +79,10 @@ export function TagFilterDialog() {
                         </AlertDialogDescription>
                     </div>
                     <Button
-                        onClick={() => setSelectedTags([])}
+                        onClick={() => {
+                            setSelectedTags([]);
+                            setFilterTags([]);
+                        }}
                         variant="destructive"
                         size="sm"
                         className="text-xs h-8 flex items-center text-destructive bg-destructive/20 hover:bg-destructive/30"
@@ -87,8 +100,8 @@ export function TagFilterDialog() {
                         </div>
                     ) : fetchedTags?.length === 0 ? (
                         <div className="w-full h-full flex flex-col items-center justify-center gap-3 text-muted-foreground/20">
-                            <Frown strokeWidth={1.5} className="size-5" />
-                            <span className="font-bricolage text-2xl ">No snippets found</span>
+                            <Frown strokeWidth={1.5} className="size-8" />
+                            <span className="font-bricolage text-base ">No snippets found</span>
                         </div>
                     ) : (
                         fetchedTags?.map((tag) => (
@@ -106,7 +119,7 @@ export function TagFilterDialog() {
                         Cancel
                     </AlertDialogCancel>
                     <AlertDialogAction
-                        onClick={() => setFilterTags(selectedTags)}
+                        onClick={handleApplyFilter}
                         className="text-xs h-8 flex items-center"
                     >
                         Filter

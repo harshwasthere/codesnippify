@@ -47,7 +47,7 @@ export function LoginForm() {
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(handlePasswordLogin)}
-                    className="w-full space-y-2"
+                    className="w-full space-y-4"
                 >
                     <FormField
                         name="email"

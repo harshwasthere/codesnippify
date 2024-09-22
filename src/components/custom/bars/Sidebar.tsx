@@ -9,7 +9,6 @@ import { SearchInput } from "../inputs/SearchInput";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { FolderButton } from "../buttons/FolderButton";
 import { useDebouncedCallback } from "use-debounce";
-import { Folder } from "@/types/global.types";
 import { pacMan } from "@lucide/lab";
 import { useRouter } from "next/navigation";
 import { CreateFolderDialog } from "../dialogs/CreateFolderDialog";
@@ -19,12 +18,9 @@ import { useFetchLangsWithSnippetCount } from "@/hooks/snippet/useFetchLangsWith
 import { langsEnum } from "@/constants/global.constants";
 import { useGlobalStore } from "@/providers/GlobalStoreProvider";
 import { useShallow } from "zustand/react/shallow";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
-
-interface Lang {
-    name: string;
-    count: number;
-}
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { Folder, Language } from "@/types/global.types";
+import { search } from "@/lib/utils";
 
 export function Sidebar() {
     const { isSidebarOpen, toggleSidebar, sidebarType, setSidebarType } = useGlobalStore(
@@ -38,17 +34,16 @@ export function Sidebar() {
 
     React.useEffect(() => {
         const handleSidebarTypeChange = () => {
-            if (window.innerWidth < 768) {
+            if (window.innerWidth < 1000) {
                 setSidebarType("sheet");
             } else {
                 setSidebarType("side");
             }
         };
-
         window.addEventListener("resize", handleSidebarTypeChange);
 
         return () => window.removeEventListener("resize", handleSidebarTypeChange);
-    }, []);
+    }, [setSidebarType]);
 
     return sidebarType === "sheet" ? (
         <Sheet open={isSidebarOpen} onOpenChange={toggleSidebar}>
@@ -96,9 +91,11 @@ function SidebarContent() {
     } = useFetchLangsWithSnippetCount();
 
     const [folders, setFolders] = React.useState<Folder[]>([]);
-    const [languages, setLanguages] = React.useState<Lang[]>([]);
+    const [languages, setLanguages] = React.useState<Language[]>([]);
+
     const [folderSearchTerm, setFolderSearchTerm] = React.useState<string>("");
     const [langSearchTerm, setLangSearchTerm] = React.useState<string>("");
+
     const handleFolderSearchTermChange = useDebouncedCallback(
         (e) => setFolderSearchTerm(e.target.value),
         400,
@@ -110,36 +107,16 @@ function SidebarContent() {
 
     React.useEffect(() => {
         if (!fetchedFolders) return;
-        const filteredFolders = search(folderSearchTerm, fetchedFolders);
+        const filteredFolders = search(folderSearchTerm, fetchedFolders, "name");
         setFolders(filteredFolders);
     }, [fetchedFolders, folderSearchTerm]);
 
     React.useEffect(() => {
         if (!fetchedLanguages) return;
-        const langs = fetchedLanguages.map((lang) => ({
-            name: lang.language,
-            count: lang.count,
-        }));
-        if (!langs) return;
-        const filteredLangs = search(langSearchTerm, langs);
-        setLanguages(filteredLangs);
+        const filteredLanguages = search(langSearchTerm, fetchedLanguages, "language");
+        setLanguages(filteredLanguages);
     }, [fetchedLanguages, langSearchTerm]);
 
-    const search = <T extends { name: string }>(
-        searchTerm: string,
-        data: T[] | null | undefined,
-    ): T[] => {
-        if (!data) return [];
-        const normalizedSearchTerm = searchTerm.trim().toLowerCase();
-
-        if (!normalizedSearchTerm) return data;
-
-        const filtered = data.filter((item) =>
-            item.name.toLowerCase().includes(normalizedSearchTerm),
-        );
-
-        return filtered;
-    };
     return (
         <div className="w-full h-full flex flex-col">
             <div className="w-full flex-shrink-0 h-14 p-2 border-b flex items-center gap-1">
@@ -200,7 +177,7 @@ function SidebarContent() {
                                     ))}
                                 </div>
                             ) : folders.length === 0 ? (
-                                <div className="w-full flex flex-col items-center gap-3 mt-10 text-muted-foreground">
+                                <div className="w-full flex flex-col items-center gap-3 mt-10 text-muted-foreground/50">
                                     <Icon iconNode={pacMan} className="size-6 " />
                                     <span className="font-bricolage text-xs ">No folder found</span>
                                 </div>
@@ -239,17 +216,19 @@ function SidebarContent() {
                                     ))}
                                 </div>
                             ) : languages.length === 0 ? (
-                                <div className="w-full flex flex-col items-center gap-3 mt-10 text-muted-foreground">
+                                <div className="w-full flex flex-col items-center gap-3 mt-10 text-muted-foreground/50">
                                     <Icon iconNode={pacMan} className="size-6 " />
                                     <span className="font-bricolage text-xs ">
                                         No languages found
                                     </span>
                                 </div>
                             ) : (
-                                languages.map((language) => (
+                                languages.map((language: Language) => (
                                     <Button
-                                        onClick={() => router.push(`/language/${language.name}`)}
-                                        key={language.name}
+                                        onClick={() =>
+                                            router.push(`/language/${language.language}`)
+                                        }
+                                        key={language.language}
                                         variant="ghost"
                                         size="sm"
                                         className="w-full h-8 group gap-2 cursor-pointer max-w-[235px]"
@@ -259,10 +238,10 @@ function SidebarContent() {
                                             className="size-4 text-muted-foreground/50 fill-muted-foreground/10 group-hover:stroke-2 flex-shrink-0"
                                         />
                                         <span className="w-full text-start text-foreground/70 group-hover:text-foreground truncate">
-                                            {langsEnum[language.name]}
+                                            {language.language && langsEnum[language.language]}
                                         </span>
                                         <span className="text-primary text-xs bg-primary/20 group-hover:bg-primary/30 p-1 h-5 min-w-5 rounded-full flex items-center justify-center flex-shrink-0">
-                                            {language?.count}
+                                            {language?.snippet_count}
                                         </span>
                                     </Button>
                                 ))

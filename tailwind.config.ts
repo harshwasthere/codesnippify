@@ -63,8 +63,14 @@ const config: Config = {
             },
             screens: {
                 xs: "380px",
-                "dashboard-break-1": "1350px",
-                "dashboard-break-2": "1890px",
+                "snippet-card-break-1": "500px",
+                "dashboard-sheet-break-1": "1100px",
+                "dashboard-sheet-break-2": "1625px",
+                "dashboard-sheet-break-3": "2170px",
+
+                "dashboard-sidebar-break-1": "1340px",
+                "dashboard-sidebar-break-2": "1860px",
+                "dashboard-sidebar-break-3": "2380px",
             },
         },
     },

@@ -1,6 +1,8 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
+import { fetchUser } from "./user.actions";
+import { Language, Tags } from "@/types/global.types";
 
 // fetch all snippets for a user with optional filters
 export async function fetchSnippets({
@@ -10,7 +12,7 @@ export async function fetchSnippets({
     showTrash,
 }: {
     userId: string;
-    filterTags?: string[];
+    filterTags: string[];
     folderIdToSearch?: string;
     showTrash: boolean;
 }) {
@@ -18,7 +20,7 @@ export async function fetchSnippets({
 
     const { data, error } = await supabase.rpc("fetch_snippets_with_tags", {
         _user_id: userId,
-        _tags: filterTags,
+        _tags: filterTags.length > 0 ? filterTags : undefined,
         _folder_id: folderIdToSearch,
         _trash: showTrash,
     });
@@ -148,15 +150,15 @@ export async function fetchLanguagesWithSnippetCount({ userId }: { userId: strin
         .eq("user_id", userId);
 
     if (error) throw error;
-    return data;
+    return data as Language[];
 }
 
 // fetch all tags for a user
-export async function fetchTags({ userId }: { userId: string }) {
+export async function fetchTags({ userId }: { userId: string }): Promise<Tags[]> {
     const supabase = createClient();
 
     const { data, error } = await supabase.from("user_tags").select("*").eq("user_id", userId);
 
     if (error) throw error;
-    return data;
+    return data as Tags[];
 }

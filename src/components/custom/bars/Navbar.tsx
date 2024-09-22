@@ -16,19 +16,19 @@ import { useGlobalStore } from "@/providers/GlobalStoreProvider";
 
 export function Navbar() {
     const { data: userProfile } = useFetchUserProfile();
-    const { toggleSidebar, searchTerm, setSearchTerm } = useGlobalStore(
+    const { toggleSidebar, setSearchTerm } = useGlobalStore(
         useShallow((store) => ({
             toggleSidebar: store.toggleSidebar,
-            searchTerm: store.searchTerm,
             setSearchTerm: store.setSearchTerm,
         })),
     );
 
     const [isProfileSettingsDialogOpen, setIsProfileSettingsDialogOpen] =
         React.useState<boolean>(false);
+
     const handleSnippetSearchTermChange = useDebouncedCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value),
-        400,
+        500,
     );
 
     return (
