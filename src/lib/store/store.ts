@@ -7,9 +7,9 @@ import { GlobalStore, GlobalStoreState } from "@/types/store.types";
  * Initial state for the UI store
  */
 const initialGlobalStore: GlobalStoreState = {
+    _hasHydrated: false,
     isSidebarOpen: true,
     sidebarType: "side",
-
     searchTerm: "",
     filterTags: [],
 };
@@ -23,6 +23,11 @@ export const createGlobalStore = (initialStore: GlobalStoreState = initialGlobal
             devtools(
                 immer((set) => ({
                     ...initialStore,
+                    setHasHydrated: (state) => {
+                        set({
+                            _hasHydrated: state,
+                        });
+                    },
                     setSearchTerm: (term: string) =>
                         set((state) => {
                             state.searchTerm = term;
@@ -43,7 +48,12 @@ export const createGlobalStore = (initialStore: GlobalStoreState = initialGlobal
                         }),
                 })),
             ),
-            { name: "global-store" }, // Persist configuration
+            {
+                name: "global-store", // Unique name`
+                onRehydrateStorage: (state) => {
+                    return () => state.setHasHydrated(true);
+                },
+            }, // Persist configuration
         ),
     );
 };

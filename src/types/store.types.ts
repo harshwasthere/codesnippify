@@ -1,4 +1,5 @@
 export interface GlobalStoreState {
+    _hasHydrated: boolean;
     isSidebarOpen: boolean;
     sidebarType: "sheet" | "side";
 
@@ -7,6 +8,8 @@ export interface GlobalStoreState {
 }
 
 export interface GlobalStoreActions {
+    setHasHydrated: (state: boolean) => void;
+
     toggleSidebar: () => void;
     setSidebarType: (type: "sheet" | "side") => void;
 

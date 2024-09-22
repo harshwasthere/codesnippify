@@ -9,6 +9,8 @@ export default function QueryProvider({ children }: { children: React.ReactNode 
             queries: {
                 // With SSR, we usually want to set some default staleTime
                 // above 0 to avoid refetching immediately on the client
+                staleTime: 1000 * 60, // 1 minute
+                gcTime: 1000 * 60 * 5, // 5 minutes
             },
         },
     });

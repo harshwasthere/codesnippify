@@ -13,3 +13,36 @@ export function errorMessage(error: unknown) {
     }
     return "An unknown error occurred";
 }
+
+export type RemoveNullOn<T, O extends keyof T = never> = {
+    [P in keyof T]: P extends O ? Exclude<T[P], null> : T[P];
+};
+export type RemoveNullExcept<T, E extends keyof T = never> = {
+    [P in keyof T]: P extends E ? T[P] : Exclude<T[P], null>;
+};
+
+export type RemoveNull<T> = {
+    [P in keyof T]: Exclude<T[P], null>;
+};
+
+export const search = <
+    T extends {
+        [key: string]: unknown;
+    },
+>(
+    searchTerm: string,
+    data: T[] | null | undefined,
+    searchKey: keyof T,
+): T[] => {
+    if (!data) return [];
+    const normalizedSearchTerm = searchTerm.trim().toLowerCase();
+
+    if (!normalizedSearchTerm) return data;
+
+    const filtered = data.filter((item) => {
+        const value = item[searchKey];
+        return typeof value === "string" && value.toLowerCase().includes(normalizedSearchTerm);
+    });
+
+    return filtered;
+};
