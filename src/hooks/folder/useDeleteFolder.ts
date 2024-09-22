@@ -7,8 +7,11 @@ export function useDeleteFolder() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: deleteFolder,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["folders"] });
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: ["folders"] });
+            await queryClient.invalidateQueries({ queryKey: ["languages"] });
+            await queryClient.invalidateQueries({ queryKey: ["tags"] });
+            await queryClient.invalidateQueries({ queryKey: ["snippets"] });
             toast.success("Folder deleted successfully");
         },
         onError: (error) => {

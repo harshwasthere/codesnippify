@@ -1,4 +1,5 @@
 import { createFolder } from "@/actions/db/folder.actions";
+import { fetchUser } from "@/actions/db/user.actions";
 import { errorMessage } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
@@ -7,9 +8,13 @@ export function useCreateFolder() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: createFolder,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["folders"] });
+        mutationFn: async ({ folderName }: { folderName: string }) => {
+            const userId = (await fetchUser())?.id;
+            if (!userId) throw new Error("User not found");
+            await createFolder({ folderName, userId });
+        },
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: ["folders"] });
             toast.success("Folder created successfully");
         },
         onError: (error: Error) => {

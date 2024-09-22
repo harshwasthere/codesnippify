@@ -7,8 +7,9 @@ export function useRenameFolder() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: updateFolder,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["folders"] });
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: ["folders"] });
+            await queryClient.invalidateQueries({ queryKey: ["snippets"] });
             toast.success("Folder renamed successfully");
         },
         onError: (error) => {
