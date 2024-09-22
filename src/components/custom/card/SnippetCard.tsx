@@ -6,17 +6,21 @@ import { useTheme } from "next-themes";
 import { BundledLanguage } from "shiki";
 import React from "react";
 import { Badge } from "@/components/ui/badge";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { langsEnum } from "@/constants/global.constants";
 
 interface SnippetCardProps {
     snippet: {
-        id: string;
+        snippet_id: string;
         title: string;
         description: string;
-        tags: string[];
-        code: string;
         language: string;
+        code: string;
+        favorite: boolean;
+        trash: boolean;
         created_at: string;
-        updated_at: string;
+        folder_name: string;
+        tags: string[];
     };
     className?: string;
 }
@@ -31,34 +35,44 @@ export function SnippetCard({ snippet, className }: SnippetCardProps) {
     }).then((value) => setSnippetCode(value));
 
     return (
-        <Card className="break-inside-avoid max-w-lg">
+        <Card className="break-inside-avoid  max-w-72 snippet-card-break-1:max-w-96 sm:max-w-lg">
             <CardHeader className="w-full flex flex-row items-center justify-between gap-2 space-y-0 p-4">
-                <Button variant="ghost" size="icon" className="size-7 rounded-sm flex-shrink-0">
-                    <Heart strokeWidth={1.5} className="size-5" />
+                <Button variant="secondary" size="icon" className="size-7 rounded-sm flex-shrink-0">
+                    <Heart strokeWidth={1.5} className="size-4" />
                 </Button>
                 <div className="flex items-center justify-center gap-2">
-                    <Button variant="ghost" size="icon" className="size-7 rounded-sm">
-                        <Pencil strokeWidth={1.5} className="size-5" />
+                    <Button variant="secondary" size="icon" className="size-7 rounded-sm">
+                        <Pencil strokeWidth={1.5} className="size-4" />
                     </Button>
-                    <Button variant="ghost" size="icon" className="size-7 rounded-sm">
-                        <Trash2 strokeWidth={1.5} className="size-5" />
+                    <Button variant="secondary" size="icon" className="size-7 rounded-sm">
+                        <Trash2 strokeWidth={1.5} className="size-4" />
                     </Button>
                 </div>
             </CardHeader>
             <CardContent className="w-full flex flex-col gap-4 p-4 pt-0">
-                <CardTitle className="text-base font-bold font-manrope">{snippet.title}</CardTitle>
-                <CardDescription>{snippet.description}</CardDescription>
+                <div className="flex flex-col">
+                    <CardTitle className="text-lg font-bold font-manrope text-foreground/80">
+                        {snippet.title}
+                    </CardTitle>
+                    <CardDescription>{snippet.description}</CardDescription>
+                </div>
                 <div className="w-full flex flex-wrap gap-2">
+                    <Badge className="py-1 bg-green-400 text-foreground/70 dark:text-foreground dark:bg-green-600">
+                        {langsEnum[snippet.language]}
+                    </Badge>
                     {snippet.tags.map((tag, index) => (
                         <Badge
                             key={index}
-                            className="text-primary rounded-sm bg-primary/20 hover:bg-primary/20"
+                            className="text-primary rounded-sm bg-primary/20 hover:bg-primary/20 py-1"
                         >
                             {tag}
                         </Badge>
                     ))}
                 </div>
-                <div className="w-full relative group">
+
+                <ScrollArea className="w-full h-full relative group rounded-md">
+                    <ScrollBar orientation="horizontal" />
+                    <ScrollBar orientation="vertical" />
                     <Button
                         variant="outline"
                         size="icon"
@@ -67,7 +81,7 @@ export function SnippetCard({ snippet, className }: SnippetCardProps) {
                         <Clipboard strokeWidth={1.5} className="size-4" />
                     </Button>
                     <div dangerouslySetInnerHTML={{ __html: snippetCode }} />
-                </div>
+                </ScrollArea>
             </CardContent>
         </Card>
     );
