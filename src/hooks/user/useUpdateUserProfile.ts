@@ -1,20 +1,20 @@
-import { fetchUserProfie, updateUserProfile } from "@/actions/db/user.actions";
+import { fetchUser, fetchUserProfie, updateUserProfile } from "@/actions/db/user.actions";
 import { errorMessage } from "@/lib/utils";
 import { deleteImgFromStorage, uploadImgToStorage } from "@/utils/supabase/storage/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 export async function updateProfile({
-    userId,
     newName,
     newAvatar,
 }: {
-    userId: string;
     newName: string;
     newAvatar?: File | null;
 }) {
-    const profile = await fetchUserProfie({ userId });
+    const userId = (await fetchUser())?.id;
+    if (!userId) throw new Error("User not found");
 
+    const profile = await fetchUserProfie({ userId });
     if (!profile) throw new Error("Profile not found");
 
     if (newAvatar) {
@@ -50,7 +50,6 @@ export function useUpdateUserProfile() {
         mutationFn: updateProfile,
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ["profile"] });
-            toast.success("Profile updated successfully");
         },
         onError: (error) => {
             console.log(error);
