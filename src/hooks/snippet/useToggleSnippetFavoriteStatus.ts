@@ -8,8 +8,10 @@ export function useToggleSnippetFavoriteStatus() {
 
     return useMutation({
         mutationFn: toggleSnippetFavoriteStatus,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["snippets"] });
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: ["snippets"] });
+            await queryClient.invalidateQueries({ queryKey: ["languages"] });
+            await queryClient.invalidateQueries({ queryKey: ["tags"] });
         },
         onError: (error) => {
             console.error(error);
