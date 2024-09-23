@@ -77,8 +77,8 @@ export default function LanguagePage({ params }: LanguagePageProps) {
                         snippets?.length < 3
                             ? "flex flex-wrap justify-center"
                             : isSidebarOpen && sidebarType === "side"
-                            ? "columns-1 dashboard-sidebar-break-1:columns-2 dashboard-sidebar-break-2:columns-3 dashboard-sidebar-break-3:columns-4"
-                            : "columns-1 dashboard-sheet-break-1:columns-2 dashboard-sheet-break-2:columns-3 dashboard-sheet-break-3:columns-4",
+                            ? "space-y-3 columns-1 dashboard-sidebar-break-1:columns-2 dashboard-sidebar-break-2:columns-3 dashboard-sidebar-break-3:columns-4"
+                            : "space-y-3 columns-1 dashboard-sheet-break-1:columns-2 dashboard-sheet-break-2:columns-3 dashboard-sheet-break-3:columns-4",
                     )}
                 >
                     {snippets?.map((snippet) => (

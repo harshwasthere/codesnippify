@@ -82,7 +82,7 @@ export function SnippetCard({ snippet, className }: SnippetCardProps) {
     };
 
     return (
-        <Card className="break-inside-avoid  max-w-72 snippet-card-break-1:max-w-96 sm:max-w-lg">
+        <Card className="break-inside-avoid h-fit  max-w-72 snippet-card-break-1:max-w-96 sm:max-w-lg">
             <CardHeader className="w-full flex flex-row items-center justify-between gap-2 space-y-0 p-4">
                 <Button
                     variant="secondary"
