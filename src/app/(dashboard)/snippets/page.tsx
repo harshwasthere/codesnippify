@@ -3,20 +3,24 @@
 import { SnippetCard } from "@/components/custom/card/SnippetCard";
 import ClassicLoader from "@/components/ui/classic-loader";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import SpinningCubeLoader from "@/components/ui/spinning-cube-loader";
 import { useFetchSnippets } from "@/hooks/snippet/useFetchSnippets";
 import { cn } from "@/lib/utils";
 import { useGlobalStore } from "@/providers/GlobalStoreProvider";
 import { Snail } from "lucide-react";
 import { useShallow } from "zustand/react/shallow";
+import Fuse from "fuse.js";
+import React from "react";
+import { FilteredSnippets } from "@/types/global.types";
+import { fuseOptions } from "@/constants/global.constants";
 
 export default function AllSnippetsPage() {
-    const { filterTags, hasHydrated, isSidebarOpen, sidebarType } = useGlobalStore(
+    const { filterTags, hasHydrated, isSidebarOpen, sidebarType, searchTerm } = useGlobalStore(
         useShallow((store) => ({
             filterTags: store.filterTags,
             hasHydrated: store._hasHydrated,
             isSidebarOpen: store.isSidebarOpen,
             sidebarType: store.sidebarType,
+            searchTerm: store.searchTerm,
         })),
     );
 
@@ -30,11 +34,25 @@ export default function AllSnippetsPage() {
         hasHydrated: hasHydrated,
     });
 
+    const [snippets, setSnippets] = React.useState<FilteredSnippets>(fetchedSnippets || []);
+
+    React.useEffect(() => {
+        if (fetchedSnippetsSuccess) {
+            if (!searchTerm) {
+                setSnippets(fetchedSnippets);
+                return;
+            }
+            const fuse = new Fuse(fetchedSnippets, fuseOptions);
+            const result = fuse.search(searchTerm);
+            setSnippets(result.map((r) => r.item));
+        }
+    }, [searchTerm, fetchedSnippetsSuccess, fetchedSnippets]);
+
     return (fetchedSnippetsLoading && !fetchedSnippetsSuccess) || !hasHydrated ? (
         <div className="w-full h-full flex items-center justify-center ">
             <ClassicLoader className="size-6 " />
         </div>
-    ) : fetchedSnippets?.length === 0 ? (
+    ) : snippets?.length === 0 ? (
         <div className="w-full h-full flex flex-col items-center justify-center gap-3 text-muted-foreground/20">
             <Snail strokeWidth={1.5} className="size-20" />
             <span className="font-bricolage text-2xl ">No snippets found</span>
@@ -45,13 +63,15 @@ export default function AllSnippetsPage() {
                 <ScrollBar orientation="vertical" />
                 <div
                     className={cn(
-                        "h-full w-fit rounded-md columns-1 space-y-3 gap-3  mx-auto",
-                        isSidebarOpen && sidebarType === "side"
-                            ? "dashboard-sidebar-break-1:columns-2 dashboard-sidebar-break-2:columns-3 dashboard-sidebar-break-3:columns-4"
-                            : "dashboard-sheet-break-1:columns-2 dashboard-sheet-break-2:columns-3 dashboard-sheet-break-3:columns-4",
+                        "h-full w-fit rounded-md  space-y-3 gap-3  mx-auto",
+                        snippets?.length < 3
+                            ? "flex flex-wrap justify-center"
+                            : isSidebarOpen && sidebarType === "side"
+                            ? "columns-1 dashboard-sidebar-break-1:columns-2 dashboard-sidebar-break-2:columns-3 dashboard-sidebar-break-3:columns-4"
+                            : "columns-1 dashboard-sheet-break-1:columns-2 dashboard-sheet-break-2:columns-3 dashboard-sheet-break-3:columns-4",
                     )}
                 >
-                    {fetchedSnippets?.map((snippet) => (
+                    {snippets?.map((snippet) => (
                         <SnippetCard key={snippet.snippet_id} snippet={snippet} />
                     ))}
                 </div>
