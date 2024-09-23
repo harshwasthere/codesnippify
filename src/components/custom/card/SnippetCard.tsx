@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Clipboard, Heart, Pencil, Trash2 } from "lucide-react";
+import { ArrowUpFromLine, Clipboard, Heart, Pencil, Trash2 } from "lucide-react";
 import { codeToHtmlShiki } from "@/lib/shiki/codeToHtmlShiki";
 import { useTheme } from "next-themes";
 import { BundledLanguage } from "shiki";
@@ -8,6 +8,13 @@ import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { langsEnum } from "@/constants/global.constants";
+import { useToggleSnippetFavoriteStatus } from "@/hooks/snippet/useToggleSnippetFavoriteStatus";
+import { cn } from "@/lib/utils";
+import { useToggleSnippetTrashStatus } from "@/hooks/snippet/useToggleSnippetTrashStatus";
+import EditSnippetSheet from "../sheets/EditSnippetSheet";
+import { useDeleteSnippet } from "@/hooks/snippet/useDeleteSnippet";
+import { SnippetDeleteDialog } from "../dialogs/SnippetDeleteDialog";
+import toast from "react-hot-toast";
 
 interface SnippetCardProps {
     snippet: {
@@ -34,19 +41,89 @@ export function SnippetCard({ snippet, className }: SnippetCardProps) {
         lang: snippet.language as BundledLanguage,
     }).then((value) => setSnippetCode(value));
 
+    const {
+        mutate: toggleSnippetFavoriteMutate,
+        isPending: toggleSnippetFavoritePending,
+        isError: toggleSnippetFavoriteError,
+    } = useToggleSnippetFavoriteStatus();
+
+    const {
+        mutate: toggleSnippetTrashMutate,
+        isPending: toggleSnippetTrashPending,
+        isError: toggleSnippetTrashError,
+    } = useToggleSnippetTrashStatus();
+
+    const isDisabled =
+        (toggleSnippetFavoritePending && !toggleSnippetFavoriteError) ||
+        (toggleSnippetTrashPending && !toggleSnippetTrashError);
+
+    const handleToggleSnippetFavoriteStatus = () => {
+        toggleSnippetFavoriteMutate({
+            snippetId: snippet.snippet_id,
+            currentFavoriteStatus: snippet.favorite,
+        });
+    };
+
+    const handleToggleSnippetTrashStatus = () => {
+        toggleSnippetTrashMutate({
+            snippetId: snippet.snippet_id,
+            currentTrashStatus: snippet.trash,
+        });
+    };
+
+    const handleCopyToClipboard = () => {
+        // Use the original code (not HTML) for copying
+        navigator.clipboard
+            .writeText(snippet.code)
+            .then(() => toast.success("Code copied to clipboard"))
+            .catch((error) => {
+                console.error("Failed to copy text: ", error);
+            });
+    };
+
     return (
         <Card className="break-inside-avoid  max-w-72 snippet-card-break-1:max-w-96 sm:max-w-lg">
             <CardHeader className="w-full flex flex-row items-center justify-between gap-2 space-y-0 p-4">
-                <Button variant="secondary" size="icon" className="size-7 rounded-sm flex-shrink-0">
-                    <Heart strokeWidth={1.5} className="size-4" />
+                <Button
+                    variant="secondary"
+                    size="icon"
+                    onClick={handleToggleSnippetFavoriteStatus}
+                    disabled={isDisabled}
+                    className={cn(
+                        "size-7 rounded-sm flex-shrink-0 hover:bg-destructive/10",
+                        snippet.favorite &&
+                            "bg-destructive/10 hover:bg-destructive/20 text-destructive",
+                    )}
+                >
+                    <Heart
+                        strokeWidth={1.5}
+                        className={cn(
+                            "size-4",
+                            snippet.favorite && " fill-destructive hover:stroke-2",
+                        )}
+                    />
                 </Button>
                 <div className="flex items-center justify-center gap-2">
-                    <Button variant="secondary" size="icon" className="size-7 rounded-sm">
-                        <Pencil strokeWidth={1.5} className="size-4" />
+                    <EditSnippetSheet snippet={snippet} isDisabled={isDisabled} />
+                    <Button
+                        variant="secondary"
+                        onClick={handleToggleSnippetTrashStatus}
+                        disabled={isDisabled}
+                        size="icon"
+                        className="size-7 rounded-sm"
+                    >
+                        {snippet.trash ? (
+                            <ArrowUpFromLine strokeWidth={1.5} className="size-4" />
+                        ) : (
+                            <Trash2 strokeWidth={1.5} className="size-4" />
+                        )}
                     </Button>
-                    <Button variant="secondary" size="icon" className="size-7 rounded-sm">
-                        <Trash2 strokeWidth={1.5} className="size-4" />
-                    </Button>
+                    {snippet.trash && (
+                        <SnippetDeleteDialog
+                            snippetId={snippet.snippet_id}
+                            isDisabled={isDisabled}
+                        />
+                    )}
                 </div>
             </CardHeader>
             <CardContent className="w-full flex flex-col gap-4 p-4 pt-0">
@@ -76,6 +153,7 @@ export function SnippetCard({ snippet, className }: SnippetCardProps) {
                     <Button
                         variant="outline"
                         size="icon"
+                        onClick={handleCopyToClipboard}
                         className="size-7 rounded-sm hidden group-hover:flex absolute top-2 right-2 items-center justify-center flex-shrink-0"
                     >
                         <Clipboard strokeWidth={1.5} className="size-4" />
