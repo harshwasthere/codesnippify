@@ -85,6 +85,6 @@
     }
 
     .create-snippet-code .shiki {
-        @apply absolute left-0 bottom-0 top-0 right-0 w-full h-full p-5 m-0 text-xs font-mono rounded-md outline-none border-none overflow-auto !bg-secondary;
+        @apply absolute max-h-full inset-0 w-full h-full p-5 m-0 font-mono text-xs outline-none border-none overflow-auto  rounded-md !bg-secondary;
     }
 }

@@ -40,8 +40,10 @@ import { useTheme } from "next-themes";
 import { codeToHtmlShiki } from "@/lib/shiki/codeToHtmlShiki";
 import { langs } from "@/constants/global.constants";
 import { useCreateNewSnippet } from "@/hooks/snippet/useCreateNewSnippet";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export default function CreateSnippetSheet() {
+    const [isOpen, setIsOpen] = React.useState(false);
     const theme = useTheme().theme;
     const {
         mutate: createSnippetMutate,
@@ -50,7 +52,6 @@ export default function CreateSnippetSheet() {
     } = useCreateNewSnippet();
 
     const [snippetCode, setSnippetCode] = React.useState("");
-    const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
     const form = useForm<CreateSnippetFormSchemaTypes>({
         resolver: zodResolver(CreateSnippetFormSchema),
@@ -76,13 +77,14 @@ export default function CreateSnippetSheet() {
     const handleCreateSnippet = async (data: CreateSnippetFormSchemaTypes) => {
         createSnippetMutate(data);
         form.reset();
+        setIsOpen(false);
     };
 
     const handleAddTag = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
             event.preventDefault();
             event.stopPropagation();
-            const newTag = event.currentTarget.value.trim();
+            const newTag = event.currentTarget.value.trim().toLowerCase();
             if (newTag !== "") {
                 const currentTags = form.getValues("tags");
                 if (!currentTags.includes(newTag)) {
@@ -94,7 +96,7 @@ export default function CreateSnippetSheet() {
     };
 
     return (
-        <Sheet>
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
                 <Button size="sm" className="h-8 flex-shrink-0">
                     <Plus strokeWidth={1.5} className="size-4 mr-1" />
@@ -257,14 +259,6 @@ export default function CreateSnippetSheet() {
                             name="code"
                             control={form.control}
                             render={({ field }) => {
-                                textareaRef?.current?.addEventListener("scroll", () => {
-                                    const $shiki = document.querySelector(".shiki");
-                                    if ($shiki && textareaRef?.current) {
-                                        $shiki.scrollTop = textareaRef.current.scrollTop;
-                                        $shiki.scrollLeft = textareaRef.current.scrollLeft;
-                                    }
-                                });
-
                                 codeToHtmlShiki({
                                     code: field.value,
                                     theme: theme,
@@ -274,24 +268,23 @@ export default function CreateSnippetSheet() {
                                 return (
                                     <FormItem className="w-full h-full flex flex-col">
                                         <FormLabel className="text-xs">Code</FormLabel>
-                                        <div className="relative w-full h-full create-snippet-code">
+                                        <ScrollArea className="relative w-full h-full create-snippet-code">
+                                            <ScrollBar orientation="horizontal" />
+                                            <ScrollBar orientation="vertical" />
+
                                             <div
                                                 dangerouslySetInnerHTML={{ __html: snippetCode }}
                                             />
                                             <Textarea
-                                                ref={textareaRef}
                                                 spellCheck={false}
                                                 placeholder="Snippet code"
-                                                className="absolute left-0 bottom-0 top-0 right-0 w-full h-full p-5 m-0 text-xs font-mono rounded-md outline-none border-none overflow-auto caret-foreground bg-transparent text-transparent whitespace-nowrap scrollbar-none"
-                                                value={field.value}
-                                                onChange={(e) => {
-                                                    field.onChange(e);
-                                                }}
+                                                className="absolute inset-0 w-full h-full p-5 m-0 font-mono text-xs outline-none border-none overflow-auto  rounded-md whitespace-nowrap bg-transparent text-transparent caret-foreground z-10"
+                                                {...field}
                                                 disabled={
                                                     createSnippetPending && !createSnippetError
                                                 }
                                             />
-                                        </div>
+                                        </ScrollArea>
                                         <FormMessage className="text-xs" />
                                     </FormItem>
                                 );

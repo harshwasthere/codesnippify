@@ -16,10 +16,11 @@ import { useGlobalStore } from "@/providers/GlobalStoreProvider";
 
 export function Navbar() {
     const { data: userProfile } = useFetchUserProfile();
-    const { toggleSidebar, setSearchTerm } = useGlobalStore(
+    const { toggleSidebar, setSearchTerm, searchTerm } = useGlobalStore(
         useShallow((store) => ({
             toggleSidebar: store.toggleSidebar,
             setSearchTerm: store.setSearchTerm,
+            searchTerm: store.searchTerm,
         })),
     );
 
@@ -50,6 +51,7 @@ export function Navbar() {
                             placeholder="Search snippet"
                             className="h-8 w-full bg-secondary pl-8 text-xs"
                             iconClassName="size-4"
+                            defaultValue={searchTerm}
                             onChange={handleSnippetSearchTermChange}
                         />
                     </div>

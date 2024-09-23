@@ -13,7 +13,6 @@ export function useToggleSnippetTrashStatus() {
             await queryClient.invalidateQueries({ queryKey: ["snippets"] });
             await queryClient.invalidateQueries({ queryKey: ["languages"] });
             await queryClient.invalidateQueries({ queryKey: ["tags"] });
-            toast.success("Snippet moved to trash!");
         },
         onError: (error) => {
             console.error(error);

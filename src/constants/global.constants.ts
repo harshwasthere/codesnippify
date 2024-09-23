@@ -11,3 +11,10 @@ export const langsEnum = langs.reduce((acc, lang) => {
     acc[lang.id] = lang.name;
     return acc;
 }, {} as Record<string, string>);
+
+export const fuseOptions = {
+    threshold: 0.1,
+    ignoreLocation: true,
+    distance: 100,
+    keys: ["title", "description", "language", "code", "tags"],
+};
