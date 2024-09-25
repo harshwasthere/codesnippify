@@ -240,7 +240,7 @@ function SidebarContent() {
                                         <span className="w-full text-start text-foreground/70 group-hover:text-foreground truncate">
                                             {language.language && langsEnum[language.language]}
                                         </span>
-                                        <span className="text-primary text-xs bg-primary/20 group-hover:bg-primary/30 p-1 h-5 min-w-5 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <span className="text-primary text-xs bg-primary/20 group-hover:bg-primary/30 p-1 px-2 h-5 min-w-5 rounded-full flex items-center justify-center flex-shrink-0">
                                             {language?.snippet_count}
                                         </span>
                                     </Button>

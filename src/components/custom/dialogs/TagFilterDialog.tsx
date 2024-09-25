@@ -63,7 +63,7 @@ export function TagFilterDialog() {
                     className="h-8 flex-shrink-0 text-xs group flex items-center gap-2 p-2"
                 >
                     <span>Tags</span>
-                    <span className="text-primary bg-primary/20 group-hover:bg-primary/30 p-1 size-5 rounded-full flex items-center justify-center">
+                    <span className="text-primary text-xs bg-primary/20 group-hover:bg-primary/30 p-1 px-2 h-5 min-w-5 rounded-full flex items-center justify-center flex-shrink-0">
                         {selectedTags.length}
                     </span>
                 </Button>
