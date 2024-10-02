@@ -8,16 +8,16 @@ export async function middleware(request: NextRequest) {
         data: { user },
     } = await supabase.auth.getUser();
 
-    // add public , onbaording and protected routes
+    // add public, onbaording and protected routes
     const publicRoutes = ["/login", "/signup", "/forgot-password"];
     const onboardingRoutes = ["/update-password", "/update-name"];
     const protectedRoutes = ["/snippets", "/favorites", "/folder", "/language", "/trash"];
 
     const path = request.nextUrl.pathname;
 
-    const isProtectedRoute = protectedRoutes.some((route) => path.startsWith(route));
     const isPublicRoute = publicRoutes.includes(path);
     const isOnboardingRoute = onboardingRoutes.includes(path);
+    const isProtectedRoute = protectedRoutes.some((route) => path.startsWith(route));
 
     const isAuthenticated = user !== null && user !== undefined;
     const haveName = async () => {

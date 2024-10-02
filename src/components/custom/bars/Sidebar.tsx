@@ -11,7 +11,6 @@ import { FolderButton } from "../buttons/FolderButton";
 import { useDebouncedCallback } from "use-debounce";
 import { pacMan } from "@lucide/lab";
 import { useRouter } from "next/navigation";
-import { CreateFolderDialog } from "../dialogs/CreateFolderDialog";
 import { useFetchFolders } from "@/hooks/folder/useFetchFolders";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFetchLangsWithSnippetCount } from "@/hooks/snippet/useFetchLangsWithSnippetCount";
@@ -21,6 +20,7 @@ import { useShallow } from "zustand/react/shallow";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Folder, Language } from "@/types/global.types";
 import { search } from "@/lib/utils";
+import { FolderCreateDialog } from "../dialogs/FolderCreateDialog";
 
 export function Sidebar() {
     const { isSidebarOpen, toggleSidebar, sidebarType, setSidebarType } = useGlobalStore(
@@ -166,7 +166,7 @@ function SidebarContent() {
                             iconClassName="size-4"
                             onChange={handleFolderSearchTermChange}
                         />
-                        <CreateFolderDialog />
+                        <FolderCreateDialog />
                     </div>
                     <ScrollArea className="w-full h-full flex-grow min-h-0">
                         <div className="w-full pl-2 pr-3">

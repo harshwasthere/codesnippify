@@ -1,7 +1,6 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
-import { fetchUser } from "./user.actions";
 import { Language, Tags } from "@/types/global.types";
 
 // fetch all snippets for a user with optional filters
@@ -135,6 +134,34 @@ export async function toggleSnippetTrashStatus({
     const { error } = await supabase
         .from("snippets")
         .update({ trash: !currentTrashStatus })
+        .eq("id", snippetId);
+
+    if (error) throw error;
+}
+
+export async function addSnippetToFolder({
+    snippetId,
+    folderId,
+}: {
+    snippetId: string;
+    folderId: string | null;
+}) {
+    const supabase = createClient();
+
+    const { error } = await supabase
+        .from("snippets")
+        .update({ folder_id: folderId })
+        .eq("id", snippetId);
+
+    if (error) throw error;
+}
+
+export async function removeSnippetFromFolder({ snippetId }: { snippetId: string }) {
+    const supabase = createClient();
+
+    const { error } = await supabase
+        .from("snippets")
+        .update({ folder_id: null })
         .eq("id", snippetId);
 
     if (error) throw error;

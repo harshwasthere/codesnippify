@@ -10,7 +10,7 @@ import { ProfileShowDropdown } from "../dropdowns/ProfileShowDropdown";
 import { TagFilterDialog } from "../dialogs/TagFilterDialog";
 import { ProfileSettingsDialog } from "../dialogs/ProfileSettingsDialog";
 import { useFetchUserProfile } from "@/hooks/user/useFetchUserProfile";
-import CreateSnippetSheet from "../sheets/CreateSnippetSheet";
+import SnippetCreateSheet from "../sheets/SnippetCreateSheet";
 import { useShallow } from "zustand/react/shallow";
 import { useGlobalStore } from "@/providers/GlobalStoreProvider";
 
@@ -56,7 +56,7 @@ export function Navbar() {
                         />
                     </div>
                     <TagFilterDialog />
-                    <CreateSnippetSheet />
+                    <SnippetCreateSheet />
                 </div>
 
                 <div className="flex-shrink-0 flex items-center gap-2">
