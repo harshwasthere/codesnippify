@@ -12,6 +12,9 @@ interface FolderButtonDropdownProps {
     setIsFolderDropdownMenuOpen: (open: boolean) => void;
     setIsFolderRenameDialogOpen: (open: boolean) => void;
     setIsFolderDeleteDialogOpen: (open: boolean) => void;
+    setIsFolderShareDialogOpen: (open: boolean) => void;
+    shareFolder: () => void;
+    folderShareToken: string | null;
 }
 
 export default function FolderButtonDropdown({
@@ -19,6 +22,9 @@ export default function FolderButtonDropdown({
     setIsFolderDropdownMenuOpen,
     setIsFolderRenameDialogOpen,
     setIsFolderDeleteDialogOpen,
+    setIsFolderShareDialogOpen,
+    shareFolder,
+    folderShareToken,
 }: FolderButtonDropdownProps) {
     return (
         <DropdownMenu open={isFolderDropdownMenuOpen} onOpenChange={setIsFolderDropdownMenuOpen}>
@@ -37,6 +43,18 @@ export default function FolderButtonDropdown({
                 onCloseAutoFocus={(e) => e.preventDefault()}
                 className="min-w-full"
             >
+                <DropdownMenuItem
+                    onSelect={(e) => {
+                        e.stopPropagation();
+                        if (folderShareToken === null) {
+                            shareFolder();
+                        }
+                        setIsFolderShareDialogOpen(true);
+                    }}
+                    className="text-xs"
+                >
+                    {folderShareToken ? "Unshare" : "Share"}
+                </DropdownMenuItem>
                 <DropdownMenuItem
                     onSelect={(e) => {
                         e.stopPropagation();

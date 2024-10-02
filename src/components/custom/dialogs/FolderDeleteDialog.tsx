@@ -38,10 +38,10 @@ export function FolderDeleteDialog({
             >
                 <AlertDialogHeader className="space-y-0">
                     <AlertDialogTitle className="text-sm font-bricolage font-semibold">
-                        Delete Convo?
+                        Delete Folder?
                     </AlertDialogTitle>
                     <AlertDialogDescription className="text-xs">
-                        This conversation will be deleted permanently.
+                        This folder will be deleted permanently.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

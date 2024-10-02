@@ -29,10 +29,8 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { CreateSnippetFormSchema } from "@/lib/zod/schema";
-import { CreateSnippetFormSchemaTypes } from "@/types/zod.types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Check, ChevronsUpDown, Plus, X } from "lucide-react";
+import { Check, ChevronsUpDown, Loader, Pencil, Plus, X } from "lucide-react";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { BundledLanguage, bundledLanguagesInfo } from "shiki";
@@ -41,20 +39,39 @@ import { codeToHtmlShiki } from "@/lib/shiki/codeToHtmlShiki";
 import { langs } from "@/constants/global.constants";
 import { useCreateNewSnippet } from "@/hooks/snippet/useCreateNewSnippet";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useUpdateSnippet } from "@/hooks/snippet/useUpdateSnippet";
+import { SnippetCreateFormSchemaTypes } from "@/types/zod.types";
+import { SnippetCreateFormSchema } from "@/lib/zod/schema";
 
-export default function CreateSnippetSheet() {
-    const [isOpen, setIsOpen] = React.useState(false);
+interface SnippetEditProps {
+    isOpen: boolean;
+    setIsOpen: (open: boolean) => void;
+    snippet: {
+        snippet_id: string;
+        title: string;
+        description: string;
+        language: string;
+        code: string;
+        favorite: boolean;
+        trash: boolean;
+        created_at: string;
+        folder_name: string;
+        tags: string[];
+    };
+}
+
+export default function SnippetUpdateSheet({ isOpen, setIsOpen, snippet }: SnippetEditProps) {
     const theme = useTheme().theme;
     const {
-        mutate: createSnippetMutate,
-        isPending: createSnippetPending,
-        isError: createSnippetError,
-    } = useCreateNewSnippet();
+        mutate: updateSnippetMutate,
+        isPending: updateSnippetPending,
+        isError: updateSnippetError,
+    } = useUpdateSnippet();
 
     const [snippetCode, setSnippetCode] = React.useState("");
 
-    const form = useForm<CreateSnippetFormSchemaTypes>({
-        resolver: zodResolver(CreateSnippetFormSchema),
+    const form = useForm<SnippetCreateFormSchemaTypes>({
+        resolver: zodResolver(SnippetCreateFormSchema),
         mode: "onChange",
         defaultValues: {
             title: "",
@@ -65,17 +82,27 @@ export default function CreateSnippetSheet() {
         },
     });
 
+    React.useEffect(() => {
+        form.reset({
+            title: snippet.title,
+            description: snippet.description,
+            code: snippet.code,
+            tags: snippet.tags,
+            language: snippet.language,
+        });
+    }, [snippet, form, isOpen]);
+
     const { title, code, language, tags } = form.watch();
-    const createSnippetDisabled =
+    const updateSnippetDisabled =
         !form.formState.isValid ||
         !title ||
         !code ||
         !language ||
         tags.length === 0 ||
-        (createSnippetPending && !createSnippetError);
+        (updateSnippetPending && !updateSnippetError);
 
-    const handleCreateSnippet = async (data: CreateSnippetFormSchemaTypes) => {
-        createSnippetMutate(data);
+    const handleCreateSnippet = async (data: SnippetCreateFormSchemaTypes) => {
+        updateSnippetMutate({ snippetId: snippet.snippet_id, ...data });
         form.reset();
         setIsOpen(false);
     };
@@ -97,19 +124,13 @@ export default function CreateSnippetSheet() {
 
     return (
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild>
-                <Button size="sm" className="h-8 flex-shrink-0">
-                    <Plus strokeWidth={1.5} className="size-4 mr-1" />
-                    <span className="max-xs:hidden">Snippet</span>
-                </Button>
-            </SheetTrigger>
             <SheetContent className="sm:max-w-xl w-full gap-4 flex flex-col">
                 <SheetHeader className="space-y-0">
                     <SheetTitle className="text-base font-bricolage font-semibold">
-                        Create Snippet
+                        Edit Snippet
                     </SheetTitle>
                     <SheetDescription className="text-xs">
-                        Create a new snippet to save your code.
+                        Change the details of the snippet.
                     </SheetDescription>
                 </SheetHeader>
 
@@ -129,7 +150,7 @@ export default function CreateSnippetSheet() {
                                         type="text"
                                         placeholder="Snippet title"
                                         className="bg-secondary text-xs h-8"
-                                        disabled={createSnippetPending && !createSnippetError}
+                                        disabled={updateSnippetPending && !updateSnippetError}
                                     />
                                     <FormMessage className="text-xs" />
                                 </FormItem>
@@ -159,7 +180,7 @@ export default function CreateSnippetSheet() {
                                             type="text"
                                             placeholder="Enter tag"
                                             onKeyDown={handleAddTag}
-                                            disabled={createSnippetPending && !createSnippetError}
+                                            disabled={updateSnippetPending && !updateSnippetError}
                                             className="bg-secondary text-xs h-8 max-w-24 ml-1"
                                         />
                                     </div>
@@ -177,7 +198,7 @@ export default function CreateSnippetSheet() {
                                     <Textarea
                                         placeholder="Snippet description"
                                         className="bg-secondary text-xs h-28 resize-none"
-                                        disabled={createSnippetPending && !createSnippetError}
+                                        disabled={updateSnippetPending && !updateSnippetError}
                                         {...field}
                                     />
                                     <FormMessage className="text-xs" />
@@ -202,7 +223,7 @@ export default function CreateSnippetSheet() {
                                                         !field.value && "text-muted-foreground",
                                                     )}
                                                     disabled={
-                                                        createSnippetPending && !createSnippetError
+                                                        updateSnippetPending && !updateSnippetError
                                                     }
                                                 >
                                                     {field.value
@@ -281,7 +302,7 @@ export default function CreateSnippetSheet() {
                                                 className="absolute inset-0 w-full h-full p-5 m-0 font-mono text-xs outline-none border-none overflow-auto  rounded-md whitespace-nowrap bg-transparent text-transparent caret-foreground z-10"
                                                 {...field}
                                                 disabled={
-                                                    createSnippetPending && !createSnippetError
+                                                    updateSnippetPending && !updateSnippetError
                                                 }
                                             />
                                         </ScrollArea>
@@ -295,9 +316,12 @@ export default function CreateSnippetSheet() {
                             <Button
                                 type="submit"
                                 className="h-8 bg-primary text-xs"
-                                disabled={createSnippetDisabled}
+                                disabled={updateSnippetDisabled}
                             >
-                                Create
+                                {updateSnippetPending && !updateSnippetError && (
+                                    <Loader className="mr-2 size-4 animate-spin" />
+                                )}
+                                Update
                             </Button>
                         </SheetFooter>
                     </form>

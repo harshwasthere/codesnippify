@@ -17,12 +17,12 @@ import { useDeleteSnippet } from "@/hooks/snippet/useDeleteSnippet";
 import { Trash2 } from "lucide-react";
 
 interface SnippetDeleteDialogProps {
+    isOpen: boolean;
+    setIsOpen: (open: boolean) => void;
     snippetId: string;
-    isDisabled: boolean;
 }
 
-export function SnippetDeleteDialog({ snippetId, isDisabled }: SnippetDeleteDialogProps) {
-    const [isOpen, setIsOpen] = React.useState<boolean>(false);
+export function SnippetDeleteDialog({ isOpen, setIsOpen, snippetId }: SnippetDeleteDialogProps) {
     const {
         mutate: deleteSnippetMutate,
         isPending: deleteSnippetPending,
@@ -31,16 +31,6 @@ export function SnippetDeleteDialog({ snippetId, isDisabled }: SnippetDeleteDial
 
     return (
         <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-            <AlertDialogTrigger asChild>
-                <Button
-                    variant="secondary"
-                    disabled={isDisabled}
-                    size="icon"
-                    className="size-7 rounded-sm"
-                >
-                    <Trash2 strokeWidth={1.5} className="size-4" />
-                </Button>
-            </AlertDialogTrigger>
             <AlertDialogContent
                 className="max-w-64 w-[calc(100%-1.25rem)] p-4 rounded-xl space-y-3"
                 overlayClassName="backdrop-blur-sm"
