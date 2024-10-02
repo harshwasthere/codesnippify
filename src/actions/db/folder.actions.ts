@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
+import { v4 as uuidv4 } from "uuid";
 
 // fetch all folders for a user
 export async function fetchFolders({ userId }: { userId: string }) {
@@ -48,4 +49,36 @@ export async function deleteFolder({ folderId }: { folderId: string }) {
     const { error } = await supabase.from("folders").delete().eq("id", folderId);
 
     if (error) throw error;
+}
+
+export async function shareFolder({ folderId }: { folderId: string }) {
+    const supabase = createClient();
+
+    const uuid = uuidv4();
+    const { error } = await supabase
+        .from("folders")
+        .update({ share_token: uuid })
+        .eq("id", folderId);
+
+    if (error) throw error;
+}
+
+export async function unShareFolder({ folderId }: { folderId: string }) {
+    const supabase = createClient();
+
+    const { error } = await supabase
+        .from("folders")
+        .update({ share_token: null })
+        .eq("id", folderId);
+
+    if (error) throw error;
+}
+
+export async function fetchFolder({ folderId }: { folderId: string }) {
+    const supabase = createClient();
+
+    const { data, error } = await supabase.from("folders").select("*").eq("id", folderId);
+
+    if (error) throw error;
+    return data;
 }
