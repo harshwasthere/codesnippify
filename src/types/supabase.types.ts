@@ -14,18 +14,21 @@ export type Database = {
           created_at: string
           id: string
           name: string
+          share_token: string | null
           user_id: string
         }
         Insert: {
           created_at?: string
           id?: string
           name: string
+          share_token?: string | null
           user_id: string
         }
         Update: {
           created_at?: string
           id?: string
           name?: string
+          share_token?: string | null
           user_id?: string
         }
         Relationships: [
@@ -251,6 +254,24 @@ export type Database = {
           p_user_id: string
         }
         Returns: undefined
+      }
+      fetch_shared_snippets: {
+        Args: {
+          _folder_id: string
+          _trash?: boolean
+        }
+        Returns: {
+          snippet_id: string
+          title: string
+          description: string
+          language: string
+          code: string
+          favorite: boolean
+          trash: boolean
+          created_at: string
+          folder_name: string
+          tags: string[]
+        }[]
       }
       fetch_snippets_with_tags: {
         Args: {

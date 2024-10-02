@@ -17,6 +17,7 @@ export async function updateProfile({
     const profile = await fetchUserProfie({ userId });
     if (!profile) throw new Error("Profile not found");
 
+    // if newAvatar is provided then update the avatar where we will first upload the new avatar to the storage and then update the profile with the new avatar url and then delete the old avatar from the storage
     if (newAvatar) {
         if (newAvatar.size > 200 * 1024) throw new Error("Avatar size should be less than 200KB");
 

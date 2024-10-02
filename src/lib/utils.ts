@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
+import toast from "react-hot-toast";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -46,3 +47,12 @@ export const search = <
 
     return filtered;
 };
+
+export function handleCopyToClipboard(text: string) {
+    navigator.clipboard
+        .writeText(text)
+        .then(() => toast.success("Copied to clipboard"))
+        .catch((error) => {
+            console.error("Failed to copy text: ", error);
+        });
+}

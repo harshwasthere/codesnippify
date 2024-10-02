@@ -2,7 +2,6 @@
 
 import { type ReactNode, createContext, useRef, useContext } from "react";
 import { useStore } from "zustand";
-
 import { type GlobalStore } from "@/types/store.types";
 import { createGlobalStore } from "@/lib/store/store";
 
@@ -10,11 +9,7 @@ export type GlobalStoreApi = ReturnType<typeof createGlobalStore>;
 
 export const GlobalStoreContext = createContext<GlobalStoreApi | undefined>(undefined);
 
-export interface GlobalStoreProviderProps {
-    children: ReactNode;
-}
-
-export const GlobalStoreProvider = ({ children }: GlobalStoreProviderProps) => {
+export const GlobalStoreProvider = ({ children }: { children: ReactNode }) => {
     const storeRef = useRef<GlobalStoreApi>();
     if (!storeRef.current) {
         storeRef.current = createGlobalStore();

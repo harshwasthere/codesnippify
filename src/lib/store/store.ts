@@ -3,9 +3,7 @@ import { persist, devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { GlobalStore, GlobalStoreState } from "@/types/store.types";
 
-/**
- * Initial state for the UI store
- */
+// Initial state for the UI store
 const initialGlobalStore: GlobalStoreState = {
     _hasHydrated: false,
     isSidebarOpen: true,
@@ -14,9 +12,7 @@ const initialGlobalStore: GlobalStoreState = {
     filterTags: [],
 };
 
-/**
- * Creates and configures the store
- */
+// Creates and configures the store
 export const createGlobalStore = (initialStore: GlobalStoreState = initialGlobalStore) => {
     return createStore<GlobalStore>()(
         persist(
@@ -49,7 +45,7 @@ export const createGlobalStore = (initialStore: GlobalStoreState = initialGlobal
                 })),
             ),
             {
-                name: "global-store", // Unique name`
+                name: "global-store", // localStorage key`
                 onRehydrateStorage: (state) => {
                     return () => state.setHasHydrated(true);
                 },
