@@ -9,12 +9,14 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { langsEnum } from "@/constants/global.constants";
 import { useToggleSnippetFavoriteStatus } from "@/hooks/snippet/useToggleSnippetFavoriteStatus";
-import { cn } from "@/lib/utils";
+import { cn, handleCopyToClipboard } from "@/lib/utils";
 import { useToggleSnippetTrashStatus } from "@/hooks/snippet/useToggleSnippetTrashStatus";
-import EditSnippetSheet from "../sheets/EditSnippetSheet";
 import { useDeleteSnippet } from "@/hooks/snippet/useDeleteSnippet";
 import { SnippetDeleteDialog } from "../dialogs/SnippetDeleteDialog";
 import toast from "react-hot-toast";
+import SnippetOptionsDropdown from "../dropdowns/SnippetOptionsDropdown";
+import { SnippetFolderDialog } from "../dialogs/SnippetFolderDialog";
+import SnippetUpdateSheet from "../sheets/SnippetUpdateSheet";
 
 interface SnippetCardProps {
     snippet: {
@@ -30,9 +32,10 @@ interface SnippetCardProps {
         tags: string[];
     };
     className?: string;
+    shared?: boolean;
 }
 
-export function SnippetCard({ snippet, className }: SnippetCardProps) {
+export function SnippetCard({ snippet, className, shared }: SnippetCardProps) {
     const [snippetCode, setSnippetCode] = React.useState<string>("");
     const theme = useTheme().theme;
     codeToHtmlShiki({
@@ -47,16 +50,6 @@ export function SnippetCard({ snippet, className }: SnippetCardProps) {
         isError: toggleSnippetFavoriteError,
     } = useToggleSnippetFavoriteStatus();
 
-    const {
-        mutate: toggleSnippetTrashMutate,
-        isPending: toggleSnippetTrashPending,
-        isError: toggleSnippetTrashError,
-    } = useToggleSnippetTrashStatus();
-
-    const isDisabled =
-        (toggleSnippetFavoritePending && !toggleSnippetFavoriteError) ||
-        (toggleSnippetTrashPending && !toggleSnippetTrashError);
-
     const handleToggleSnippetFavoriteStatus = () => {
         toggleSnippetFavoriteMutate({
             snippetId: snippet.snippet_id,
@@ -64,103 +57,103 @@ export function SnippetCard({ snippet, className }: SnippetCardProps) {
         });
     };
 
-    const handleToggleSnippetTrashStatus = () => {
-        toggleSnippetTrashMutate({
-            snippetId: snippet.snippet_id,
-            currentTrashStatus: snippet.trash,
-        });
-    };
-
-    const handleCopyToClipboard = () => {
-        // Use the original code (not HTML) for copying
-        navigator.clipboard
-            .writeText(snippet.code)
-            .then(() => toast.success("Code copied to clipboard"))
-            .catch((error) => {
-                console.error("Failed to copy text: ", error);
-            });
-    };
+    const isDisabled = toggleSnippetFavoritePending && !toggleSnippetFavoriteError;
+    const [isSnippetOptionDropdownOpen, setIsSnippetOptionDropdownOpen] = React.useState(false);
+    const [isSnippetUpdateSheetOpen, setIsSnippetUpdateSheetOpen] = React.useState(false);
+    const [isSnippetDeleteDialogOpen, setIsSnippetDeleteDialogOpen] = React.useState(false);
+    const [isSnippetFolderDialogOpen, setIsSnippetFolderDialogOpen] = React.useState(false);
 
     return (
-        <Card className="break-inside-avoid h-fit  max-w-72 snippet-card-break-1:max-w-96 sm:max-w-lg">
-            <CardHeader className="w-full flex flex-row items-center justify-between gap-2 space-y-0 p-4">
-                <Button
-                    variant="secondary"
-                    size="icon"
-                    onClick={handleToggleSnippetFavoriteStatus}
-                    disabled={isDisabled}
+        <React.Fragment>
+            <Card className="break-inside-avoid h-fit  max-w-72 snippet-card-break-1:max-w-96 sm:max-w-lg">
+                <CardHeader
                     className={cn(
-                        "size-7 rounded-sm flex-shrink-0 hover:bg-destructive/10",
-                        snippet.favorite &&
-                            "bg-destructive/10 hover:bg-destructive/20 text-destructive",
+                        "w-full flex flex-row items-center justify-between gap-2 space-y-0 p-4",
+                        shared && "hidden",
                     )}
                 >
-                    <Heart
-                        strokeWidth={1.5}
-                        className={cn(
-                            "size-4",
-                            snippet.favorite && " fill-destructive hover:stroke-2",
-                        )}
-                    />
-                </Button>
-                <div className="flex items-center justify-center gap-2">
-                    <EditSnippetSheet snippet={snippet} isDisabled={isDisabled} />
                     <Button
                         variant="secondary"
-                        onClick={handleToggleSnippetTrashStatus}
+                        size="icon"
+                        onClick={handleToggleSnippetFavoriteStatus}
                         disabled={isDisabled}
-                        size="icon"
-                        className="size-7 rounded-sm"
-                    >
-                        {snippet.trash ? (
-                            <ArrowUpFromLine strokeWidth={1.5} className="size-4" />
-                        ) : (
-                            <Trash2 strokeWidth={1.5} className="size-4" />
+                        className={cn(
+                            "size-7 rounded-sm flex-shrink-0 hover:bg-destructive/10",
+                            snippet.favorite &&
+                                "bg-destructive/10 hover:bg-destructive/20 text-destructive",
                         )}
-                    </Button>
-                    {snippet.trash && (
-                        <SnippetDeleteDialog
-                            snippetId={snippet.snippet_id}
-                            isDisabled={isDisabled}
-                        />
-                    )}
-                </div>
-            </CardHeader>
-            <CardContent className="w-full flex flex-col gap-4 p-4 pt-0">
-                <div className="flex flex-col">
-                    <CardTitle className="text-lg font-bold font-manrope text-foreground/80">
-                        {snippet.title}
-                    </CardTitle>
-                    <CardDescription>{snippet.description}</CardDescription>
-                </div>
-                <div className="w-full flex flex-wrap gap-2">
-                    <Badge className="py-1 bg-green-400 text-foreground/70 dark:text-foreground dark:bg-green-600">
-                        {langsEnum[snippet.language]}
-                    </Badge>
-                    {snippet.tags.map((tag, index) => (
-                        <Badge
-                            key={index}
-                            className="text-primary rounded-sm bg-primary/20 hover:bg-primary/20 py-1"
-                        >
-                            {tag}
-                        </Badge>
-                    ))}
-                </div>
-
-                <ScrollArea className="w-full h-full relative group rounded-md">
-                    <ScrollBar orientation="horizontal" />
-                    <ScrollBar orientation="vertical" />
-                    <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={handleCopyToClipboard}
-                        className="size-7 rounded-sm hidden group-hover:flex absolute top-2 right-2 items-center justify-center flex-shrink-0"
                     >
-                        <Clipboard strokeWidth={1.5} className="size-4" />
+                        <Heart
+                            strokeWidth={1.5}
+                            className={cn(
+                                "size-4",
+                                snippet.favorite && " fill-destructive hover:stroke-2",
+                            )}
+                        />
                     </Button>
-                    <div dangerouslySetInnerHTML={{ __html: snippetCode }} />
-                </ScrollArea>
-            </CardContent>
-        </Card>
+                    <SnippetOptionsDropdown
+                        isDisabled={isDisabled}
+                        isSnippetOptionDropdownOpen={isSnippetOptionDropdownOpen}
+                        setIsSnippetOptionDropdownOpen={setIsSnippetOptionDropdownOpen}
+                        setSnippetUpdateSheetOpen={setIsSnippetUpdateSheetOpen}
+                        setSnippetFolderDialogOpen={setIsSnippetFolderDialogOpen}
+                        setSnippetDeleteDialogOpen={setIsSnippetDeleteDialogOpen}
+                        isTrash={snippet.trash}
+                        snippetId={snippet.snippet_id}
+                    />
+                </CardHeader>
+                <CardContent className={cn("w-full flex flex-col gap-4 p-4", !shared && "pt-0")}>
+                    <div className="flex flex-col">
+                        <CardTitle className="text-lg font-bold font-manrope text-foreground/80">
+                            {snippet.title}
+                        </CardTitle>
+                        <CardDescription>{snippet.description}</CardDescription>
+                    </div>
+                    <div className="w-full flex flex-wrap gap-2">
+                        <Badge className="py-1 bg-green-400 text-foreground/70 dark:text-foreground dark:bg-green-600">
+                            {langsEnum[snippet.language]}
+                        </Badge>
+                        {snippet.tags.map((tag, index) => (
+                            <Badge
+                                key={index}
+                                className="text-primary rounded-sm bg-primary/20 hover:bg-primary/20 py-1"
+                            >
+                                {tag}
+                            </Badge>
+                        ))}
+                    </div>
+
+                    <ScrollArea className="w-full h-full relative group rounded-md">
+                        <ScrollBar orientation="horizontal" />
+                        <ScrollBar orientation="vertical" />
+                        <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() => handleCopyToClipboard(snippet.code)}
+                            className="size-7 rounded-sm hidden group-hover:flex absolute top-2 right-2 items-center justify-center flex-shrink-0"
+                        >
+                            <Clipboard strokeWidth={1.5} className="size-4" />
+                        </Button>
+                        <div dangerouslySetInnerHTML={{ __html: snippetCode }} />
+                    </ScrollArea>
+                </CardContent>
+            </Card>
+            <SnippetUpdateSheet
+                snippet={snippet}
+                isOpen={isSnippetUpdateSheetOpen}
+                setIsOpen={setIsSnippetUpdateSheetOpen}
+            />
+            <SnippetDeleteDialog
+                snippetId={snippet.snippet_id}
+                isOpen={isSnippetDeleteDialogOpen}
+                setIsOpen={setIsSnippetDeleteDialogOpen}
+            />
+            <SnippetFolderDialog
+                isOpen={isSnippetFolderDialogOpen}
+                setIsOpen={setIsSnippetFolderDialogOpen}
+                currentFolderName={snippet.folder_name}
+                snippetId={snippet.snippet_id}
+            />
+        </React.Fragment>
     );
 }

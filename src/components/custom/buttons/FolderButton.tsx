@@ -9,6 +9,8 @@ import { FolderIcon } from "lucide-react";
 import FolderButtonDropdown from "../dropdowns/FolderButtonDropdown";
 import { FolderDeleteDialog } from "../dialogs/FolderDeleteDialog";
 import { FolderRenameDialog } from "../dialogs/FolderRenameDialog";
+import { FolderShareDialog } from "../dialogs/FolderShareDialog";
+import { useShareFolder } from "@/hooks/folder/useShareFolder";
 
 interface FolderButtonProps {
     className?: string;
@@ -20,6 +22,12 @@ export function FolderButton({ className, folder, onClick }: FolderButtonProps) 
     const [isFolderDropdownMenuOpen, setIsFolderDropdownMenuOpen] = useState<boolean>(false);
     const [isFolderRenameDialogOpen, setIsFolderRenameDialogOpen] = useState<boolean>(false);
     const [isFolderDeleteDialogOpen, setIsFolderDeleteDialogOpen] = useState<boolean>(false);
+    const [isFolderShareDialogOpen, setIsFolderShareDialogOpen] = useState<boolean>(false);
+    const {
+        mutateAsync: shareFolder,
+        isPending: shareFolderPending,
+        isError: shareFolderError,
+    } = useShareFolder({ folderId: folder?.id });
 
     return (
         <React.Fragment>
@@ -45,6 +53,9 @@ export function FolderButton({ className, folder, onClick }: FolderButtonProps) 
                     setIsFolderDropdownMenuOpen={setIsFolderDropdownMenuOpen}
                     setIsFolderRenameDialogOpen={setIsFolderRenameDialogOpen}
                     setIsFolderDeleteDialogOpen={setIsFolderDeleteDialogOpen}
+                    setIsFolderShareDialogOpen={setIsFolderShareDialogOpen}
+                    shareFolder={shareFolder}
+                    folderShareToken={folder?.share_token}
                 />
             </div>
 
@@ -59,6 +70,14 @@ export function FolderButton({ className, folder, onClick }: FolderButtonProps) 
                 isFolderDeleteDialogOpen={isFolderDeleteDialogOpen}
                 setIsFolderDeleteDialogOpen={setIsFolderDeleteDialogOpen}
                 folderId={folder?.id}
+            />
+            <FolderShareDialog
+                isFolderShareDialogOpen={isFolderShareDialogOpen}
+                setIsFolderShareDialogOpen={setIsFolderShareDialogOpen}
+                folderId={folder?.id}
+                folderShareToken={folder?.share_token}
+                shareFolderPending={shareFolderPending}
+                shareFolderError={shareFolderError}
             />
         </React.Fragment>
     );

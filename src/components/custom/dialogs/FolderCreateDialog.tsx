@@ -17,12 +17,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CreateFolderDialogSchemaTypes } from "@/types/zod.types";
-import { CreateFolderDialogSchema } from "@/lib/zod/schema";
+import { FolderCreateDialogSchemaTypes } from "@/types/zod.types";
+import { FolderCreateDialogSchema } from "@/lib/zod/schema";
 import { FolderPlus } from "lucide-react";
 import { useCreateFolder } from "@/hooks/folder/useCreateFolder";
 
-export function CreateFolderDialog() {
+export function FolderCreateDialog() {
     const {
         mutate: createFolderMutate,
         isPending: createFolderPending,
@@ -30,9 +30,9 @@ export function CreateFolderDialog() {
     } = useCreateFolder();
 
     const [isOpen, onOpenChange] = React.useState(false);
-    
-    const form = useForm<CreateFolderDialogSchemaTypes>({
-        resolver: zodResolver(CreateFolderDialogSchema),
+
+    const form = useForm<FolderCreateDialogSchemaTypes>({
+        resolver: zodResolver(FolderCreateDialogSchema),
         mode: "onChange",
         defaultValues: {
             folderName: "",
@@ -41,7 +41,7 @@ export function CreateFolderDialog() {
 
     const { folderName } = form.watch();
 
-    const onSubmit = (data: CreateFolderDialogSchemaTypes) => {
+    const onSubmit = (data: FolderCreateDialogSchemaTypes) => {
         createFolderMutate(data);
         form.reset();
         onOpenChange(false);
