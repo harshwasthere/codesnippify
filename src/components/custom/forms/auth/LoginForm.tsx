@@ -98,7 +98,7 @@ export function LoginForm() {
                         }
                         className="w-full"
                     >
-                        {passwordLoginError && !loginError && (
+                        {passwordLoginPending && !loginError && (
                             <Loader className="mr-2 size-4 animate-spin" />
                         )}
                         Login
