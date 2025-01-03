@@ -1,4 +1,3 @@
-import { langIds } from "@/constants/global.constants";
 import { z } from "zod";
 
 // Common validations
@@ -85,21 +84,21 @@ export const ProfileSettingsFormSchema = z.object({
 });
 
 // Snippet related schemas
-export const SnippetCreateFormSchema = z.object({
-    title: z
-        .string()
-        .min(3, { message: "Title is required." })
-        .max(50, { message: "Max length exceeded." }),
+// export const SnippetCreateFormSchema = z.object({
+//     title: z
+//         .string()
+//         .min(3, { message: "Title is required." })
+//         .max(50, { message: "Max length exceeded." }),
 
-    description: z.string().max(500, { message: "Max length exceeded." }).optional(),
-    language: z
-        .string()
-        .refine((lang) => langIds.includes(lang), { message: "Language is required." }),
-    code: z.string().min(3, { message: "Code is required." }),
-    tags: z.array(z.string()).refine((tags) => new Set(tags).size === tags.length, {
-        message: "Tags must be unique.",
-    }),
-});
+//     description: z.string().max(500, { message: "Max length exceeded." }).optional(),
+//     language: z
+//         .string()
+//         .refine((lang) => langIds.includes(lang), { message: "Language is required." }),
+//     code: z.string().min(3, { message: "Code is required." }),
+//     tags: z.array(z.string()).refine((tags) => new Set(tags).size === tags.length, {
+//         message: "Tags must be unique.",
+//     }),
+// });
 
 export const SnippetFolderSelectSchema = z.object({
     folderId: z.string(),

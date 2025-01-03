@@ -55,7 +55,6 @@ export function UpdateNameForm() {
                                 <Input
                                     type="text"
                                     placeholder="Name"
-                                    className="bg-secondary"
                                     disabled={updateNamePending && !updateNameError}
                                     {...field}
                                 />

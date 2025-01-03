@@ -10,6 +10,7 @@ import { SignupFormSchema } from "@/lib/zod/schema";
 import { useSignInUserWithOAuth } from "@/hooks/auth/useSignInUserWithOAuth";
 import { useSignupUserWithPassword } from "@/hooks/auth/useSignupUserWithPassword";
 import { Github, Loader } from "lucide-react";
+import { PasswordInput } from "../../inputs/PasswordInput";
 
 export function SignupForm() {
     const form = useForm<SignupFormSchemaTypes>({
@@ -59,7 +60,6 @@ export function SignupForm() {
                                     <Input
                                         type="email"
                                         placeholder="Email"
-                                        className="bg-secondary"
                                         disabled={signupPending && !signupError}
                                         {...field}
                                     />
@@ -74,10 +74,9 @@ export function SignupForm() {
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
-                                    <Input
+                                    <PasswordInput
                                         type="password"
                                         placeholder="Password"
-                                        className="bg-secondary"
                                         disabled={signupPending && !signupError}
                                         {...field}
                                     />
@@ -93,10 +92,10 @@ export function SignupForm() {
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
-                                    <Input
+                                    <PasswordInput
                                         type="password"
                                         placeholder="Confirm password"
-                                        className="bg-secondary mb-3"
+                                        className="mb-3"
                                         disabled={signupPending && !signupError}
                                         {...field}
                                     />

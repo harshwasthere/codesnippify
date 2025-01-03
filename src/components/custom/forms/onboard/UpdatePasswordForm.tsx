@@ -3,12 +3,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { UpdatePasswordFormSchemaTypes } from "@/types/zod.types";
 import { UpdatePasswordFormSchema } from "@/lib/zod/schema";
 import { useUpdatePasswordOfUser } from "@/hooks/auth/useUpdatePasswordOfUser";
 import { Loader } from "lucide-react";
+import { PasswordInput } from "../../inputs/PasswordInput";
 
 export function UpdatePasswordForm() {
     const form = useForm<UpdatePasswordFormSchemaTypes>({
@@ -42,10 +42,10 @@ export function UpdatePasswordForm() {
                     render={({ field }) => (
                         <FormItem>
                             <FormControl>
-                                <Input
+                                <PasswordInput
                                     type="password"
                                     placeholder="Password"
-                                    className="bg-secondary mb-3"
+                                    className="mb-3"
                                     disabled={updatePasswordPending && !updatePasswordError}
                                     {...field}
                                 />
@@ -61,10 +61,10 @@ export function UpdatePasswordForm() {
                     render={({ field }) => (
                         <FormItem>
                             <FormControl>
-                                <Input
+                                <PasswordInput
                                     type="password"
                                     placeholder="Confirm password"
-                                    className="bg-secondary mb-3"
+                                    className="mb-3"
                                     disabled={updatePasswordPending && !updatePasswordError}
                                     {...field}
                                 />

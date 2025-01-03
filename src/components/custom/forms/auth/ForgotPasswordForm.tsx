@@ -46,7 +46,6 @@ export function ForgotPasswordForm() {
                                 <Input
                                     type="email"
                                     placeholder="Email"
-                                    className="bg-secondary"
                                     disabled={
                                         sendResetPasswordLinkPending && !sendResetPasswordLinkError
                                     }

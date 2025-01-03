@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 const config: Config = {
     darkMode: ["class"],
@@ -11,8 +12,8 @@ const config: Config = {
     theme: {
         extend: {
             fontFamily: {
-                bricolage: ["var(--font-bricolage-grotesque)", ...fontFamily.sans],
-                manrope: ["var(--font-manrope)", ...fontFamily.sans],
+                openSans: ["var(--font-open-sans)", ...fontFamily.sans],
+                poppins: ["var(--font-poppins)", ...fontFamily.sans],
             },
             colors: {
                 background: "hsl(var(--background))",
@@ -74,6 +75,6 @@ const config: Config = {
             },
         },
     },
-    plugins: [require("tailwindcss-animate"), require("tailwind-scrollbar")],
+    plugins: [tailwindcssAnimate],
 };
 export default config;

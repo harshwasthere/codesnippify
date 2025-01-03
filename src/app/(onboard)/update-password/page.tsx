@@ -7,8 +7,8 @@ export default function LoginPage() {
             <div className="max-w-96 w-full flex flex-col items-center justify-center space-y-4">
                 <div className="flex flex-col items-center gap-2">
                     <Icons.LogoCodesnippify className="size-20" />
-                    <h1 className="text-4xl font-bricolage font-extrabold">Update Password</h1>
-                    <p className="max-w-80 text-lg text-center text-muted-foreground font-manrope">
+                    <h1 className="text-4xl font-poppins font-extrabold">Update Password</h1>
+                    <p className="max-w-80 text-lg text-center text-muted-foreground font-openSans">
                         Enter the new password below.
                     </p>
                 </div>
