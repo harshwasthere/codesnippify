@@ -16,6 +16,7 @@ const config: Config = {
 					"var(--font-ubuntu)",
 					...fontFamily.sans,
 				],
+				ubuntuMono: ["var(--font-ubuntu-mono)", ...fontFamily.mono],
 			},
 			colors: {
 				background: "hsl(var(--background))",

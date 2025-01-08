@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Ubuntu } from "next/font/google";
+import { Ubuntu, Ubuntu_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/providers/ThemeProvider";
@@ -10,6 +10,12 @@ const ubuntu = Ubuntu({
     subsets: ["latin"],
     variable: "--font-ubuntu",
     weight: ["300", "400", "500", "700"],
+});
+
+const ubuntuMono = Ubuntu_Mono({
+    subsets: ["latin"],
+    variable: "--font-ubuntu-mono",
+    weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
@@ -34,6 +40,7 @@ export default function RootLayout({
                 className={cn(
                     "min-h-screen w-full bg-background font-ubuntu antialiased",
                     ubuntu.variable,
+                    ubuntuMono.variable,
                 )}
             >
                 <ThemeProvider

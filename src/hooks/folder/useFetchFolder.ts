@@ -6,13 +6,16 @@ import { useQuery } from "@tanstack/react-query";
 export async function fetchFolder({ folderId }: { folderId: string }) {
     const supabase = createClient();
 
-    const { data, error } = await supabase.from("folders").select("*").eq("id", folderId);
+    const { data, error } = await supabase.from("folders").select("*").eq(
+        "id",
+        folderId,
+    );
 
     if (error) throw error;
     return data;
 }
 
-export function useFetchFolders({ folderId }: { folderId: string }) {
+export function useFetchFolder({ folderId }: { folderId: string }) {
     return useQuery({
         queryKey: ["folders"],
         queryFn: () => fetchFolder({ folderId }),
