@@ -4,9 +4,12 @@ import { z } from "zod";
 const emailValidation = z
     .string()
     .email({ message: "Enter valid email address." })
-    .refine((value) => /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(value), {
-        message: "Enter valid email address.",
-    });
+    .refine(
+        (value) => /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(value),
+        {
+            message: "Enter valid email address.",
+        },
+    );
 
 const passwordValidation = z
     .string()
@@ -34,7 +37,9 @@ export const SignupFormSchema = z
     .object({
         email: emailValidation,
         password: passwordValidation,
-        confirmPassword: z.string().min(1, { message: "Password is required." }),
+        confirmPassword: z.string().min(1, {
+            message: "Password is required.",
+        }),
     })
     .refine((data) => data.password === data.confirmPassword, {
         message: "Passwords do not match.",
@@ -49,7 +54,9 @@ export const ForgotPasswordFormSchema = z.object({
 export const UpdatePasswordFormSchema = z
     .object({
         newPassword: passwordValidation,
-        confirmNewPassword: z.string().min(1, { message: "Password is required." }),
+        confirmNewPassword: z.string().min(1, {
+            message: "Password is required.",
+        }),
     })
     .refine((data) => data.newPassword === data.confirmNewPassword, {
         message: "Passwords do not match.",

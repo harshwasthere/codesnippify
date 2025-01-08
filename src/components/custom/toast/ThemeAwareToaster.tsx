@@ -14,8 +14,8 @@ export default function ThemeAwareToaster() {
             reverseOrder={false}
             toastOptions={{
                 style: {
-                    background: darkTheme ? "#333" : "#fff",
-                    color: darkTheme ? "#fff" : "#333",
+                    background: darkTheme ? "#07112e" : "#fff",
+                    color: darkTheme ? "#fff" : "#07112e",
                     fontSize: "14px",
                 },
             }}

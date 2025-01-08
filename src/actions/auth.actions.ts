@@ -12,9 +12,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 // Sign up a user with email and password
-export async function signupUser(
-    { email, password, confirmPassword }: SignupFormSchemaTypes,
-) {
+export async function signupUser({ email, password, confirmPassword }: SignupFormSchemaTypes) {
     if (password !== confirmPassword) throw new Error("Passwords don't match");
 
     const supabase = createClient();
@@ -43,17 +41,12 @@ export async function authenticateWithOAuth(provider: Provider = "github") {
 // Authenticate a user with email and password
 export async function loginUser({ email, password }: LoginFormSchemaTypes) {
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-    });
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
 }
 
 // Send a reset password link to the user's email
-export async function sendResetPasswordLink(
-    { email }: ForgotPasswordFormSchemaTypes,
-) {
+export async function sendResetPasswordLink({ email }: ForgotPasswordFormSchemaTypes) {
     const supabase = createClient();
     const { error } = await supabase.auth.resetPasswordForEmail(email);
     if (error) throw error;
@@ -64,9 +57,7 @@ export async function updatePasswordOfUser({
     newPassword,
     confirmNewPassword,
 }: UpdatePasswordFormSchemaTypes) {
-    if (newPassword !== confirmNewPassword) {
-        throw new Error("Passwords don't match");
-    }
+    if (newPassword !== confirmNewPassword) throw new Error("Passwords don't match");
 
     const supabase = createClient();
     const { error } = await supabase.auth.updateUser({ password: newPassword });

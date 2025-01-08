@@ -1,7 +1,7 @@
 import { z } from "zod";
 import {
     FolderCreateDialogSchema,
-    // SnippetCreateFormSchema,
+    SnippetCreateFormSchema,
     FolderRenameDialogSchema,
     ForgotPasswordFormSchema,
     LoginFormSchema,
@@ -48,5 +48,5 @@ export type FolderCreateDialogSchemaTypes = z.infer<typeof FolderCreateDialogSch
 
 export type ProfileSettingsFormSchemaTypes = z.infer<typeof ProfileSettingsFormSchema>;
 
-// export type SnippetCreateFormSchemaTypes = z.infer<typeof SnippetCreateFormSchema>;
+export type SnippetCreateFormSchemaTypes = z.infer<typeof SnippetCreateFormSchema>;
 export type SnippetFolderSelectSchemaTypes = z.infer<typeof SnippetFolderSelectSchema>;

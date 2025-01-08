@@ -1,22 +1,15 @@
 import type { Metadata } from "next";
-import { Open_Sans, Poppins } from "next/font/google";
+import { Ubuntu } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import QueryProvider from "@/providers/QueryProvider";
 import ThemeAwareToaster from "@/components/custom/toast/ThemeAwareToaster";
 
-const poppinsFont = Poppins({
+const ubuntu = Ubuntu({
     subsets: ["latin"],
-    display: "swap",
-    variable: "--font-poppins",
-    weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-});
-
-const openSansFont = Open_Sans({
-    subsets: ["latin"],
-    display: "swap",
-    variable: "--font-open-sans",
+    variable: "--font-ubuntu",
+    weight: ["300", "400", "500", "700"],
 });
 
 export const metadata: Metadata = {
@@ -39,9 +32,8 @@ export default function RootLayout({
             </head>
             <body
                 className={cn(
-                    "min-h-screen w-full bg-background font-openSans antialiased",
-                    poppinsFont.variable,
-                    openSansFont.variable,
+                    "min-h-screen w-full bg-background font-ubuntu antialiased",
+                    ubuntu.variable,
                 )}
             >
                 <ThemeProvider
