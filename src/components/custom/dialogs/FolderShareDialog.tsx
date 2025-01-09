@@ -56,7 +56,7 @@ export function FolderShareDialog({ folderId, folderShareToken }: FolderShareDia
                 </DropdownMenuItem>
             </AlertDialogTrigger>
 
-            <AlertDialogContent className="max-w-md w-[calc(100%-1.25rem)] p-4 flex flex-col">
+            <AlertDialogContent className="max-w-md w-[calc(100%-1.25rem)] p-4 flex flex-col rounded-md">
                 <AlertDialogHeader className="space-y-0">
                     <AlertDialogTitle>Share Folder</AlertDialogTitle>
                     <AlertDialogDescription>

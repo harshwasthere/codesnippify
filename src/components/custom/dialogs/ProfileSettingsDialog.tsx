@@ -84,7 +84,7 @@ export function ProfileSettingsDialog({ profile }: ProfileSettingsDialogProps) {
                     <span className="text-xs">Settings</span>
                 </DropdownMenuItem>
             </AlertDialogTrigger>
-            <AlertDialogContent className="max-w-96 w-[calc(100%-1.25rem)] p-4">
+            <AlertDialogContent className="max-w-96 w-[calc(100%-1.25rem)] p-4 rounded-md">
                 <AlertDialogHeader className="space-y-0">
                     <AlertDialogTitle className="text-sm font-semibold">Settings</AlertDialogTitle>
                     <AlertDialogDescription className="text-xs">

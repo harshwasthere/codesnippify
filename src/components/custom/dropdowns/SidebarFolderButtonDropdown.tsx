@@ -27,7 +27,7 @@ export function SidebarFolderButtonDropdown({
             <DropdownMenuTrigger asChild>
                 <div
                     className={cn(
-                        buttonVariants({ variant: "outline", size: "icon" }),
+                        buttonVariants({ variant: "ghost", size: "icon" }),
                         "h-5 w-6 p-0 rounded-sm text-sidebar-foreground cursor-pointer",
                         className,
                     )}

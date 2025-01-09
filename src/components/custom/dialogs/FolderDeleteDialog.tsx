@@ -41,7 +41,7 @@ export function FolderDeleteDialog({ folderId }: FolderDeleteDialogProps) {
                 </DropdownMenuItem>
             </AlertDialogTrigger>
 
-            <AlertDialogContent className="max-w-96 w-[calc(100%-1.25rem)] p-4">
+            <AlertDialogContent className="max-w-96 w-[calc(100%-1.25rem)] p-4 rounded-md">
                 <AlertDialogHeader className="space-y-0">
                     <AlertDialogTitle>Delete Folder</AlertDialogTitle>
                     <AlertDialogDescription>
