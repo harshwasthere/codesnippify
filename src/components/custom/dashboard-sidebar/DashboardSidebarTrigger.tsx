@@ -8,7 +8,12 @@ export function DashboardSidebarTrigger() {
     const { toggleSidebar } = useSidebar();
 
     return (
-        <Button variant="ghost" size="icon" onClick={toggleSidebar} className="size-8">
+        <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleSidebar}
+            className="size-8 flex-shrink-0"
+        >
             <Sidebar className="size-6" />
         </Button>
     );

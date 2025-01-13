@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { CircleAlertIcon, Frown, Loader, X } from "lucide-react";
+import { CircleAlertIcon, FilterIcon, Frown, ListFilterIcon, Loader, X } from "lucide-react";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -54,11 +54,14 @@ export function TagFilterDialog() {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <Button variant="outline" className="h-8 flex-shrink-0 group px-2 gap-1">
-                    <span className="text-primary bg-primary/20 group-hover:bg-primary/30 flex-shrink-0 p-1 px-1.5 h-5 min-w-5 rounded-full flex items-center justify-center">
-                        {selectedTags.length}
-                    </span>
-                    <span>Tags</span>
+                <Button variant="secondary" className="h-8 flex-shrink-0 rounded-full gap-1 px-3">
+                    <ListFilterIcon className="size-4" />
+                    <span className="max-2xs:hidden">Tags</span>
+                    {selectedTags.length > 0 && (
+                        <span className="text-primary bg-primary/20 group-hover:bg-primary/30 flex-shrink-0 p-1 px-1.5 h-5 min-w-5 rounded-full flex items-center justify-center">
+                            {selectedTags.length}
+                        </span>
+                    )}
                 </Button>
             </AlertDialogTrigger>
             <AlertDialogContent className="max-w-96 w-[calc(100%-1.25rem)] p-4 flex flex-col gap-10 rounded-md">
