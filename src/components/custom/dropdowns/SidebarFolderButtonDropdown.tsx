@@ -28,14 +28,19 @@ export function SidebarFolderButtonDropdown({
                 <div
                     className={cn(
                         buttonVariants({ variant: "ghost", size: "icon" }),
-                        "h-5 w-6 p-0 rounded-sm text-sidebar-foreground cursor-pointer",
+                        "h-5 w-6 p-0 rounded-sm text-sidebar-foreground cursor-pointer hover:bg-transparent",
                         className,
                     )}
                 >
                     <MoreHorizontal className="size-4" />
                 </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="min-w-[6.5rem]" side="right" align="start">
+            <DropdownMenuContent
+                className="min-w-[6.5rem]"
+                side="right"
+                align="start"
+                onCloseAutoFocus={(e) => e.preventDefault()}
+            >
                 <FolderRenameDialog
                     folderId={currentFolder.id}
                     oldFolderName={currentFolder.name}

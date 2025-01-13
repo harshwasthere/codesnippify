@@ -121,7 +121,7 @@ export function DashboardSidebarContent() {
                                     <SidebarMenuItem key={folder.id}>
                                         <SidebarMenuButton
                                             asChild
-                                            className="group/folder-button relative"
+                                            className="group/folder-button relative [&:has([data-state=open])]:bg-sidebar-accent"
                                         >
                                             <Link href={`/folder/${folder.id}`}>
                                                 <FolderIcon className="size-4 fill-sidebar-foreground" />
@@ -129,7 +129,7 @@ export function DashboardSidebarContent() {
                                                     {folder?.name}
                                                 </span>
                                                 <div
-                                                    className="ml-auto absolute top-1/2 -translate-y-1/2 right-2 opacity-0 group-hover/folder-button:opacity-100 flex items-center justify-center gap-1"
+                                                    className="ml-auto absolute top-1/2 -translate-y-1/2 right-2 opacity-0 group-hover/folder-button:opacity-100 flex items-center justify-center gap-1 [&[data-state=open]]:opacity-100 [&:has(>div[data-state=open])]:opacity-100"
                                                     onClick={(e) => e.stopPropagation()}
                                                 >
                                                     <SidebarFolderButtonDropdown
