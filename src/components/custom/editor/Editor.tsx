@@ -20,7 +20,7 @@ export default function Editor({
     language = "typescript",
     className,
 }: EditorProps) {
-    const shikiTheme = theme === "light" ? "github-light" : "github-dark";
+    const shikiTheme = theme === "light" ? "github-light" : "catppuccin-mocha";
 
     const [snippetCode, setSnippetCode] = React.useState("");
 
@@ -46,7 +46,7 @@ export default function Editor({
     }, []);
 
     return (
-        <div className={cn("h-56 rounded-md p-4", className)}>
+        <div className={cn("h-56 rounded-md px-3", className)}>
             <div className="h-full w-full relative">
                 <textarea
                     className="shikicode input"

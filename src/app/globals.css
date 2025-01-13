@@ -115,4 +115,12 @@
     .shikicode.output > pre {
         @apply contents;
     }
+
+    .shikicode-readonly > .shiki {
+        @apply w-full max-h-[600px] m-0 rounded-md outline-none border-none !bg-transparent;
+    }
+
+    .shikicode-readonly code {
+        @apply font-ubuntuMono text-sm;
+    }
 }

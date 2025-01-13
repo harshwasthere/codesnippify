@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -15,19 +15,19 @@ import {
 import React from "react";
 import { cn } from "@/lib/utils";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { useDeleteFolder } from "@/hooks/folder/useDeleteFolder";
 import { Trash2 } from "lucide-react";
+import { useDeleteSnippet } from "@/hooks/snippet/useDeleteSnippet";
 
-interface FolderDeleteDialogProps {
-    folderId: string;
+interface SnippetDeleteDialogProps {
+    snippetId: string;
 }
 
-export function FolderDeleteDialog({ folderId }: FolderDeleteDialogProps) {
+export function SnippetDeleteDialog({ snippetId }: SnippetDeleteDialogProps) {
     const {
-        mutate: deleteFolderMutate,
-        isPending: deleteFolderPending,
-        isError: deleteFolderError,
-    } = useDeleteFolder();
+        mutate: deleteSnippetMutate,
+        isPending: deleteSnippetPending,
+        isError: deleteSnippetError,
+    } = useDeleteSnippet();
 
     return (
         <AlertDialog>
@@ -43,9 +43,9 @@ export function FolderDeleteDialog({ folderId }: FolderDeleteDialogProps) {
 
             <AlertDialogContent className="max-w-96 w-[calc(100%-1.25rem)] p-4 rounded-md">
                 <AlertDialogHeader className="space-y-0">
-                    <AlertDialogTitle>Delete Folder</AlertDialogTitle>
+                    <AlertDialogTitle>Delete Snippet</AlertDialogTitle>
                     <AlertDialogDescription>
-                        Are you sure you want to delete this folder? This action cannot be undone.
+                        Are you sure you want to delete this snippet? This action cannot be undone.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
@@ -55,8 +55,8 @@ export function FolderDeleteDialog({ folderId }: FolderDeleteDialogProps) {
                         Cancel
                     </AlertDialogCancel>
                     <AlertDialogAction
-                        onClick={() => deleteFolderMutate({ folderId })}
-                        disabled={deleteFolderPending && !deleteFolderError}
+                        onClick={() => deleteSnippetMutate(snippetId)}
+                        disabled={deleteSnippetPending && !deleteSnippetError}
                         className={cn(
                             buttonVariants({ size: "sm" }),
                             "border border-destructive text-destructive bg-destructive/20 hover:bg-destructive/30",
