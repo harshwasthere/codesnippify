@@ -1,26 +1,18 @@
 "use client";
 
 import React, { useState } from "react";
-import { CircleAlertIcon, FilterIcon, Frown, ListFilterIcon, Loader, X } from "lucide-react";
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
+import { CircleAlertIcon, ListFilterIcon, Loader, X } from "lucide-react";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useGlobalStore } from "@/providers/GlobalStoreProvider";
 import { useShallow } from "zustand/react/shallow";
 import { useFetchTags } from "@/hooks/snippet/useFetchTags";
-import { useQueryClient } from "@tanstack/react-query";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { PopoverClose } from "@radix-ui/react-popover";
 
-export function TagFilterDialog() {
+export function TagFilterPopover() {
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+
     const { setFilterTags, filterTags } = useGlobalStore(
         useShallow((store) => ({
             setFilterTags: store.setFilterTags,
@@ -49,11 +41,12 @@ export function TagFilterDialog() {
 
     const handleApplyFilter = async () => {
         setFilterTags(selectedTags);
+        setIsOpen(false);
     };
 
     return (
-        <AlertDialog>
-            <AlertDialogTrigger asChild>
+        <Popover open={isOpen} onOpenChange={setIsOpen}>
+            <PopoverTrigger asChild>
                 <Button variant="secondary" className="h-8 flex-shrink-0 rounded-full gap-1 px-3">
                     <ListFilterIcon className="size-4" />
                     <span className="max-2xs:hidden">Tags</span>
@@ -63,29 +56,34 @@ export function TagFilterDialog() {
                         </span>
                     )}
                 </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent className="max-w-96 w-[calc(100%-1.25rem)] p-4 flex flex-col gap-10 rounded-md">
-                <AlertDialogHeader className="space-y-0 flex-row items-center justify-between gap-2">
+            </PopoverTrigger>
+            <PopoverContent
+                align="start"
+                alignOffset={-24}
+                sideOffset={8}
+                className="max-w-96 min-w-72 w-72 sm:w-full p-4 flex flex-col gap-10 rounded-md"
+            >
+                <header className="flex items-center justify-between gap-2">
                     <div className="flex flex-col items-start justify-center">
-                        <AlertDialogTitle className="text-sm font-semibold">
-                            Tags Filter
-                        </AlertDialogTitle>
-                        <AlertDialogDescription className="text-xs">
+                        <span className="text-sm font-semibold">Filter by Tags</span>
+                        <span className="text-xs text-muted-foreground">
                             Select tags to filter snippets
-                        </AlertDialogDescription>
+                        </span>
                     </div>
-                    <Button
-                        onClick={() => {
-                            setSelectedTags([]);
-                            setFilterTags([]);
-                        }}
-                        variant="destructive"
-                        size="sm"
-                        className="h-8 text-destructive bg-destructive/20 hover:bg-destructive/30"
-                    >
-                        Clear
-                    </Button>
-                </AlertDialogHeader>
+                    {selectedTags.length > 0 && (
+                        <Button
+                            onClick={() => {
+                                setSelectedTags([]);
+                                setFilterTags([]);
+                            }}
+                            variant="destructive"
+                            size="sm"
+                            className="h-8 text-destructive bg-destructive/20 hover:bg-destructive/30"
+                        >
+                            Clear
+                        </Button>
+                    )}
+                </header>
                 <div className="w-full flex flex-wrap gap-2 items-center justify-center">
                     {fetchedTagsLoading && !fetchedTagsSuccess ? (
                         <Loader className="size-4 animate-spin text-muted-foreground/50" />
@@ -107,19 +105,21 @@ export function TagFilterDialog() {
                         ))
                     )}
                 </div>
-                <AlertDialogFooter className="sm:justify-center">
-                    <AlertDialogCancel className="text-xs h-8 flex items-center">
+                <div className="flex items-center justify-center gap-2">
+                    <PopoverClose
+                        className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+                    >
                         Cancel
-                    </AlertDialogCancel>
-                    <AlertDialogAction
+                    </PopoverClose>
+                    <Button
                         onClick={handleApplyFilter}
-                        className="text-xs h-8 flex items-center"
+                        className={cn(buttonVariants({ size: "sm" }))}
                     >
                         Apply
-                    </AlertDialogAction>
-                </AlertDialogFooter>
-            </AlertDialogContent>
-        </AlertDialog>
+                    </Button>
+                </div>
+            </PopoverContent>
+        </Popover>
     );
 }
 
