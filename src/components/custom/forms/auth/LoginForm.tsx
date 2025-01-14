@@ -22,8 +22,6 @@ export function LoginForm() {
         },
     });
 
-    const { email, password } = form.watch();
-
     const {
         mutate: mutateOauthLogin,
         isPending: oauthLoginPending,
@@ -35,8 +33,13 @@ export function LoginForm() {
         isError: passwordLoginError,
     } = useLoginUser();
 
+    const { email, password } = form.watch();
+
     const loginPending = oauthLoginPending || passwordLoginPending;
     const loginError = oauthLoginError || passwordLoginError;
+
+    const isSubmitDisabled =
+        !form.formState.isValid || !email || !password || (loginPending && !loginError);
 
     const handlePasswordLogin = async (data: LoginFormSchemaTypes) => {
         mutatePasswordLogin(data);
@@ -89,16 +92,7 @@ export function LoginForm() {
                         )}
                     />
 
-                    <Button
-                        type="submit"
-                        disabled={
-                            !form.formState.isValid ||
-                            !email ||
-                            !password ||
-                            (loginPending && !loginError)
-                        }
-                        className="w-full"
-                    >
+                    <Button type="submit" disabled={isSubmitDisabled} className="w-full">
                         {passwordLoginPending && !loginError && (
                             <Loader className="mr-2 size-4 animate-spin" />
                         )}
@@ -122,7 +116,7 @@ export function LoginForm() {
                 onClick={() => mutateOauthLogin("github")}
                 className="flex items-center w-full bg-foreground hover:bg-foreground/90 text-background"
             >
-                {oauthLoginError && !loginError ? (
+                {oauthLoginPending && !oauthLoginError ? (
                     <Loader className="mr-2 size-4 animate-spin" />
                 ) : (
                     <Github className="mr-2 size-4 " />

@@ -23,8 +23,6 @@ export function SignupForm() {
         },
     });
 
-    const { email, password, confirmPassword } = form.watch();
-
     const {
         mutate: mutateOauthSignup,
         isPending: oauthSignupPending,
@@ -36,8 +34,17 @@ export function SignupForm() {
         isError: passwordSignupError,
     } = useSignupUserWithPassword();
 
+    const { email, password, confirmPassword } = form.watch();
+
     const signupPending = oauthSignupPending || passwordSignupPending;
     const signupError = oauthSignupError || passwordSignupError;
+
+    const isSubmitDisabled =
+        !form.formState.isValid ||
+        !email ||
+        !password ||
+        !confirmPassword ||
+        (signupPending && !signupError);
 
     const handlePasswordSignup = (data: SignupFormSchemaTypes) => {
         mutatePasswordSignup(data);
@@ -107,18 +114,8 @@ export function SignupForm() {
                         )}
                     />
 
-                    <Button
-                        type="submit"
-                        disabled={
-                            !form.formState.isValid ||
-                            !email ||
-                            !password ||
-                            !confirmPassword ||
-                            (signupPending && !signupError)
-                        }
-                        className="w-full"
-                    >
-                        {passwordSignupError && !signupError && (
+                    <Button type="submit" disabled={isSubmitDisabled} className="w-full">
+                        {passwordSignupPending && !signupError && (
                             <Loader className="mr-2 size-4 animate-spin" />
                         )}
                         Signup

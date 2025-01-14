@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { UpdatePasswordFormSchemaTypes } from "@/types/zod.types";
 import { UpdatePasswordFormSchema } from "@/lib/zod/schema";
@@ -21,13 +20,19 @@ export function UpdatePasswordForm() {
         },
     });
 
-    const { newPassword, confirmNewPassword } = form.watch();
-
     const {
         mutate: mutateUpdatePassword,
         isPending: updatePasswordPending,
         isError: updatePasswordError,
     } = useUpdatePasswordOfUser();
+
+    const { newPassword, confirmNewPassword } = form.watch();
+
+    const isSubmitDisabled =
+        !form.formState.isValid ||
+        !newPassword ||
+        !confirmNewPassword ||
+        (updatePasswordPending && !updatePasswordError);
 
     const handleUpdatePassword = (data: UpdatePasswordFormSchemaTypes) => {
         mutateUpdatePassword(data);
@@ -46,7 +51,7 @@ export function UpdatePasswordForm() {
                                 <PasswordInput
                                     type="password"
                                     placeholder="Password"
-                                    className="bg-secondary mb-3"
+                                    className="bg-secondary"
                                     disabled={updatePasswordPending && !updatePasswordError}
                                     {...field}
                                 />
@@ -77,12 +82,7 @@ export function UpdatePasswordForm() {
 
                 <Button
                     type="submit"
-                    disabled={
-                        !form.formState.isValid ||
-                        !newPassword ||
-                        !confirmNewPassword ||
-                        (updatePasswordPending && !updatePasswordError)
-                    }
+                    disabled={isSubmitDisabled}
                     className="w-full"
                 >
                     {updatePasswordPending && !updatePasswordError && (

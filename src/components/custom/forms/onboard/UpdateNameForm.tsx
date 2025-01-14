@@ -10,10 +10,11 @@ import { UpdateNameFormSchema } from "@/lib/zod/schema";
 import { Loader } from "lucide-react";
 import { useUpdateUserProfile } from "@/hooks/user/useUpdateUserProfile";
 import toast from "react-hot-toast";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export function UpdateNameForm() {
     const router = useRouter();
+
     const form = useForm<UpdateNameFormSchemaTypes>({
         resolver: zodResolver(UpdateNameFormSchema),
         mode: "onChange",
@@ -29,6 +30,9 @@ export function UpdateNameForm() {
     } = useUpdateUserProfile();
 
     const { newName } = form.watch();
+
+    const isSubmitDisabled =
+        !form.formState.isValid || !newName || (updateNamePending && !updateNameError);
 
     const onSubmit = ({ newName }: UpdateNameFormSchemaTypes) => {
         mutateUpdateNameOfUser(
@@ -65,15 +69,7 @@ export function UpdateNameForm() {
                     )}
                 />
 
-                <Button
-                    type="submit"
-                    disabled={
-                        !form.formState.isValid ||
-                        !newName ||
-                        (updateNamePending && !updateNameError)
-                    }
-                    className="w-full"
-                >
+                <Button type="submit" disabled={isSubmitDisabled} className="w-full">
                     {updateNamePending && !updateNameError && (
                         <Loader className="mr-2 size-4 animate-spin" />
                     )}

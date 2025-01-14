@@ -18,13 +18,18 @@ export function ForgotPasswordForm() {
             email: "",
         },
     });
-    const { email } = form.watch();
-
     const {
         mutate: mutatesendResetPasswordLink,
         isPending: sendResetPasswordLinkPending,
         isError: sendResetPasswordLinkError,
     } = useSendResetPasswordLink();
+
+    const { email } = form.watch();
+
+    const isSubmitDisabled =
+        !form.formState.isValid ||
+        !email ||
+        (sendResetPasswordLinkPending && !sendResetPasswordLinkError);
 
     const handleSendResetPasswordLink = (data: ForgotPasswordFormSchemaTypes) => {
         mutatesendResetPasswordLink(data);
@@ -58,15 +63,7 @@ export function ForgotPasswordForm() {
                     )}
                 />
 
-                <Button
-                    type="submit"
-                    disabled={
-                        !form.formState.isValid ||
-                        !email ||
-                        (sendResetPasswordLinkPending && !sendResetPasswordLinkError)
-                    }
-                    className="w-full"
-                >
+                <Button type="submit" disabled={isSubmitDisabled} className="w-full">
                     {sendResetPasswordLinkPending && !sendResetPasswordLinkError && (
                         <Loader className="mr-2 size-4 animate-spin" />
                     )}
