@@ -9,6 +9,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
     SidebarMenuSkeleton,
+    useSidebar,
 } from "@/components/ui/sidebar";
 import { Apple, Atom, CircleAlertIcon, FolderIcon, Heart } from "lucide-react";
 import Link from "next/link";
@@ -19,12 +20,13 @@ import { useFetchLangsWithSnippetCount } from "@/hooks/snippet/useFetchLangsWith
 import React from "react";
 import { Folder, Language } from "@/types/global.types";
 import { useDebouncedCallback } from "use-debounce";
-import { search } from "@/lib/utils";
+import { cn, search } from "@/lib/utils";
 import { SidebarFolderButtonDropdown } from "../dropdowns/SidebarFolderButtonDropdown";
 import { usePathname } from "next/navigation";
 
 export function DashboardSidebarContent() {
     const pathname = usePathname();
+    const { isMobile } = useSidebar();
     const {
         data: fetchedFolders,
         isLoading: fetchedFoldersLoading,
@@ -139,7 +141,10 @@ export function DashboardSidebarContent() {
                                                     {folder?.name}
                                                 </span>
                                                 <div
-                                                    className="ml-auto absolute top-1/2 -translate-y-1/2 right-2 opacity-0 group-hover/folder-button:opacity-100 flex items-center justify-center gap-1 [&[data-state=open]]:opacity-100 [&:has(>div[data-state=open])]:opacity-100"
+                                                    className={cn(
+                                                        "ml-auto absolute top-1/2 -translate-y-1/2 right-2 opacity-0 group-hover/folder-button:opacity-100 flex items-center justify-center gap-1 [&[data-state=open]]:opacity-100 [&:has(>div[data-state=open])]:opacity-100",
+                                                        isMobile && "opacity-100",
+                                                    )}
                                                     onClick={(e) => e.stopPropagation()}
                                                 >
                                                     <SidebarFolderButtonDropdown

@@ -73,7 +73,11 @@ export function FolderCreateDialog() {
                         </SidebarGroupAction>
                     </TooltipTrigger>
                 </DialogTrigger>
-                <TooltipContent side="right" align="center">
+                <TooltipContent
+                    side="right"
+                    align="center"
+                    className="bg-foreground text-background"
+                >
                     Create Folder
                 </TooltipContent>
             </Tooltip>
@@ -108,7 +112,7 @@ export function FolderCreateDialog() {
                                 </FormItem>
                             )}
                         />
-                        <DialogFooter>
+                        <DialogFooter className="max-sm:gap-2">
                             <DialogClose
                                 className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
                             >

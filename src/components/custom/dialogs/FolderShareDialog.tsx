@@ -2,20 +2,19 @@
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 import React from "react";
 import { cn, handleCopyToClipboard } from "@/lib/utils";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { CircleAlertIcon, Clipboard, LoaderIcon, Share2Icon, Trash } from "lucide-react";
+import { CircleAlertIcon, Clipboard, Loader, LoaderIcon, Share2Icon, Trash } from "lucide-react";
 import { useShareFolder } from "@/hooks/folder/useShareFolder";
 import { useUnshareFolder } from "@/hooks/folder/useUnShareFolder";
 
@@ -25,6 +24,7 @@ interface FolderShareDialogProps {
 }
 
 export function FolderShareDialog({ folderId, folderShareToken }: FolderShareDialogProps) {
+    const [isOpen, setIsOpen] = React.useState<boolean>(false);
     const {
         mutateAsync: shareFolder,
         isPending: shareFolderPending,
@@ -40,8 +40,8 @@ export function FolderShareDialog({ folderId, folderShareToken }: FolderShareDia
     } = useUnshareFolder();
 
     return (
-        <AlertDialog>
-            <AlertDialogTrigger asChild>
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
                 <DropdownMenuItem
                     onSelect={(e) => {
                         e.preventDefault();
@@ -54,16 +54,16 @@ export function FolderShareDialog({ folderId, folderShareToken }: FolderShareDia
                     <Share2Icon className="size-4" />
                     <span>{folderShareToken ? "Shared link" : "Share"}</span>
                 </DropdownMenuItem>
-            </AlertDialogTrigger>
+            </DialogTrigger>
 
-            <AlertDialogContent className="max-w-md w-[calc(100%-1.25rem)] p-4 flex flex-col rounded-md">
-                <AlertDialogHeader className="space-y-0">
-                    <AlertDialogTitle>Share Folder</AlertDialogTitle>
-                    <AlertDialogDescription>
+            <DialogContent className="max-w-md w-[calc(100%-1.25rem)] p-4 flex flex-col rounded-md">
+                <DialogHeader>
+                    <DialogTitle>Share Folder</DialogTitle>
+                    <DialogDescription>
                         Share this folder with others by copying the link below. Anyone with the
                         link can view your folder snippets.
-                    </AlertDialogDescription>
-                </AlertDialogHeader>
+                    </DialogDescription>
+                </DialogHeader>
                 {shareFolderPending && !shareFolderError ? (
                     <div className="w-full flex justify-center items-center p-4">
                         <LoaderIcon className="size-4 animate-spin text-muted-foreground/50" />
@@ -89,24 +89,27 @@ export function FolderShareDialog({ folderId, folderShareToken }: FolderShareDia
                         </span>
                     </div>
                 )}
-                <AlertDialogFooter>
-                    <AlertDialogCancel
-                        className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
-                    >
+                <DialogFooter className="max-sm:gap-2">
+                    <DialogClose className={cn(buttonVariants({ variant: "outline", size: "sm" }))}>
                         Cancel
-                    </AlertDialogCancel>
-                    <AlertDialogAction
-                        onClick={() => unshareFolder({ folderId })}
+                    </DialogClose>
+                    <Button
+                        onClick={() =>
+                            unshareFolder({ folderId }, { onSuccess: () => setIsOpen(false) })
+                        }
                         disabled={unshareFolderPending && !unshareFolderError}
                         className={cn(
                             buttonVariants({ size: "sm" }),
                             "border border-destructive text-destructive bg-destructive/20 hover:bg-destructive/30",
                         )}
                     >
+                        {unshareFolderPending && !unshareFolderError && (
+                            <Loader className="size-4 animate-spin" />
+                        )}
                         Unshare
-                    </AlertDialogAction>
-                </AlertDialogFooter>
-            </AlertDialogContent>
-        </AlertDialog>
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     );
 }
