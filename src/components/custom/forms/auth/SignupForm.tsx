@@ -116,7 +116,7 @@ export function SignupForm() {
 
                     <Button type="submit" disabled={isSubmitDisabled} className="w-full">
                         {passwordSignupPending && !signupError && (
-                            <Loader className="mr-2 size-4 animate-spin" />
+                            <Loader className="size-4 animate-spin" />
                         )}
                         Signup
                     </Button>
@@ -139,9 +139,9 @@ export function SignupForm() {
                 className="flex items-center w-full bg-foreground hover:bg-foreground/90 text-background"
             >
                 {oauthSignupPending && !signupError ? (
-                    <Loader className="mr-2 size-4 animate-spin" />
+                    <Loader className="size-4 animate-spin" />
                 ) : (
-                    <Github className="mr-2 size-4" />
+                    <Github className="size-4" />
                 )}
                 Signup with Github
             </Button>

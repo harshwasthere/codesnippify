@@ -1,18 +1,17 @@
 "use client";
 
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { FolderCreateDialogSchema } from "@/lib/zod/schema";
 import { FolderCreateDialogSchemaTypes } from "@/types/zod.types";
@@ -21,10 +20,13 @@ import { useForm } from "react-hook-form";
 import React from "react";
 import { cn } from "@/lib/utils";
 import { SidebarGroupAction } from "@/components/ui/sidebar";
-import { Plus } from "lucide-react";
+import { Loader, Plus } from "lucide-react";
 import { useCreateFolder } from "@/hooks/folder/useCreateFolder";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 export function FolderCreateDialog() {
+    const [isOpen, setIsOpen] = React.useState<boolean>(false);
+
     const {
         mutate: createFolderMutate,
         isPending: createFolderPending,
@@ -45,32 +47,44 @@ export function FolderCreateDialog() {
         !form.formState.isValid || !folderName || (createFolderPending && !createFolderError);
 
     const onSubmit = (data: FolderCreateDialogSchemaTypes) => {
-        createFolderMutate(data);
-        form.reset();
+        createFolderMutate(data, {
+            onSuccess: () => {
+                setIsOpen(false);
+                form.reset();
+            },
+        });
     };
 
     return (
-        <AlertDialog>
-            <AlertDialogTrigger asChild onClick={(e) => e.stopPropagation()}>
-                <SidebarGroupAction asChild>
-                    <div
-                        className={cn(
-                            buttonVariants({ variant: "outline", size: "icon" }),
-                            "!size-5 text-sidebar-foreground cursor-pointer flex-shrink-0 right-4",
-                        )}
-                    >
-                        <Plus className="!size-3" />
-                    </div>
-                </SidebarGroupAction>
-            </AlertDialogTrigger>
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <Tooltip>
+                <DialogTrigger asChild>
+                    <TooltipTrigger asChild>
+                        <SidebarGroupAction asChild>
+                            <div
+                                className={cn(
+                                    buttonVariants({ variant: "outline", size: "icon" }),
+                                    "!size-5 text-sidebar-foreground bg-sidebar-accent cursor-pointer flex-shrink-0 right-4",
+                                )}
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <Plus className="!size-3" />
+                            </div>
+                        </SidebarGroupAction>
+                    </TooltipTrigger>
+                </DialogTrigger>
+                <TooltipContent side="right" align="center">
+                    Create Folder
+                </TooltipContent>
+            </Tooltip>
 
-            <AlertDialogContent className="max-w-96 w-[calc(100%-1.25rem)] p-4 rounded-md">
-                <AlertDialogHeader className="space-y-0">
-                    <AlertDialogTitle>Create Folder</AlertDialogTitle>
-                    <AlertDialogDescription>
+            <DialogContent className="max-w-96 w-[calc(100%-1.25rem)] p-4 rounded-md">
+                <DialogHeader>
+                    <DialogTitle>Create Folder</DialogTitle>
+                    <DialogDescription>
                         Create a new folder to organize your snippets.
-                    </AlertDialogDescription>
-                </AlertDialogHeader>
+                    </DialogDescription>
+                </DialogHeader>
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
@@ -94,23 +108,26 @@ export function FolderCreateDialog() {
                                 </FormItem>
                             )}
                         />
-                        <AlertDialogFooter>
-                            <AlertDialogCancel
+                        <DialogFooter>
+                            <DialogClose
                                 className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
                             >
                                 Cancel
-                            </AlertDialogCancel>
-                            <AlertDialogAction
+                            </DialogClose>
+                            <Button
                                 type="submit"
                                 disabled={isSubmitDisabled}
                                 className={cn(buttonVariants({ size: "sm" }), "px-6")}
                             >
+                                {createFolderPending && !createFolderError && (
+                                    <Loader className="size-4 animate-spin" />
+                                )}
                                 Create
-                            </AlertDialogAction>
-                        </AlertDialogFooter>
+                            </Button>
+                        </DialogFooter>
                     </form>
                 </Form>
-            </AlertDialogContent>
-        </AlertDialog>
+            </DialogContent>
+        </Dialog>
     );
 }

@@ -14,7 +14,6 @@ import { Apple, Atom, CircleAlertIcon, FolderIcon, Heart } from "lucide-react";
 import Link from "next/link";
 import { SearchInput } from "../inputs/SearchInput";
 import { FolderCreateDialog } from "../dialogs/FolderCreateDialog";
-import { useRouter } from "next/navigation";
 import { useFetchFolders } from "@/hooks/folder/useFetchFolders";
 import { useFetchLangsWithSnippetCount } from "@/hooks/snippet/useFetchLangsWithSnippetCount";
 import React from "react";
@@ -22,8 +21,10 @@ import { Folder, Language } from "@/types/global.types";
 import { useDebouncedCallback } from "use-debounce";
 import { search } from "@/lib/utils";
 import { SidebarFolderButtonDropdown } from "../dropdowns/SidebarFolderButtonDropdown";
+import { usePathname } from "next/navigation";
 
 export function DashboardSidebarContent() {
+    const pathname = usePathname();
     const {
         data: fetchedFolders,
         isLoading: fetchedFoldersLoading,
@@ -69,7 +70,11 @@ export function DashboardSidebarContent() {
                 <SidebarGroupContent>
                     <SidebarMenu>
                         <SidebarMenuItem>
-                            <SidebarMenuButton asChild tooltip="Snippets">
+                            <SidebarMenuButton
+                                asChild
+                                tooltip="Snippets"
+                                isActive={pathname.includes("/snippets")}
+                            >
                                 <Link href="/snippets">
                                     <Apple className="size-4 text-primary fill-primary" />
                                     <span>Snippets</span>
@@ -77,7 +82,11 @@ export function DashboardSidebarContent() {
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                         <SidebarMenuItem>
-                            <SidebarMenuButton asChild tooltip="Favorites">
+                            <SidebarMenuButton
+                                asChild
+                                tooltip="Favorites"
+                                isActive={pathname.includes("/favorites")}
+                            >
                                 <Link href="/favorites">
                                     <Heart className="size-4 text-red-500 fill-red-500" />
                                     <span>Favorites</span>
@@ -95,7 +104,7 @@ export function DashboardSidebarContent() {
                         <SearchInput
                             type="text"
                             placeholder="Search folder"
-                            className="h-7 text-xs bg-secondary"
+                            className="h-7 text-xs bg-sidebar-accent"
                             iconClassName="size-4"
                             onChange={handleFolderSearchTermChange}
                         />
@@ -109,9 +118,9 @@ export function DashboardSidebarContent() {
                                     </SidebarMenuItem>
                                 ))
                             ) : folders.length === 0 ? (
-                                <SidebarMenuItem className="flex flex-col items-center justify-center gap-1 mt-10 text-muted-foreground/50 text-center">
+                                <SidebarMenuItem className="flex flex-col items-center justify-center mt-10 text-muted-foreground/50 text-center">
                                     <CircleAlertIcon className="size-6" />
-                                    <span className="text-xs">No folder found</span>
+                                    <span className="text-xs mt-1">No folder found</span>
                                     <span className="text-xs w-2/3 text-center">
                                         Create a folder to get started
                                     </span>
@@ -122,6 +131,7 @@ export function DashboardSidebarContent() {
                                         <SidebarMenuButton
                                             asChild
                                             className="group/folder-button relative [&:has([data-state=open])]:bg-sidebar-accent"
+                                            isActive={pathname.includes(`/folder/${folder.id}`)}
                                         >
                                             <Link href={`/folder/${folder.id}`}>
                                                 <FolderIcon className="size-4 fill-sidebar-foreground" />
@@ -150,7 +160,7 @@ export function DashboardSidebarContent() {
                         <SearchInput
                             type="text"
                             placeholder="Search language"
-                            className="h-7 text-xs bg-secondary"
+                            className="h-7 text-xs bg-sidebar-accent"
                             iconClassName="size-4"
                             onChange={handleLangSearchTermChange}
                         />
@@ -176,6 +186,9 @@ export function DashboardSidebarContent() {
                                         <SidebarMenuButton
                                             asChild
                                             className="group/language-button relative"
+                                            isActive={pathname.includes(
+                                                `/language/${language.language}`,
+                                            )}
                                         >
                                             <Link href={`/language/${language.language}`}>
                                                 <Atom className="size-4 fill-sidebar-foreground/30" />

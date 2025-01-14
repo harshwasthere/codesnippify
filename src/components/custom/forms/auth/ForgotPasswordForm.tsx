@@ -65,7 +65,7 @@ export function ForgotPasswordForm() {
 
                 <Button type="submit" disabled={isSubmitDisabled} className="w-full">
                     {sendResetPasswordLinkPending && !sendResetPasswordLinkError && (
-                        <Loader className="mr-2 size-4 animate-spin" />
+                        <Loader className="size-4 animate-spin" />
                     )}
                     Send reset link
                 </Button>

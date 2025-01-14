@@ -80,13 +80,9 @@ export function UpdatePasswordForm() {
                     )}
                 />
 
-                <Button
-                    type="submit"
-                    disabled={isSubmitDisabled}
-                    className="w-full"
-                >
+                <Button type="submit" disabled={isSubmitDisabled} className="w-full">
                     {updatePasswordPending && !updatePasswordError && (
-                        <Loader className="mr-2 size-4 animate-spin" />
+                        <Loader className="size-4 animate-spin" />
                     )}
                     Update Password
                 </Button>

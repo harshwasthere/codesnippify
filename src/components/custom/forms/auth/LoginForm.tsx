@@ -94,7 +94,7 @@ export function LoginForm() {
 
                     <Button type="submit" disabled={isSubmitDisabled} className="w-full">
                         {passwordLoginPending && !loginError && (
-                            <Loader className="mr-2 size-4 animate-spin" />
+                            <Loader className="size-4 animate-spin" />
                         )}
                         Login
                     </Button>
@@ -117,9 +117,9 @@ export function LoginForm() {
                 className="flex items-center w-full bg-foreground hover:bg-foreground/90 text-background"
             >
                 {oauthLoginPending && !oauthLoginError ? (
-                    <Loader className="mr-2 size-4 animate-spin" />
+                    <Loader className="size-4 animate-spin" />
                 ) : (
-                    <Github className="mr-2 size-4 " />
+                    <Github className="size-4" />
                 )}
                 Login with Github
             </Button>

@@ -71,7 +71,7 @@ export function UpdateNameForm() {
 
                 <Button type="submit" disabled={isSubmitDisabled} className="w-full">
                     {updateNamePending && !updateNameError && (
-                        <Loader className="mr-2 size-4 animate-spin" />
+                        <Loader className="size-4 animate-spin" />
                     )}
                     Update Name
                 </Button>

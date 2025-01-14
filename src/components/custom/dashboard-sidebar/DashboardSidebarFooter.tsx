@@ -1,3 +1,5 @@
+"use client";
+
 import {
     SidebarFooter,
     SidebarMenu,
@@ -6,8 +8,11 @@ import {
 } from "@/components/ui/sidebar";
 import { Trash2 } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function DashboardSidebarFooter() {
+    const pathname = usePathname();
+
     return (
         <SidebarFooter>
             <SidebarMenu>
@@ -15,6 +20,7 @@ export function DashboardSidebarFooter() {
                     <SidebarMenuButton
                         asChild
                         tooltip="Trash"
+                        isActive={pathname.includes("/trash")}
                         className="text-destructive bg-destructive/20 hover:text-destructive hover:bg-destructive/30"
                     >
                         <Link href="/trash">
