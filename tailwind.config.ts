@@ -80,6 +80,7 @@ const config: Config = {
 			screens: {
 				xs: "380px",
 				"2xs": "480px",
+				"3xl": "1800px",
 			},
 		},
 	},

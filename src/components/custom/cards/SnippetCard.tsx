@@ -3,39 +3,33 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useShikiHighlighter } from "@/lib/hooks/useShikiHighlighter";
-import { handleCopyToClipboard } from "@/lib/utils";
+import { cn, handleCopyToClipboard } from "@/lib/utils";
 import { Clipboard } from "lucide-react";
 import { BundledLanguage } from "shiki";
 import { SnippetCardDropdown } from "../dropdowns/SnippetCardDropdown";
 
-const snippet = {
-    snippet_id: "1",
-    title: "Generate Random UUID in JavaScript",
-    favorite: true,
-    trash: true,
-    created_at: new Date().toISOString(),
-    folder_name: "JavaScript",
-    description:
-        "This snippet demonstrates how to generate a random UUID (Universally Unique Identifier) in JavaScript using the crypto module. UUIDs are commonly used as unique identifiers in databases and applications.",
-    tags: ["javascript", "uuid", "random", "utilities"],
-    language: "javascript",
-    code: `function generateUUID() {
-  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-    (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16)
-  );
+interface SnippetCardProps {
+    snippet: {
+        snippet_id: string;
+        title: string;
+        description: string;
+        language: string;
+        code: string;
+        favorite: boolean;
+        trash: boolean;
+        created_at: string;
+        folder_name: string;
+        tags: string[];
+    };
+    className?: string;
+    shared?: boolean;
 }
 
-// Example usage:
-const uuid = generateUUID();
-console.log('Generated UUID:', uuid);
-`,
-};
-
-export default function SnippetCard() {
+export default function SnippetCard({ snippet, className, shared }: SnippetCardProps) {
     const html = useShikiHighlighter(snippet.code, snippet.language as BundledLanguage);
 
     return (
-        <Card className="w-full max-w-2xl group relative">
+        <Card className={cn("w-full max-w-2xl group relative", className)}>
             <CardHeader className="space-y-3">
                 <CardTitle className="font-ubuntu font-medium pr-8">{snippet.title}</CardTitle>
                 <CardDescription className="italic">{snippet.description}</CardDescription>

@@ -6,9 +6,9 @@ export default function DashboardLayout({ children }: Readonly<{ children: React
     return (
         <SidebarProvider>
             <DashboardSidebar />
-            <SidebarInset>
+            <SidebarInset className="h-[calc(100svh-theme(spacing.4))] overflow-hidden">
                 <DashboardNavbar />
-                {children}
+                <div className="w-full h-full flex flex-1 flex-col overflow-auto ">{children}</div>
             </SidebarInset>
         </SidebarProvider>
     );
