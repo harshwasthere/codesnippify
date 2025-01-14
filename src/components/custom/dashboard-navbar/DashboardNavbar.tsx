@@ -9,8 +9,8 @@ import { useDebouncedCallback } from "use-debounce";
 import { ProfileShowDropdown } from "../dropdowns/ProfileShowDropdown";
 import { useGlobalStore } from "@/providers/GlobalStoreProvider";
 import { useShallow } from "zustand/react/shallow";
-import { TagFilterDialog } from "../dialogs/TagFilterDialog";
 import SnippetCreateSheet from "../sheets/SnippetCreateSheet";
+import { TagFilterPopover } from "../popover/TagFilterPopover";
 
 export function DashboardNavbar() {
     const { data: userProfile } = useFetchUserProfile();
@@ -31,7 +31,7 @@ export function DashboardNavbar() {
                 <DashboardSidebarTrigger />
                 <Separator orientation="vertical" className="mr-2 h-4" />
                 <div className="w-full flex items-center justify-center gap-2">
-                    <TagFilterDialog />
+                    <TagFilterPopover />
                     <div className="max-w-lg w-full">
                         <SearchInput
                             type="text"

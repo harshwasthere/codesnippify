@@ -26,7 +26,7 @@ export function ProfileShowDropdown({ profile }: ProfileShowDropdownProps) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Avatar className="size-8 cursor-pointer flex-shrink-0 rounded-sm border-2 border-muted">
+                <Avatar className="size-8 cursor-pointer flex-shrink-0 rounded-sm border-1 border-muted">
                     <AvatarImage
                         src={
                             profile?.avatar_url ??

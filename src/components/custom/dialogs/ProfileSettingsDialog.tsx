@@ -2,15 +2,15 @@
 
 import React, { ChangeEvent } from "react";
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -23,17 +23,18 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CardDescription, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { Pencil, Settings } from "lucide-react";
+import { Loader, Pencil, Settings } from "lucide-react";
 import { useUpdateUserProfile } from "@/hooks/user/useUpdateUserProfile";
 import toast from "react-hot-toast";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 
 interface ProfileSettingsDialogProps {
     profile: Profile | null | undefined;
 }
 
 export function ProfileSettingsDialog({ profile }: ProfileSettingsDialogProps) {
+    const [isOpen, setIsOpen] = React.useState(false);
+
     const {
         mutate: updateUserProfileMutate,
         isPending: updateUserProfilePending,
@@ -66,6 +67,7 @@ export function ProfileSettingsDialog({ profile }: ProfileSettingsDialogProps) {
             {
                 onSuccess: () => {
                     toast.success("Profile updated successfully!");
+                    setIsOpen(false);
                 },
             },
         );
@@ -74,8 +76,8 @@ export function ProfileSettingsDialog({ profile }: ProfileSettingsDialogProps) {
     };
 
     return (
-        <AlertDialog>
-            <AlertDialogTrigger asChild>
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
                 <DropdownMenuItem
                     onSelect={(e) => e.preventDefault()}
                     className="group cursor-pointer"
@@ -83,14 +85,14 @@ export function ProfileSettingsDialog({ profile }: ProfileSettingsDialogProps) {
                     <Settings className="mr-2 size-4" />
                     <span className="text-xs">Settings</span>
                 </DropdownMenuItem>
-            </AlertDialogTrigger>
-            <AlertDialogContent className="max-w-96 w-[calc(100%-1.25rem)] p-4 rounded-md">
-                <AlertDialogHeader className="space-y-0">
-                    <AlertDialogTitle className="text-sm font-semibold">Settings</AlertDialogTitle>
-                    <AlertDialogDescription className="text-xs">
+            </DialogTrigger>
+            <DialogContent className="max-w-96 w-[calc(100%-1.25rem)] p-4 rounded-md">
+                <DialogHeader>
+                    <DialogTitle className="text-sm font-semibold">Settings</DialogTitle>
+                    <DialogDescription className="text-xs">
                         Update your profile settings
-                    </AlertDialogDescription>
-                </AlertDialogHeader>
+                    </DialogDescription>
+                </DialogHeader>
                 <div className="w-full flex flex-col sm:flex-row items-center rounded-sm bg-secondary p-4 dark:bg-secondary/30 gap-4 overflow-hidden">
                     <div className="relative">
                         <Avatar className="size-20 rounded-full border-2 border-muted">
@@ -108,6 +110,7 @@ export function ProfileSettingsDialog({ profile }: ProfileSettingsDialogProps) {
                             </AvatarFallback>
                         </Avatar>
                         <Button
+                            type="button"
                             onClick={() => avatarInputRef.current?.click()}
                             variant="outline"
                             size="icon"
@@ -183,8 +186,8 @@ export function ProfileSettingsDialog({ profile }: ProfileSettingsDialogProps) {
                             )}
                         />
 
-                        <AlertDialogFooter>
-                            <AlertDialogCancel asChild>
+                        <DialogFooter className="max-sm:gap-2">
+                            <DialogClose asChild>
                                 <Button
                                     variant="secondary"
                                     size="sm"
@@ -192,24 +195,25 @@ export function ProfileSettingsDialog({ profile }: ProfileSettingsDialogProps) {
                                 >
                                     Cancel
                                 </Button>
-                            </AlertDialogCancel>
-                            <AlertDialogAction asChild>
-                                <Button
-                                    type="submit"
-                                    disabled={
-                                        !form.formState.isValid ||
-                                        !newFullName ||
-                                        (updateUserProfilePending && !updateUserProfileError)
-                                    }
-                                    className="w-full text-xs h-8"
-                                >
-                                    Update
-                                </Button>
-                            </AlertDialogAction>
-                        </AlertDialogFooter>
+                            </DialogClose>
+                            <Button
+                                type="submit"
+                                disabled={
+                                    !form.formState.isValid ||
+                                    !newFullName ||
+                                    (updateUserProfilePending && !updateUserProfileError)
+                                }
+                                className="w-full text-xs h-8"
+                            >
+                                {updateUserProfilePending && !updateUserProfileError && (
+                                    <Loader className="size-4 animate-spin" />
+                                )}
+                                Update
+                            </Button>
+                        </DialogFooter>
                     </form>
                 </Form>
-            </AlertDialogContent>
-        </AlertDialog>
+            </DialogContent>
+        </Dialog>
     );
 }

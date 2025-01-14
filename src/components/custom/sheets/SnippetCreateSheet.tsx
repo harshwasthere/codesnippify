@@ -1,3 +1,5 @@
+"use client";
+
 import { useCreateNewSnippet } from "@/hooks/snippet/useCreateNewSnippet";
 import { SnippetCreateFormSchemaTypes } from "@/types/zod.types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,7 +16,7 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Check, ChevronsUpDown, Loader, PlusIcon, X } from "lucide-react";
+import { Loader, PlusIcon, X } from "lucide-react";
 import {
     Form,
     FormControl,
@@ -29,8 +31,12 @@ import { Textarea } from "@/components/ui/textarea";
 import LanguagePopover from "../popover/LanguagePopover";
 import Editor from "../editor/Editor";
 import { BundledLanguage } from "shiki";
+import React from "react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 export default function SnippetCreateSheet() {
+    const [isOpen, setIsOpen] = React.useState(false);
+
     const theme = useTheme().theme;
 
     const {
@@ -52,6 +58,7 @@ export default function SnippetCreateSheet() {
     });
 
     const { title, code, language, tags } = form.watch();
+
     const createSnippetDisabled =
         !form.formState.isValid ||
         !title ||
@@ -61,8 +68,12 @@ export default function SnippetCreateSheet() {
         (createSnippetPending && !createSnippetError);
 
     const handleCreateSnippet = async (data: SnippetCreateFormSchemaTypes) => {
-        createSnippetMutate(data);
-        form.reset();
+        createSnippetMutate(data, {
+            onSuccess: () => {
+                setIsOpen(false);
+                form.reset();
+            },
+        });
     };
 
     const handleAddTag = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -81,15 +92,28 @@ export default function SnippetCreateSheet() {
     };
 
     return (
-        <Sheet>
-            <SheetTrigger asChild>
-                <Button size="sm" className="h-8 flex-shrink-0 gap-1">
-                    <PlusIcon className="size-4" />
-                    <span className="max-2xs:hidden">Snippet</span>
-                </Button>
-            </SheetTrigger>
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <SheetTrigger asChild>
+                        <Button size="sm" className="h-8 flex-shrink-0 gap-1 max-2xs:px-2">
+                            <PlusIcon className="size-4" />
+                            <span className="max-2xs:hidden">Snippet</span>
+                        </Button>
+                    </SheetTrigger>
+                </TooltipTrigger>
+                <TooltipContent
+                    side="bottom"
+                    sideOffset={8}
+                    align="center"
+                    className="bg-foreground text-background"
+                >
+                    Create Snippet
+                </TooltipContent>
+            </Tooltip>
+
             <SheetContent className="sm:max-w-xl w-full flex flex-col gap-4 p-4">
-                <SheetHeader className="space-y-0">
+                <SheetHeader>
                     <SheetTitle>Create Snippet</SheetTitle>
                     <SheetDescription>Create a new snippet to save your code.</SheetDescription>
                 </SheetHeader>
