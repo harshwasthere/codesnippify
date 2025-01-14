@@ -5,7 +5,6 @@ interface FetchSnippetsProps {
     filterTags: string[];
     folderIdToSearch?: string;
     showTrash: boolean;
-    hasHydrated: boolean;
 }
 
 // fetch all snippets for a user with optional filters
@@ -41,9 +40,13 @@ export async function fetchSnippets({
 
 export function useFetchSnippets(options: FetchSnippetsProps) {
     return useQuery({
-        queryKey: ["snippets", options.filterTags, options.folderIdToSearch, options.showTrash],
+        queryKey: [
+            "snippets",
+            options.filterTags,
+            options.folderIdToSearch,
+            options.showTrash,
+        ],
         queryFn: () => fetchSnippets(options),
-        enabled: options.hasHydrated,
         refetchOnWindowFocus: false, // Avoid refetching when switching tabs
     });
 }
