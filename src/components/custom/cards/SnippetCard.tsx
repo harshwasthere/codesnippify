@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { useShikiHighlighter } from "@/lib/hooks/useShikiHighlighter";
+import { useShikiHighlighter } from "@/hooks/ui/useShikiHighlighter";
 import { cn, handleCopyToClipboard } from "@/lib/utils";
 import { Clipboard } from "lucide-react";
 import { BundledLanguage } from "shiki";
