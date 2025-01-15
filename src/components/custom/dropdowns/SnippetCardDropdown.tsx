@@ -197,7 +197,15 @@ export function SnippetCardDropdown({
                 </DropdownMenuSub>
 
                 {snippet.folder_name && (
-                    <DropdownMenuItem className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/30">
+                    <DropdownMenuItem
+                        onSelect={(e) => {
+                            e.stopPropagation();
+                            removeSnippetFromFolderMutate({
+                                snippetId: snippet.snippet_id,
+                            });
+                        }}
+                        className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/30"
+                    >
                         <FolderOutputIcon className="size-4" />
                         <span>Remove from folder</span>
                     </DropdownMenuItem>
