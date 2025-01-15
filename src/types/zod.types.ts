@@ -1,13 +1,12 @@
 import { z } from "zod";
 import {
     FolderCreateDialogSchema,
-    SnippetCreateFormSchema,
     FolderRenameDialogSchema,
     ForgotPasswordFormSchema,
     LoginFormSchema,
     ProfileSettingsFormSchema,
     SignupFormSchema,
-    SnippetFolderSelectSchema,
+    SnippetCreateFormSchema,
     UpdateNameFormSchema,
     UpdatePasswordFormSchema,
 } from "@/lib/zod/schema";
@@ -33,20 +32,30 @@ import {
  *
  * Snippet related schemas
  * @type SnippetCreateFormSchemaTypes - The type of the SnippetCreateFormSchema
- * @type SnippetFolderSelectSchemaTypes - The type of the SnippetFolderSelectSchema
  */
 
 export type LoginFormSchemaTypes = z.infer<typeof LoginFormSchema>;
 export type SignupFormSchemaTypes = z.infer<typeof SignupFormSchema>;
-export type ForgotPasswordFormSchemaTypes = z.infer<typeof ForgotPasswordFormSchema>;
+export type ForgotPasswordFormSchemaTypes = z.infer<
+    typeof ForgotPasswordFormSchema
+>;
 
-export type UpdatePasswordFormSchemaTypes = z.infer<typeof UpdatePasswordFormSchema>;
+export type UpdatePasswordFormSchemaTypes = z.infer<
+    typeof UpdatePasswordFormSchema
+>;
 export type UpdateNameFormSchemaTypes = z.infer<typeof UpdateNameFormSchema>;
 
-export type FolderRenameDialogSchemaTypes = z.infer<typeof FolderRenameDialogSchema>;
-export type FolderCreateDialogSchemaTypes = z.infer<typeof FolderCreateDialogSchema>;
+export type FolderRenameDialogSchemaTypes = z.infer<
+    typeof FolderRenameDialogSchema
+>;
+export type FolderCreateDialogSchemaTypes = z.infer<
+    typeof FolderCreateDialogSchema
+>;
 
-export type ProfileSettingsFormSchemaTypes = z.infer<typeof ProfileSettingsFormSchema>;
+export type ProfileSettingsFormSchemaTypes = z.infer<
+    typeof ProfileSettingsFormSchema
+>;
 
-export type SnippetCreateFormSchemaTypes = z.infer<typeof SnippetCreateFormSchema>;
-export type SnippetFolderSelectSchemaTypes = z.infer<typeof SnippetFolderSelectSchema>;
+export type SnippetCreateFormSchemaTypes = z.infer<
+    typeof SnippetCreateFormSchema
+>;

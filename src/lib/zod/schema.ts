@@ -5,6 +5,7 @@ import { z } from "zod";
 const emailValidation = z
     .string()
     .email({ message: "Enter valid email address." })
+    .max(100, { message: "Email address is too long." })
     .refine(
         (value) => /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(value),
         {
@@ -15,6 +16,7 @@ const emailValidation = z
 const passwordValidation = z
     .string()
     .min(8, { message: "Password length is too short." })
+    .max(100, { message: "Password length is too long." })
     .refine((value) => /[a-z]/.test(value), {
         message: "Include a lowercase letter.",
     })
@@ -31,16 +33,20 @@ const passwordValidation = z
 // Authentication routes
 export const LoginFormSchema = z.object({
     email: emailValidation,
-    password: z.string().min(3, { message: "Password length is too short." }),
+    password: z
+        .string()
+        .min(3, { message: "Password length is too short." })
+        .max(100, { message: "Password length is too long." }),
 });
 
 export const SignupFormSchema = z
     .object({
         email: emailValidation,
         password: passwordValidation,
-        confirmPassword: z.string().min(1, {
-            message: "Password is required.",
-        }),
+        confirmPassword: z
+            .string()
+            .min(1, { message: "Password is required." })
+            .max(100, { message: "Password length is too long." }),
     })
     .refine((data) => data.password === data.confirmPassword, {
         message: "Passwords do not match.",
@@ -55,9 +61,10 @@ export const ForgotPasswordFormSchema = z.object({
 export const UpdatePasswordFormSchema = z
     .object({
         newPassword: passwordValidation,
-        confirmNewPassword: z.string().min(1, {
-            message: "Password is required.",
-        }),
+        confirmNewPassword: z
+            .string()
+            .min(1, { message: "Password is required." })
+            .max(100, { message: "Password length is too long." }),
     })
     .refine((data) => data.newPassword === data.confirmNewPassword, {
         message: "Passwords do not match.",
@@ -65,7 +72,10 @@ export const UpdatePasswordFormSchema = z
     });
 
 export const UpdateNameFormSchema = z.object({
-    newName: z.string().min(2, { message: "Name is required." }),
+    newName: z
+        .string()
+        .min(2, { message: "Name is required." })
+        .max(30, { message: "Max length exceeded." }),
 });
 
 // Folder related schemas
@@ -112,8 +122,4 @@ export const SnippetCreateFormSchema = z.object({
             message: "Tags must be unique.",
         },
     ),
-});
-
-export const SnippetFolderSelectSchema = z.object({
-    folderId: z.string(),
 });
