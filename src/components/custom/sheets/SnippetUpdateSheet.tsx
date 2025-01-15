@@ -1,4 +1,5 @@
-import { useCreateNewSnippet } from "@/hooks/snippet/useCreateNewSnippet";
+"use client";
+
 import { SnippetCreateFormSchemaTypes } from "@/types/zod.types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTheme } from "next-themes";
@@ -14,7 +15,7 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Check, ChevronsUpDown, Edit, Loader, PlusIcon, X } from "lucide-react";
+import { Edit, Loader, X } from "lucide-react";
 import {
     Form,
     FormControl,
@@ -31,7 +32,6 @@ import Editor from "../editor/Editor";
 import { BundledLanguage } from "shiki";
 import { useUpdateSnippet } from "@/hooks/snippet/useUpdateSnippet";
 import React from "react";
-import { Snippet } from "@/types/global.types";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 interface SnippetUpdateSheetProps {
@@ -50,6 +50,8 @@ interface SnippetUpdateSheetProps {
 }
 
 export default function SnippetUpdateSheet({ snippet }: SnippetUpdateSheetProps) {
+    const [isOpen, setIsOpen] = React.useState(false);
+
     const theme = useTheme().theme;
 
     const {
@@ -90,8 +92,15 @@ export default function SnippetUpdateSheet({ snippet }: SnippetUpdateSheetProps)
         (updateSnippetPending && !updateSnippetError);
 
     const handleUpdateSnippet = async (data: SnippetCreateFormSchemaTypes) => {
-        updateSnippetMutate({ snippetId: snippet.snippet_id, ...data });
-        form.reset();
+        updateSnippetMutate(
+            { snippetId: snippet.snippet_id, ...data },
+            {
+                onSuccess: () => {
+                    setIsOpen(false);
+                    form.reset();
+                },
+            },
+        );
     };
 
     const handleAddTag = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -110,7 +119,7 @@ export default function SnippetUpdateSheet({ snippet }: SnippetUpdateSheetProps)
     };
 
     return (
-        <Sheet>
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild onClick={(e) => e.stopPropagation()}>
                 <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="cursor-pointer">
                     <Edit className="size-4" />
@@ -118,7 +127,7 @@ export default function SnippetUpdateSheet({ snippet }: SnippetUpdateSheetProps)
                 </DropdownMenuItem>
             </SheetTrigger>
             <SheetContent className="sm:max-w-xl w-full flex flex-col gap-4 p-4">
-                <SheetHeader className="space-y-0">
+                <SheetHeader>
                     <SheetTitle>Update Snippet</SheetTitle>
                     <SheetDescription>Update details of your snippet.</SheetDescription>
                 </SheetHeader>
