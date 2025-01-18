@@ -12,6 +12,7 @@ const config: Config = {
 	theme: {
 		extend: {
 			fontFamily: {
+				monaSans: ["Mona Sans", ...fontFamily.sans],
 				ubuntu: [
 					"var(--font-ubuntu)",
 					...fontFamily.sans,
