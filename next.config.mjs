@@ -10,6 +10,10 @@ const nextConfig = {
                 protocol: "https",
                 hostname: "www.launchuicomponents.com",
             },
+            {
+                protocol: "https",
+                hostname: "tailwindui.com",
+            },
         ],
     },
     webpack: (config) => {
