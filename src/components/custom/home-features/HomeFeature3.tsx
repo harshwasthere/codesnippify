@@ -22,7 +22,7 @@ function saveSnippet(snippet) {
 `,
 };
 
-export default function HomeFeature3() {
+export function HomeFeature3() {
     const html = useShikiHighlighter(codeSection.code, codeSection.language as BundledLanguage);
     return (
         <div className="relative w-full h-full max-h-[384px] flex items-start gap-8">

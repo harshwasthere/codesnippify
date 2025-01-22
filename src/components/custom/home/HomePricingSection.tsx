@@ -15,7 +15,10 @@ import Link from "next/link";
 
 export function HomePricingSection() {
     return (
-        <section className="px-4 py-12 !pt-0 max-w-3xl mx-auto flex flex-col items-center">
+        <section
+            id="pricing"
+            className="px-4 py-12 !pt-0 max-w-3xl mx-auto flex flex-col items-center"
+        >
             <div className="mx-auto max-w-3xl text-balance flex flex-col items-center text-center my-20 sm:my-28 z-10">
                 <div className="p-2 pb-4 text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-monaSans font-extrabold leading-none tracking-tighter text-balance m-0 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
                     Pricing

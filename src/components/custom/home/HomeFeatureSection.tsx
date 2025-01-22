@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { HomeFeatureCard } from "../cards/HomeFeatureCard";
-import HomeFeature1 from "../home-features/HomeFeature1";
-import HomeFeature2 from "../home-features/HomeFeature2";
-import HomeFeature3 from "../home-features/HomeFeature3";
+import { HomeFeature1 } from "../home-features/HomeFeature1";
+import { HomeFeature2 } from "../home-features/HomeFeature2";
+import { HomeFeature3 } from "../home-features/HomeFeature3";
 
 const features = [
     {
@@ -30,7 +30,7 @@ const features = [
 export function HomeFeatureSection() {
     const [currentActiveFeature, setCurrentActiveFeature] = useState(0);
     return (
-        <section className="w-full px-4 flex flex-col items-center">
+        <section id="features" className="w-full px-4 flex flex-col items-center">
             <div className="mx-auto max-w-3xl text-balance flex flex-col items-center text-center my-20 sm:my-28 z-10">
                 <div className="p-2 pb-4 text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-monaSans font-extrabold leading-none tracking-tighter text-balance m-0 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
                     Features

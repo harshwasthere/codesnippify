@@ -82,7 +82,7 @@ function saveSnippet(snippet) {
 `,
 };
 
-export default function HomeFeature1() {
+export function HomeFeature1() {
     const html = useShikiHighlighter(codeSection.code, codeSection.language as BundledLanguage);
     return (
         <div className="w-full h-full max-w-[592px] max-h-[384px] flex gap-2">

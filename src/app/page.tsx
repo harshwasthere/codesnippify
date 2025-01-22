@@ -8,7 +8,7 @@ import { HomePricingSection } from "@/components/custom/home/HomePricingSection"
 
 export default function Home() {
     return (
-        <main className="min-h-screen h-full bg-background text-foreground font-sans">
+        <main className="min-h-screen h-full bg-background text-foreground font-sans scroll-smooth">
             <HomeNavbar />
             <HomeHeroSection
                 title1="All Your Snippets,"

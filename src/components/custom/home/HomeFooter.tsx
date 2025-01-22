@@ -17,18 +17,18 @@ export function HomeFooter({ className }: { className?: string }) {
                             Home
                         </Link>
                         <Link
-                            href="/features"
+                            href="#features"
                             className="block transition-colors hover:text-primary"
                         >
                             Features
                         </Link>
                         <Link
-                            href="/pricing"
+                            href="#pricing"
                             className="block transition-colors hover:text-primary"
                         >
                             Pricing
                         </Link>
-                        <Link href="/faq" className="block transition-colors hover:text-primary">
+                        <Link href="#faq" className="block transition-colors hover:text-primary">
                             FAQ
                         </Link>
                     </div>

@@ -15,7 +15,7 @@ export function HomeNavbar() {
                         <Link
                             data-discover="true"
                             className="block p-4 max-xs:px-2 opacity-70 transition-opacity hover:opacity-100 aria-[current=page]:opacity-100"
-                            href="/updates"
+                            href="#features"
                         >
                             Features
                         </Link>
@@ -24,7 +24,7 @@ export function HomeNavbar() {
                         <Link
                             data-discover="true"
                             className="block p-4 max-xs:px-2 opacity-70 transition-opacity hover:opacity-100 aria-[current=page]:opacity-100"
-                            href="/pricing"
+                            href="#pricing"
                         >
                             Pricing
                         </Link>

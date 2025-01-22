@@ -138,3 +138,7 @@
         @apply !bg-transparent outline-none border-none;
     }
 }
+
+html {
+    scroll-behavior: smooth;
+}
