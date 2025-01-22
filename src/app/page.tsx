@@ -1,7 +1,3 @@
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import Image from "next/image";
-import Link from "next/link";
 import { HomeCtaSection } from "@/components/custom/home/HomeCtaSection";
 import { HomeFaqSection } from "@/components/custom/home/HomeFaqSection";
 import { HomeFeatureSection } from "@/components/custom/home/HomeFeatureSection";
@@ -12,7 +8,7 @@ import { HomePricingSection } from "@/components/custom/home/HomePricingSection"
 
 export default function Home() {
     return (
-        <main className="min-h-screen bg-background text-foreground font-sans">
+        <main className="min-h-screen h-full bg-background text-foreground font-sans">
             <HomeNavbar />
             <HomeHeroSection
                 title1="All Your Snippets,"
@@ -28,6 +24,7 @@ export default function Home() {
                     alt: "app-demo",
                 }}
             />
+            <HomeFeatureSection />
             <HomePricingSection />
             <HomeFaqSection />
             <HomeCtaSection />
