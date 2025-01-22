@@ -1,9 +1,15 @@
+import { cn } from "@/lib/utils";
 import { Twitter } from "lucide-react";
 import Link from "next/link";
 
-export function HomeFooter() {
+export function HomeFooter({ className }: { className?: string }) {
     return (
-        <footer className="bg-background/80 px-4 text-sm backdrop-blur backdrop-saturate-200 !p-10">
+        <footer
+            className={cn(
+                "bg-background/80 px-4 text-sm backdrop-blur backdrop-saturate-200 !p-10",
+                className,
+            )}
+        >
             <div className="mx-auto flex flex-col justify-between max-w-5xl w-full">
                 <nav className="w-full flex  flex-col md:flex-row items-center justify-between gap-4 py-4 ">
                     <div className="flex items-center justify-center gap-4 ">
@@ -41,13 +47,13 @@ export function HomeFooter() {
                     </p>
                     <nav className="flex gap-4">
                         <Link
-                            href="#"
+                            href="/privacy-policy"
                             className="transition-colors hover:text-primary hover:underline"
                         >
                             Privacy Policy
                         </Link>
                         <Link
-                            href="#"
+                            href="/terms-of-service"
                             className="transition-colors hover:text-primary hover:underline"
                         >
                             Terms of Service

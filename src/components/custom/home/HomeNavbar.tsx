@@ -6,7 +6,7 @@ export function HomeNavbar() {
         <nav className="sticky top-0 z-50 bg-background/80 px-4 text-sm backdrop-blur backdrop-saturate-200">
             <div className="mx-auto flex max-w-2xl w-full items-center justify-between border-b border-border">
                 <h1 className="flex-1 shrink-0 text-lg font-bold">
-                    <Link className="py-4" data-discover="true" href="/?r=0">
+                    <Link className="py-4" data-discover="true" href="/">
                         Codesnippify
                     </Link>
                 </h1>
