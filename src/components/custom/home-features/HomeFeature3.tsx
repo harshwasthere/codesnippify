@@ -25,8 +25,8 @@ function saveSnippet(snippet) {
 export function HomeFeature3() {
     const html = useShikiHighlighter(codeSection.code, codeSection.language as BundledLanguage);
     return (
-        <div className="relative w-full h-full max-h-[384px] flex items-start gap-8">
-            <div className="flex flex-col items-center justify-center">
+        <div className="relative w-full h-ful max-h-[384px] flex items-start gap-8">
+            <div className="absolute bottom-5 right-5 translate-x-1/2 translate-y-1/2 flex flex-col items-center justify-center">
                 <Icons.LogoShiki className="size-32" />
                 <span className="text-lg font-bold text-brand !mt-2">Shiki 式</span>
                 <span className="text-sm font-semibold text-muted-foreground">
