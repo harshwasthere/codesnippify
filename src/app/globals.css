@@ -129,4 +129,12 @@
     .shikicode-readonly code {
         @apply font-ubuntuMono text-sm;
     }
+
+    .shikicode-homepage code {
+        @apply font-ubuntuMono;
+    }
+
+    .shikicode-homepage > .shiki {
+        @apply !bg-transparent outline-none border-none;
+    }
 }
