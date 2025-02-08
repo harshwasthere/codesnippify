@@ -1,5 +1,3 @@
-"use client";
-
 import { Icons } from "@/assets/icons";
 import { useShikiHighlighter } from "@/hooks/ui/useShikiHighlighter";
 import { cn } from "@/lib/utils";

@@ -1,4 +1,3 @@
-import { langIds } from "@/constants/global.constants";
 import { z } from "zod";
 
 // Common validations
@@ -111,9 +110,8 @@ export const SnippetCreateFormSchema = z.object({
     description: z.string().max(500, { message: "Max length exceeded." })
         .optional(),
     language: z
-        .string()
-        .refine((lang) => langIds.includes(lang), {
-            message: "Language is required.",
+        .string({
+            required_error: "Language is required.",
         }),
     code: z.string().min(3, { message: "Code is required." }),
     tags: z.array(z.string()).refine(

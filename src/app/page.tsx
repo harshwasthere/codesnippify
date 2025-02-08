@@ -1,3 +1,5 @@
+"use client";
+
 import { HomeCtaSection } from "@/components/custom/home/HomeCtaSection";
 import { HomeFaqSection } from "@/components/custom/home/HomeFaqSection";
 import { HomeFeatureSection } from "@/components/custom/home/HomeFeatureSection";

@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { HomeFeatureCard } from "../cards/HomeFeatureCard";
 import { HomeFeature1 } from "../home-features/HomeFeature1";

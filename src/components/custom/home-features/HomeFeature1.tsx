@@ -1,5 +1,3 @@
-"use client";
-
 import { useShikiHighlighter } from "@/hooks/ui/useShikiHighlighter";
 import { cn } from "@/lib/utils";
 import { Apple, AtomIcon, FolderIcon, Heart, Trash2Icon } from "lucide-react";

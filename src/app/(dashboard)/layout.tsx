@@ -1,3 +1,5 @@
+"use client";
+
 import { DashboardNavbar } from "@/components/custom/dashboard-navbar/DashboardNavbar";
 import { DashboardSidebar } from "@/components/custom/dashboard-sidebar/DashboardSidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";

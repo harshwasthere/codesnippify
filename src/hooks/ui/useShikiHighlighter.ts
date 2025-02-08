@@ -1,3 +1,5 @@
+"use client";
+
 import { useTheme } from "next-themes"; // or your theme provider
 import React from "react";
 import { BundledLanguage, codeToHtml } from "shiki";

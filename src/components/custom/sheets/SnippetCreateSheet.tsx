@@ -205,13 +205,17 @@ export default function SnippetCreateSheet() {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Language</FormLabel>
-                                    <div>
-                                        <LanguagePopover
-                                            disabled={createSnippetPending && !createSnippetError}
-                                            field={field}
-                                            form={form}
-                                        />
-                                    </div>
+                                    <FormControl>
+                                        <div>
+                                            <LanguagePopover
+                                                disabled={
+                                                    createSnippetPending && !createSnippetError
+                                                }
+                                                field={field}
+                                                form={form}
+                                            />
+                                        </div>
+                                    </FormControl>
 
                                     <FormDescription className="text-xs">
                                         This is the language that will be used in the code.
