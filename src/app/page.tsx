@@ -12,20 +12,7 @@ export default function Home() {
     return (
         <main className="min-h-screen h-full bg-background text-foreground font-sans scroll-smooth">
             <HomeNavbar />
-            <HomeHeroSection
-                title1="All Your Snippets,"
-                title2="Neatly Organized"
-                description="Save, organize, and share your code snippets effortlessly. Focus on coding, not searching."
-                ctaButton={{
-                    text: "Get Started",
-                    href: "/login",
-                }}
-                image={{
-                    light: "/app-light.png",
-                    dark: "/app-dark.png",
-                    alt: "app-demo",
-                }}
-            />
+            <HomeHeroSection />
             <HomeFeatureSection />
             <HomePricingSection />
             <HomeFaqSection />
