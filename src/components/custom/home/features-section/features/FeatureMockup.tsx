@@ -78,7 +78,7 @@ export function FeatureMockup({ step }: FeatureMockupProps) {
     // 3. Memoize render functions
     const renderCodeBlock = React.useCallback(
         () => (
-            <CodeBlock className={cn("border-none bg-foreground/5", step === 2 && "relative")}>
+            <CodeBlock className={cn("border-none bg-primary/20", step === 2 && "relative")}>
                 <CodeBlockCode
                     className="home-feature-code-block"
                     lightTheme="github-light"
@@ -94,7 +94,7 @@ export function FeatureMockup({ step }: FeatureMockupProps) {
     // 4. Memoize sidebar render function
     const renderSidebar = React.useCallback(
         () => (
-            <div className="h-full w-full max-w-56 flex flex-col px-3 py-4 rounded-xl bg-foreground/5">
+            <div className="h-full w-full max-w-56 flex flex-col px-3 py-4 rounded-xl bg-primary/20">
                 {SIDEBAR_ITEMS.main.map((item) => (
                     <MemoizedSnippetOrganizerSidebarButton
                         key={item.title}
@@ -114,18 +114,18 @@ export function FeatureMockup({ step }: FeatureMockupProps) {
                         <SnippetOrganizerSidebarButton
                             icon={SIDEBAR_ITEMS.folders[1].icon}
                             title={SIDEBAR_ITEMS.folders[1].title}
-                            className="relative bg-foreground/5"
+                            className="relative bg-primary/20"
                         >
                             <EllipsisIcon className="ml-auto size-4 text-muted-foreground" />
-                            <div className="absolute top-full left-full -translate-x-1 -translate-y-1 z-10 w-24 flex flex-col rounded-xl p-1 bg-foreground/5 backdrop-blur-md">
+                            <div className="absolute top-full left-full -translate-x-1 -translate-y-1 z-10 w-24 flex flex-col rounded-xl p-1 bg-primary/20 backdrop-blur-md">
                                 <SnippetOrganizerSidebarButton
                                     title="Share"
-                                    className="relative text-xs bg-foreground/5"
+                                    className="relative text-xs bg-primary/20"
                                 >
                                     <div className="absolute top-0 left-0 -translate-x-1/2 translate-y-4">
                                         <div className="relative">
                                             <Icons.ArrowHandDrawn className="w-36 h-auto fill-foreground" />
-                                            <div className="absolute left-full top-full translate-x-2 -translate-y-5 min-w-full max-w-64 flex items-center gap-2 py-2 px-3 rounded-xl bg-foreground/5">
+                                            <div className="absolute left-full top-full translate-x-2 -translate-y-5 min-w-full max-w-64 flex items-center gap-2 py-2 px-3 rounded-xl bg-primary/20">
                                                 <span className="truncate font-geistMono text-xs">
                                                     www.codesnippify.me/share/8c83b2b7-00fb-4371-b4e1
                                                 </span>
@@ -220,7 +220,7 @@ function SnippetOrganizerSidebarButton({
     return (
         <div
             className={cn(
-                "flex items-center gap-2 px-3 py-2 text-sm rounded-xl hover:bg-foreground/5",
+                "flex items-center gap-2 px-3 py-2 text-sm rounded-xl hover:bg-primary/20",
                 className,
             )}
         >

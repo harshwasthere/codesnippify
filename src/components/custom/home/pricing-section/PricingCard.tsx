@@ -43,8 +43,8 @@ export function PricingCard({
     return (
         <Card
             className={cn(
-                "w-full max-w-sm flex flex-col justify-center rounded-2xl border-2",
-                isPrimary && "border-primary",
+                "w-full max-w-sm flex flex-col justify-center rounded-2xl border-2 bg-muted",
+                isPrimary && "border-primary bg-primary/20",
                 className,
             )}
         >
