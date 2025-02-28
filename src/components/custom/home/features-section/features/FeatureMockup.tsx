@@ -1,3 +1,5 @@
+"use client";
+
 import { CodeBlock, CodeBlockCode } from "@/components/custom/code-block/CodeBlock";
 import { homeFeatureSectionCode } from "@/constants/constants";
 import { cn } from "@/lib/utils";
@@ -123,7 +125,7 @@ export function FeatureMockup({ step }: FeatureMockupProps) {
                                     <div className="absolute top-0 left-0 -translate-x-1/2 translate-y-4">
                                         <div className="relative">
                                             <Icons.ArrowHandDrawn className="w-36 h-auto fill-foreground" />
-                                            <div className="absolute left-full top-full translate-x-2 -translate-y-5 min-w-full max-w-72 flex items-center gap-2 py-2 px-3 rounded-xl bg-foreground/5">
+                                            <div className="absolute left-full top-full translate-x-2 -translate-y-5 min-w-full max-w-64 flex items-center gap-2 py-2 px-3 rounded-xl bg-foreground/5">
                                                 <span className="truncate font-geistMono text-xs">
                                                     www.codesnippify.me/share/8c83b2b7-00fb-4371-b4e1
                                                 </span>

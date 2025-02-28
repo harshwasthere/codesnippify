@@ -3,14 +3,13 @@
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
 import React, { useEffect, useState } from "react";
-import { codeToHtml } from "shiki";
 
 export type CodeBlockProps = {
     children?: React.ReactNode;
     className?: string;
 } & React.HTMLProps<HTMLDivElement>;
 
-function CodeBlock({ children, className, ...props }: CodeBlockProps) {
+export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
     return (
         <div
             className={cn(
@@ -33,7 +32,7 @@ export type CodeBlockCodeProps = {
     className?: string;
 } & React.HTMLProps<HTMLDivElement>;
 
-function CodeBlockCode({
+export function CodeBlockCode({
     code,
     language = "tsx",
     lightTheme = "github-light",
@@ -47,8 +46,16 @@ function CodeBlockCode({
 
     useEffect(() => {
         async function highlight() {
-            const html = await codeToHtml(code, { lang: language, theme });
-            setHighlightedHtml(html);
+            try {
+                // Import shiki dynamically only on client side
+                const { codeToHtml } = await import("shiki");
+                const html = await codeToHtml(code, { lang: language, theme });
+                setHighlightedHtml(html);
+            } catch (error) {
+                console.error("Error highlighting code:", error);
+                // Fallback to plain text if highlighting fails
+                setHighlightedHtml(`<pre><code>${code}</code></pre>`);
+            }
         }
         highlight();
     }, [code, language, theme]);
@@ -76,12 +83,10 @@ function CodeBlockCode({
 
 export type CodeBlockGroupProps = React.HTMLAttributes<HTMLDivElement>;
 
-function CodeBlockGroup({ children, className, ...props }: CodeBlockGroupProps) {
+export function CodeBlockGroup({ children, className, ...props }: CodeBlockGroupProps) {
     return (
         <div className={cn("flex items-center justify-between", className)} {...props}>
             {children}
         </div>
     );
 }
-
-export { CodeBlockGroup, CodeBlockCode, CodeBlock };
