@@ -40,13 +40,13 @@ export function FeatureDetailCard({
                 className,
             )}
         >
-            <div className="flex items-start gap-2 max-md:flex-col max-md:items-center max-md:justify-center max-md:gap-3">
+            <div className="flex items-start gap-2 max-md:flex-col max-md:items-center max-md:justify-center max-md:gap-3 max-xs:max-w-xs max-w-xl">
                 {icon}
                 <h3 className="sm:text-lg md:text-xl font-bold bg-gradient-to-r from-foreground to-muted-foreground text-transparent bg-clip-text">
                     {title}
                 </h3>
             </div>
-            <p className="text-xs sm:text-sm md:text-base font-medium text-balance text-muted-foreground max-w-xl">
+            <p className="text-xs sm:text-sm md:text-base font-medium text-balance text-muted-foreground max-xs:max-w-xs max-w-xl">
                 {description}
             </p>
         </div>

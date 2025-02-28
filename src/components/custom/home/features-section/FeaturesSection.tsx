@@ -30,7 +30,7 @@ const FEATURES = [
     },
 ];
 
-export function FeaturesSection() {
+export function HomeFeaturesSection() {
     const [currentActiveStep, setCurrentActiveStep] = React.useState(1);
 
     return (
