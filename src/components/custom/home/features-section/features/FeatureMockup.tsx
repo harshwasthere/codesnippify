@@ -71,7 +71,6 @@ const SIDEBAR_ITEMS = {
 
 // 2. Memoize helper components
 const MemoizedSnippetOrganizerSidebarButton = React.memo(SnippetOrganizerSidebarButton);
-const MemoizedSnippetOrganizerSidebarLabel = React.memo(SnippetOrganizerSidebarLabel);
 
 export function FeatureMockup({ step }: FeatureMockupProps) {
     // 3. Memoize render functions
