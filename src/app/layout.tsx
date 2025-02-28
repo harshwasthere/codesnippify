@@ -1,22 +1,24 @@
 import type { Metadata } from "next";
-import { Ubuntu, Ubuntu_Mono } from "next/font/google";
+import localFont from "next/font/local";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/providers/ThemeProvider";
-import QueryProvider from "@/providers/QueryProvider";
-import ThemeAwareToaster from "@/components/custom/toast/ThemeAwareToaster";
-import { GlobalStoreProvider } from "@/providers/GlobalStoreProvider";
 
-const ubuntu = Ubuntu({
-    subsets: ["latin"],
-    variable: "--font-ubuntu",
-    weight: ["300", "400", "500", "700"],
+const geistSans = localFont({
+    src: "../assets/fonts/GeistVF.woff",
+    variable: "--font-geist-sans",
+    weight: "100 900",
+});
+const geistMono = localFont({
+    src: "../assets/fonts/GeistMonoVF.woff",
+    variable: "--font-geist-mono",
+    weight: "100 900",
 });
 
-const ubuntuMono = Ubuntu_Mono({
+const inter = Inter({
     subsets: ["latin"],
-    variable: "--font-ubuntu-mono",
-    weight: ["400", "700"],
+    variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
@@ -39,9 +41,10 @@ export default function RootLayout({
             </head>
             <body
                 className={cn(
-                    "min-h-screen w-full bg-background font-ubuntu antialiased",
-                    ubuntu.variable,
-                    ubuntuMono.variable,
+                    "min-h-screen w-full bg-background font-inter antialiased",
+                    geistSans.variable,
+                    geistMono.variable,
+                    inter.variable,
                 )}
             >
                 <ThemeProvider
@@ -50,12 +53,7 @@ export default function RootLayout({
                     enableSystem
                     disableTransitionOnChange
                 >
-                    <GlobalStoreProvider>
-                        <QueryProvider>
-                            {children}
-                            <ThemeAwareToaster />
-                        </QueryProvider>
-                    </GlobalStoreProvider>
+                    {children}
                 </ThemeProvider>
             </body>
         </html>
