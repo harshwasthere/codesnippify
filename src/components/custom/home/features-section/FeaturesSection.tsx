@@ -63,8 +63,8 @@ export function HomeFeaturesSection() {
                 </div>
 
                 {/* Desktop layout - remains unchanged */}
-                <div className="hidden md:flex w-full items-start gap-8">
-                    <div className="w-full flex-1">
+                <div className="hidden md:flex w-full items-start justify-center gap-8">
+                    <div className="w-full flex-1 max-w-xl">
                         {FEATURES.map((feature, index) => (
                             <FeatureDetailCard
                                 key={index}
