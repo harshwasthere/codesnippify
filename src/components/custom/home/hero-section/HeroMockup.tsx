@@ -12,15 +12,24 @@ interface HeroMockupProps extends React.HTMLAttributes<HTMLDivElement> {
     lightImgPath: string;
     darkImgPath: string;
     alt: string;
-    glowVariant?: "top" | "bottom" | "center";
+    glowPosition?: "top" | "bottom" | "center";
 }
+
+const fadeInScale = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: {
+        opacity: 1,
+        scale: 1,
+        transition: { duration: 0.5, ease: "easeOut" },
+    },
+};
 
 export function HeroMockup({
     className,
     lightImgPath,
     darkImgPath,
     alt,
-    glowVariant = "top",
+    glowPosition = "top",
     ...props
 }: HeroMockupProps) {
     const { resolvedTheme } = useTheme();
@@ -32,7 +41,22 @@ export function HeroMockup({
                     <Image src={imageSrc} alt={alt} width={1248} height={765} priority />
                 </Mockup>
             </MockupFrame>
-            <Glow variant={glowVariant} />
+            <Glow
+                position={glowPosition}
+                customAnimation={{
+                    initial: {
+                        ...fadeInScale.hidden,
+                    },
+                    animate: {
+                        ...fadeInScale.visible,
+                        transition: {
+                            duration: 0.5,
+                            delay: 0.7,
+                            ease: "easeOut",
+                        },
+                    },
+                }}
+            />
         </div>
     );
 }
