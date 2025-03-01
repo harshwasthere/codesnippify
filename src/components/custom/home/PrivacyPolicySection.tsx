@@ -70,7 +70,7 @@ export function HomePrivacyPolicySection() {
                 </div>
             </div>
 
-            <article className="prose prose-neutral dark:prose-invert prose-h4:leading-none prose-h4:font-monaSans prose-h4:font-bold prose-p:leading-snug prose-p:text-muted-foreground">
+            <article className="prose prose-neutral dark:prose-invert prose-h4:leading-none prose-h4:font-bold prose-p:leading-snug prose-p:text-muted-foreground">
                 {privacyPolicy.map((section) => (
                     <div key={section.title} className="flex flex-col">
                         <h4>{section.title}</h4>

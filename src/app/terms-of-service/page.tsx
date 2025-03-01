@@ -1,6 +1,6 @@
 import { HomeFooter } from "@/components/custom/home/Footer";
 import { HomeNavbar } from "@/components/custom/home/Navbar";
-import { TermsofServiceSection } from "@/components/custom/home/pricing-section/TermsOfServiceSection";
+import { TermsofServiceSection } from "@/components/custom/home/TermsOfServiceSection";
 
 export default function TermsOfService() {
     return (
