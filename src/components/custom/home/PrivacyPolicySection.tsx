@@ -1,4 +1,5 @@
 import { Icons } from "@/assets/icons";
+import * as motion from "motion/react-client";
 
 const privacyPolicy = [
     {
@@ -57,27 +58,76 @@ const privacyPolicy = [
     },
 ];
 
+const privacyAnimations = {
+    fadeInUp: {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.5, ease: "easeOut" },
+        },
+    },
+    fadeInGlow: {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 0.8,
+            transition: { duration: 0.5, ease: "easeOut", delay: 0.4 },
+        },
+    },
+    staggerContainer: {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+            },
+        },
+    },
+};
+
 export function HomePrivacyPolicySection() {
     return (
         <section className="m-auto max-w-2xl flex flex-col items-center px-4 py-20 gap-20">
-            <div className="mx-auto flex flex-col items-center text-center text-balance gap-8">
-                <div className="relative">
+            <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={privacyAnimations.staggerContainer}
+                className="mx-auto flex flex-col items-center text-center text-balance gap-8"
+            >
+                <motion.div variants={privacyAnimations.fadeInUp} className="relative">
                     <Icons.LogoCodesnippify className="size-20 md:size-24 z-50" />
-                    <div className="absolute inset-3 bg-primary blur-3xl"></div>
-                </div>
-                <div className="p-2 pb-4 text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-extrabold leading-none tracking-tighter text-balance m-0 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent text-center">
+                    <motion.div
+                        variants={privacyAnimations.fadeInGlow}
+                        className="absolute inset-3 bg-primary blur-3xl"
+                    ></motion.div>
+                </motion.div>
+                <motion.div
+                    variants={privacyAnimations.fadeInUp}
+                    className="p-2 pb-4 text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-extrabold leading-none tracking-tighter text-balance m-0 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent text-center"
+                >
                     Privacy Policy
-                </div>
-            </div>
+                </motion.div>
+            </motion.div>
 
-            <article className="prose prose-neutral dark:prose-invert prose-h4:leading-none prose-h4:font-bold prose-p:leading-snug prose-p:text-muted-foreground">
-                {privacyPolicy.map((section) => (
-                    <div key={section.title} className="flex flex-col">
+            <motion.article
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="prose prose-neutral dark:prose-invert prose-h4:leading-none prose-h4:font-bold prose-p:leading-snug prose-p:text-muted-foreground"
+            >
+                {privacyPolicy.map((section, index) => (
+                    <motion.div
+                        key={section.title}
+                        className="flex flex-col"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.1 * index + 0.4 }}
+                    >
                         <h4>{section.title}</h4>
                         <p>{section.description}</p>
-                    </div>
+                    </motion.div>
                 ))}
-            </article>
+            </motion.article>
         </section>
     );
 }
