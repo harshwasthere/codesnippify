@@ -253,6 +253,7 @@ export function FeatureMockup({ step }: FeatureMockupProps) {
                 ))}
             </div>
         ),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [step],
     );
 
