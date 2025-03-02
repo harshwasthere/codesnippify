@@ -93,7 +93,11 @@ const ResponsiveModalContent = ({ className, children, ...props }: ResponsiveMod
     const ResponsiveModalContent = isDesktop ? DialogContent : DrawerContent;
 
     return (
-        <ResponsiveModalContent className={className} {...props}>
+        <ResponsiveModalContent
+            className={className}
+            {...props}
+            {...(isDesktop && { onOpenAutoFocus: (e) => e.preventDefault() })}
+        >
             {children}
         </ResponsiveModalContent>
     );
