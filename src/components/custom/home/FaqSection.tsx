@@ -5,6 +5,7 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 import { SectionHeader } from "./SectionHeader";
+import * as motion from "motion/react-client";
 
 const faqItems = [
     {
@@ -26,23 +27,58 @@ const faqItems = [
 ];
 
 export function HomeFaqSection() {
+    const containerAnimation = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+            },
+        },
+    };
+
+    const itemAnimation = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                type: "spring",
+                stiffness: 100,
+                damping: 12,
+                duration: 0.5,
+            },
+        },
+    };
+
     return (
         <section id="faq" className="w-full px-4 sm:px-8 py-12 flex flex-col items-center">
             <SectionHeader title="FAQ" description="Have a question? We have answers." />
-            <Accordion type="single" collapsible className="max-w-3xl w-full flex flex-col gap-2">
-                {faqItems.map((item, index) => (
-                    <AccordionItem
-                        key={`item-${index + 1}`}
-                        value={`item-${index + 1}`}
-                        className="border-none w-full px-4 rounded-xl bg-foreground/5"
-                    >
-                        <AccordionTrigger className="md:text-lg [&[data-state=open]]:text-primary">
-                            {item.question}
-                        </AccordionTrigger>
-                        <AccordionContent className="md:text-base">{item.answer}</AccordionContent>
-                    </AccordionItem>
-                ))}
-            </Accordion>
+            <motion.div
+                variants={containerAnimation}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+                className="max-w-3xl w-full flex flex-col gap-2"
+            >
+                <Accordion type="single" collapsible className="w-full flex flex-col gap-2">
+                    {faqItems.map((item, index) => (
+                        <motion.div key={`item-${index + 1}`} variants={itemAnimation}>
+                            <AccordionItem
+                                value={`item-${index + 1}`}
+                                className="border-none w-full px-4 rounded-xl bg-foreground/5"
+                            >
+                                <AccordionTrigger className="md:text-lg [&[data-state=open]]:text-primary">
+                                    {item.question}
+                                </AccordionTrigger>
+                                <AccordionContent className="md:text-base">
+                                    {item.answer}
+                                </AccordionContent>
+                            </AccordionItem>
+                        </motion.div>
+                    ))}
+                </Accordion>
+            </motion.div>
         </section>
     );
 }
