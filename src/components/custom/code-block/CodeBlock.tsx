@@ -2,27 +2,31 @@
 
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 export type CodeBlockProps = {
     children?: React.ReactNode;
     className?: string;
 } & React.HTMLProps<HTMLDivElement>;
 
-export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
-    return (
-        <div
-            className={cn(
-                "not-prose flex w-full flex-col overflow-clip border",
-                "border-border bg-card text-card-foreground rounded-xl",
-                className,
-            )}
-            {...props}
-        >
-            {children}
-        </div>
-    );
-}
+export const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(
+    ({ children, className, ...props }, ref) => {
+        return (
+            <div
+                ref={ref}
+                className={cn(
+                    "not-prose flex w-full flex-col overflow-clip border",
+                    "border-border bg-card text-card-foreground rounded-xl",
+                    className,
+                )}
+                {...props}
+            >
+                {children}
+            </div>
+        );
+    },
+);
+CodeBlock.displayName = "CodeBlock";
 
 export type CodeBlockCodeProps = {
     code: string;
@@ -40,11 +44,11 @@ export function CodeBlockCode({
     className,
     ...props
 }: CodeBlockCodeProps) {
-    const [highlightedHtml, setHighlightedHtml] = useState<string | null>(null);
+    const [highlightedHtml, setHighlightedHtml] = React.useState<string | null>(null);
     const { resolvedTheme } = useTheme();
     const theme = resolvedTheme === "dark" ? darkTheme : lightTheme;
 
-    useEffect(() => {
+    React.useEffect(() => {
         async function highlight() {
             try {
                 // Import shiki dynamically only on client side
