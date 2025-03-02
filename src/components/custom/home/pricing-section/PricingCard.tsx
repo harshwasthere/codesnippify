@@ -12,6 +12,7 @@ import { CheckIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import * as motion from "motion/react-client";
 
 interface PricingCardProps {
     type?: "primary" | "secondary";
@@ -40,21 +41,60 @@ export function PricingCard({
 }: PricingCardProps) {
     const isPrimary = type === "primary";
 
+    // Add motion animations
+    const container = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.2,
+            },
+        },
+    };
+
+    const item = {
+        hidden: { opacity: 0, y: 10 },
+        show: { opacity: 1, y: 0 },
+    };
+
+    // Primary card background fill animation
+    const fillVariants = (isPrimary: boolean) => {
+        const primaryColor = isPrimary ? "hsl(var(--primary))" : "hsl(var(--muted-foreground))";
+        return {
+            initial: {
+                background: `linear-gradient(135deg, ${primaryColor} 0%, transparent 0%)`,
+                opacity: 0.2,
+            },
+            animate: {
+                background: `linear-gradient(135deg, ${primaryColor} 100%, transparent 0%)`,
+                opacity: 0.2,
+                transition: { duration: 0.5, ease: "easeInOut" },
+            },
+        };
+    };
+
     return (
         <Card
             className={cn(
-                "w-full max-w-sm flex flex-col justify-center rounded-2xl border-2 bg-muted",
-                isPrimary && "border-primary bg-primary/20",
+                "w-full max-w-sm flex flex-col justify-center rounded-2xl border-2 overflow-hidden relative",
+                isPrimary ? "border-primary/40" : "border-muted bg-transparent",
                 className,
             )}
         >
-            <CardHeader>
+            <motion.div
+                className="absolute inset-0 z-0"
+                variants={fillVariants(isPrimary)}
+                initial="initial"
+                animate="animate"
+            />
+            <CardHeader className="relative z-10">
                 <CardTitle className={cn("text-3xl font-semibold", isPrimary && "text-primary")}>
                     {title}
                 </CardTitle>
                 <CardDescription>{description}</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4 h-full">
+            <CardContent className="space-y-4 h-full relative z-10">
                 <div className={cn(isPrimary && "text-primary")}>
                     <span className="text-sm font-light leading-none text-muted-foreground">
                         From
@@ -65,9 +105,19 @@ export function PricingCard({
                     </div>
                 </div>
 
-                <ul className="space-y-3">
+                <motion.ul
+                    className="space-y-3"
+                    variants={container}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true }}
+                >
                     {features.map(({ feature, badgeText }) => (
-                        <li key={feature} className="flex gap-x-2 items-center">
+                        <motion.li
+                            key={feature}
+                            className="flex gap-x-2 items-center"
+                            variants={item}
+                        >
                             <CheckIcon className={cn("size-4", isPrimary && "text-primary")} />
                             <span className="leading-none">{feature}</span>
                             {badgeText && (
@@ -75,11 +125,11 @@ export function PricingCard({
                                     {badgeText}
                                 </Badge>
                             )}
-                        </li>
+                        </motion.li>
                     ))}
-                </ul>
+                </motion.ul>
             </CardContent>
-            <CardFooter>
+            <CardFooter className="relative z-10">
                 {isPrimary ? (
                     <ActionButton
                         label={actionButton.text}
