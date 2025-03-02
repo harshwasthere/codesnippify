@@ -56,7 +56,7 @@ export function HomeNavbar() {
                     {...navbarAnimations.fadeIn}
                     className="flex-1 shrink-0 text-lg font-bold"
                 >
-                    <Link href="/" className="py-4">
+                    <Link href="/" className="py-4 scroll-smooth">
                         Codesnippify
                     </Link>
                 </motion.h1>

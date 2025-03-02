@@ -53,7 +53,7 @@ export function HomeHeroSection() {
                                 transition: { delay: 0.4 },
                             },
                         }}
-                        className="absolute inset-4 bg-glow blur-3xl"
+                        className="absolute inset-4 size-20 bg-glow blur-3xl"
                     ></motion.div>
                 </motion.div>
                 {/* title */}
@@ -74,6 +74,7 @@ export function HomeHeroSection() {
                 </motion.p>
                 {/* action button */}
                 <motion.div
+                    whileTap={{ scale: 0.95 }}
                     variants={{
                         ...heroSectionAnimations.fadeInUp,
                         visible: {

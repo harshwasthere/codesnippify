@@ -36,9 +36,9 @@ export function HomeFooter({ className }: { className?: string }) {
     // Group navigation items for better organization
     const mainNavItems = [
         { label: "Home", href: "/" },
-        { label: "Features", href: "#features" },
-        { label: "Pricing", href: "#pricing" },
-        { label: "FAQ", href: "#faq" },
+        { label: "Features", href: "/#features" },
+        { label: "Pricing", href: "/#pricing" },
+        { label: "FAQ", href: "/#faq" },
     ];
 
     const legalNavItems = [

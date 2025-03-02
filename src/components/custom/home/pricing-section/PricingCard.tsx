@@ -131,23 +131,25 @@ export function PricingCard({
                 </motion.ul>
             </CardContent>
             <CardFooter className="relative z-10">
-                {isPrimary ? (
-                    <ActionButton
-                        label={actionButton.text}
-                        href={actionButton.href}
-                        className="w-full rounded-2xl"
-                    />
-                ) : (
-                    <Link
-                        href={actionButton.href}
-                        className={cn(
-                            buttonVariants({ variant: "secondary" }),
-                            "w-full h-12 rounded-2xl bg-gradient-to-r from-foreground/10 to-foreground/20",
-                        )}
-                    >
-                        {actionButton.text}
-                    </Link>
-                )}
+                <motion.div whileTap={{ scale: 0.95 }} className="w-full">
+                    {isPrimary ? (
+                        <ActionButton
+                            label={actionButton.text}
+                            href={actionButton.href}
+                            className="w-full rounded-2xl"
+                        />
+                    ) : (
+                        <Link
+                            href={actionButton.href}
+                            className={cn(
+                                buttonVariants({ variant: "secondary" }),
+                                "w-full h-12 rounded-2xl bg-gradient-to-r from-foreground/10 to-foreground/20 hover:from-foreground/20 hover:to-foreground/30 transition-all duration-300",
+                            )}
+                        >
+                            {actionButton.text}
+                        </Link>
+                    )}
+                </motion.div>
             </CardFooter>
         </Card>
     );
