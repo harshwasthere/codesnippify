@@ -139,7 +139,8 @@ export function FeatureMockup({ step }: FeatureMockupProps) {
                         key={item.title}
                         custom={index}
                         initial="hidden"
-                        animate="visible"
+                        whileInView="visible"
+                        viewport={{ once: true }}
                         variants={sidebarItemsVariants}
                     >
                         <MemoizedSnippetOrganizerSidebarButton
@@ -154,7 +155,8 @@ export function FeatureMockup({ step }: FeatureMockupProps) {
                 <motion.div
                     custom={3}
                     initial="hidden"
-                    animate="visible"
+                    whileInView="visible"
+                    viewport={{ once: true }}
                     variants={sidebarItemsVariants}
                 >
                     <SnippetOrganizerSidebarButton
@@ -166,7 +168,8 @@ export function FeatureMockup({ step }: FeatureMockupProps) {
                 <motion.div
                     custom={4}
                     initial="hidden"
-                    animate="visible"
+                    whileInView="visible"
+                    viewport={{ once: true }}
                     variants={sidebarItemsVariants}
                 >
                     <SnippetOrganizerSidebarButton
@@ -179,8 +182,9 @@ export function FeatureMockup({ step }: FeatureMockupProps) {
                                 <EllipsisIcon className="ml-auto size-4 text-muted-foreground" />
                                 <motion.div
                                     initial="hidden"
-                                    animate="visible"
+                                    whileInView="visible"
                                     exit="hidden"
+                                    viewport={{ once: true }}
                                     variants={dropdownVariants}
                                     className="absolute top-full left-full -translate-x-1 -translate-y-1 z-10 w-24 flex flex-col rounded-xl p-1 bg-primary/20 backdrop-blur-md"
                                 >
@@ -192,16 +196,18 @@ export function FeatureMockup({ step }: FeatureMockupProps) {
                                             <div className="relative">
                                                 <motion.div
                                                     initial="hidden"
-                                                    animate="visible"
+                                                    whileInView="visible"
                                                     exit="hidden"
+                                                    viewport={{ once: true }}
                                                     variants={arrowVariants}
                                                 >
                                                     <Icons.ArrowHandDrawn className="w-36 h-auto fill-foreground" />
                                                 </motion.div>
                                                 <motion.div
                                                     initial="hidden"
-                                                    animate="visible"
+                                                    whileInView="visible"
                                                     exit="hidden"
+                                                    viewport={{ once: true }}
                                                     variants={linkVariants}
                                                     className="absolute left-full top-full translate-x-2 -translate-y-5 min-w-full max-w-64 flex items-center gap-2 py-2 px-3 rounded-xl bg-primary/20"
                                                 >
@@ -234,7 +240,8 @@ export function FeatureMockup({ step }: FeatureMockupProps) {
                         key={item.title}
                         custom={5 + index}
                         initial="hidden"
-                        animate="visible"
+                        whileInView="visible"
+                        viewport={{ once: true }}
                         variants={sidebarItemsVariants}
                     >
                         <SnippetOrganizerSidebarButton
@@ -266,7 +273,8 @@ export function FeatureMockup({ step }: FeatureMockupProps) {
                 <div className="relative w-full lg:w-[524px] h-full min-h-[348px] max-h-96 max-w-[600px] flex">
                     <motion.div
                         initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 1, ease: "easeInOut" }}
                         className="absolute bottom-8 right-10 translate-x-1/2 translate-y-1/2 flex flex-col items-center justify-center"

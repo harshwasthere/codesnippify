@@ -86,7 +86,8 @@ export function PricingCard({
                 className="absolute inset-0 z-0"
                 variants={fillVariants(isPrimary)}
                 initial="initial"
-                animate="animate"
+                whileInView="animate"
+                viewport={{ once: true }}
             />
             <CardHeader className="relative z-10">
                 <CardTitle className={cn("text-3xl font-semibold", isPrimary && "text-primary")}>

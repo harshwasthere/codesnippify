@@ -37,7 +37,8 @@ export function HomeHeroSection() {
         <section className="w-full overflow-hidden px-4 flex flex-col items-center">
             <motion.header
                 initial="hidden"
-                animate="visible"
+                whileInView="visible"
+                viewport={{ once: true }}
                 variants={heroSectionAnimations.staggerContainer}
                 className="mx-auto max-w-3xl text-balance flex flex-col items-center text-center my-20 sm:my-28 z-10"
             >
@@ -88,7 +89,8 @@ export function HomeHeroSection() {
             <motion.div
                 variants={heroSectionAnimations.fadeInScale}
                 initial="hidden"
-                animate="visible"
+                whileInView="visible"
+                viewport={{ once: true }}
                 transition={{
                     delay: 0.3,
                 }}

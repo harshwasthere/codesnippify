@@ -9,7 +9,8 @@ export function HomeCallToActionSection() {
             <div className="relative max-w-7xl w-full flex items-center justify-center">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     transition={{ duration: 0.8 }}
                     className=" mx-auto max-w-5xl text-balance flex flex-col items-center text-center my-20 sm:my-28 z-10"
                 >
@@ -17,7 +18,8 @@ export function HomeCallToActionSection() {
                     <motion.div
                         className="relative"
                         initial={{ scale: 0.8, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
+                        whileInView={{ scale: 1, opacity: 1 }}
+                        viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
                         <Icons.LogoCodesnippify className="size-24 md:size-28 z-50" />
@@ -38,7 +40,8 @@ export function HomeCallToActionSection() {
                     <motion.div
                         className="py-2 pb-4 text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-none tracking-tighter m-0 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent drop-shadow-2xl"
                         initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: 0.4 }}
                     >
                         <span className="inline-block">Ready to simplify</span>
@@ -48,7 +51,8 @@ export function HomeCallToActionSection() {
                     <motion.p
                         className="text-lg xs:text-xl md:text-2xl font-medium leading-snug text-muted-foreground text-center"
                         initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: 0.6 }}
                     >
                         Start building your personalized snippet library today.
@@ -56,7 +60,8 @@ export function HomeCallToActionSection() {
                     {/* action button */}
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: 0.8 }}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
@@ -71,7 +76,8 @@ export function HomeCallToActionSection() {
                 <motion.div
                     className="pointer-events-none absolute inset-0 rounded-2xl shadow-glow [mask-image:linear-gradient(to_bottom,transparent,background_8rem)]"
                     initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
                     transition={{ duration: 1, delay: 0.2 }}
                 />
             </div>

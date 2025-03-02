@@ -35,7 +35,8 @@ const Glow = React.forwardRef<HTMLDivElement, GlowProps>(
             ref={ref}
             className={cn(glowVariants({ position, intensity }), className)}
             initial="initial"
-            animate="animate"
+            whileInView="animate"
+            viewport={{ once: true }}
             variants={customAnimation}
             {...props}
         >

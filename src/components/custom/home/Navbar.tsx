@@ -11,12 +11,14 @@ interface NavItem {
 const navbarAnimations = {
     fadeIn: {
         initial: { opacity: 0 },
-        animate: { opacity: 1 },
+        whileInView: { opacity: 1 },
+        viewport: { once: true },
         transition: { duration: 0.4 },
     },
     slideIn: {
         initial: { width: "0px", opacity: 0 },
-        animate: { width: "100%", opacity: 1 },
+        whileInView: { width: "100%", opacity: 1 },
+        viewport: { once: true },
         transition: {
             opacity: { delay: 0.3 },
             duration: 0.7,
@@ -24,21 +26,23 @@ const navbarAnimations = {
     },
     staggerChildren: {
         initial: { opacity: 0 },
-        animate: { opacity: 1 },
+        whileInView: { opacity: 1 },
+        viewport: { once: true },
         transition: { staggerChildren: 0.1 },
     },
 };
 
 const navItemAnimation = {
     initial: { y: -20, opacity: 0 },
-    animate: { y: 0, opacity: 1 },
+    whileInView: { y: 0, opacity: 1 },
+    viewport: { once: true },
     transition: { duration: 0.3 },
 };
 
 export function HomeNavbar() {
     const pathOptions: NavItem[] = [
-        { label: "Features", href: "#features" },
-        { label: "Pricing", href: "#pricing" },
+        { label: "Features", href: "/#features" },
+        { label: "Pricing", href: "/#pricing" },
         { label: "Login", href: "/login" },
     ];
 

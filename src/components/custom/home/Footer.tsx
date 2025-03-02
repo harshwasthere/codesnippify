@@ -7,24 +7,28 @@ import * as motion from "motion/react-client";
 const footerAnimations = {
     fadeIn: {
         initial: { opacity: 0 },
-        animate: { opacity: 1 },
+        whileInView: { opacity: 1 },
+        viewport: { once: true },
         transition: { duration: 0.4 },
     },
     slideUp: {
         initial: { y: 20, opacity: 0 },
-        animate: { y: 0, opacity: 1 },
+        whileInView: { y: 0, opacity: 1 },
+        viewport: { once: true },
         transition: { duration: 0.5 },
     },
     staggerChildren: {
         initial: { opacity: 0 },
-        animate: { opacity: 1 },
+        whileInView: { opacity: 1 },
+        viewport: { once: true },
         transition: { staggerChildren: 0.1 },
     },
 };
 
 const footerItemAnimation = {
     initial: { y: 10, opacity: 0 },
-    animate: { y: 0, opacity: 1 },
+    whileInView: { y: 0, opacity: 1 },
+    viewport: { once: true },
     transition: { duration: 0.3 },
 };
 
