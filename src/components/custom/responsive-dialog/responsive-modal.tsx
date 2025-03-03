@@ -54,7 +54,7 @@ const useResponsiveModalContext = () => {
 };
 
 const ResponsiveModal = ({ children, ...props }: RootResponsiveModalProps) => {
-    const isDesktop = useMediaQuery("(min-width: 768px)");
+    const isDesktop = useMediaQuery("(min-width: 640px)");
     const ResponsiveModal = isDesktop ? Dialog : Drawer;
 
     return (
@@ -138,7 +138,7 @@ const ResponsiveModalTitle = ({ className, children, ...props }: ResponsiveModal
 
 const ResponsiveModalBody = ({ className, children, ...props }: ResponsiveModalProps) => {
     return (
-        <div className={cn("px-4 md:px-0", className)} {...props}>
+        <div className={cn("px-4 sm:px-0", className)} {...props}>
             {children}
         </div>
     );

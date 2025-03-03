@@ -3,8 +3,10 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import {
     ResponsiveModal,
     ResponsiveModalBody,
+    ResponsiveModalClose,
     ResponsiveModalContent,
     ResponsiveModalDescription,
+    ResponsiveModalFooter,
     ResponsiveModalHeader,
     ResponsiveModalTitle,
     ResponsiveModalTrigger,
@@ -12,6 +14,8 @@ import {
 import { cn } from "@/lib/utils";
 
 interface ResponsiveDialogProps {
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
     title: string;
     description: string;
     trigger: React.ReactNode;
@@ -23,6 +27,8 @@ interface ResponsiveDialogProps {
 }
 
 export function ResponsiveDialog({
+    open,
+    onOpenChange,
     title,
     description,
     trigger,
@@ -33,7 +39,7 @@ export function ResponsiveDialog({
     tooltipAlign = "center",
 }: ResponsiveDialogProps) {
     return (
-        <ResponsiveModal>
+        <ResponsiveModal open={open} onOpenChange={onOpenChange}>
             {tooltip ? (
                 <Tooltip>
                     <ResponsiveModalTrigger asChild>
@@ -60,3 +66,6 @@ export function ResponsiveDialog({
         </ResponsiveModal>
     );
 }
+
+export const ResponsiveDialogFooter = ResponsiveModalFooter;
+export const ResponsiveDialogClose = ResponsiveModalClose;
