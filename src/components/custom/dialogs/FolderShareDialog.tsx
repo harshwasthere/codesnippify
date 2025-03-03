@@ -9,6 +9,7 @@ import {
     ResponsiveDialogClose,
     ResponsiveDialogFooter,
 } from "../responsive-dialog/ResponsiveDialog";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useShareFolder } from "@/hooks/folder/useShareFolder";
 import { useUnshareFolder } from "@/hooks/folder/useUnShareFolder";
 import { AnimatePresence } from "motion/react";
@@ -46,10 +47,10 @@ export function FolderShareDialog({ folderId, folderShareToken }: FolderShareDia
             title="Share Folder"
             description="Share this folder with others by copying the link below. Anyone with the link can view your folder snippets."
             trigger={
-                <Button onSelect={(e) => e.preventDefault()}>
+                <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="cursor-pointer">
                     <Share2Icon className="size-4" />
                     <span>Share</span>
-                </Button>
+                </DropdownMenuItem>
             }
         >
             <div className="w-full flex flex-col gap-4">
