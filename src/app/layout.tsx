@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/providers/ThemeProvider";
-
+import QueryProvider from "@/providers/QueryProvider";
 const geistSans = localFont({
     src: "../assets/fonts/GeistVF.woff",
     variable: "--font-geist-sans",
@@ -53,7 +53,7 @@ export default function RootLayout({
                     enableSystem
                     disableTransitionOnChange
                 >
-                    {children}
+                    <QueryProvider>{children}</QueryProvider>
                 </ThemeProvider>
             </body>
         </html>
