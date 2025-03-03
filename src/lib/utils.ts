@@ -34,3 +34,26 @@ export function handleCopyToClipboard(text: string) {
       console.error("Failed to copy text: ", error);
     });
 }
+
+export const search = <
+  T extends {
+    [key: string]: unknown;
+  },
+>(
+  searchTerm: string,
+  data: T[] | null | undefined,
+  searchKey: keyof T,
+): T[] => {
+  if (!data) return [];
+  const normalizedSearchTerm = searchTerm.trim().toLowerCase();
+
+  if (!normalizedSearchTerm) return data;
+
+  const filtered = data.filter((item) => {
+    const value = item[searchKey];
+    return typeof value === "string" &&
+      value.toLowerCase().includes(normalizedSearchTerm);
+  });
+
+  return filtered;
+};
