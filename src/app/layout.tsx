@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import QueryProvider from "@/providers/QueryProvider";
 import ThemeAwareToaster from "@/components/custom/toast/ThemeAwareToaster";
+import { GlobalStoreProvider } from "@/providers/GlobalStoreProvider";
 
 const geistSans = localFont({
     src: "../assets/fonts/GeistVF.woff",
@@ -55,10 +56,12 @@ export default function RootLayout({
                     enableSystem
                     disableTransitionOnChange
                 >
-                    <QueryProvider>
-                        {children}
-                        <ThemeAwareToaster />
-                    </QueryProvider>
+                    <GlobalStoreProvider>
+                        <QueryProvider>
+                            {children}
+                            <ThemeAwareToaster />
+                        </QueryProvider>
+                    </GlobalStoreProvider>
                 </ThemeProvider>
             </body>
         </html>

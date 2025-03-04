@@ -136,7 +136,7 @@ export function DashboardSidebarContent() {
                                             isActive={pathname.includes(`/folder/${folder.id}`)}
                                         >
                                             <Link href={`/folder/${folder.id}`}>
-                                                <FolderIcon className="size-4 fill-sidebar-foreground" />
+                                                <FolderIcon className="size-4 fill-muted-foreground text-muted-foreground" />
                                                 <span className="truncate first-letter:capitalize group-hover/folder-button:pr-7">
                                                     {folder?.name}
                                                 </span>
@@ -196,7 +196,7 @@ export function DashboardSidebarContent() {
                                             )}
                                         >
                                             <Link href={`/language/${language.language}`}>
-                                                <Atom className="size-4 fill-sidebar-foreground/30" />
+                                                <Atom className="size-4 fill-muted-foreground/10 text-muted-foreground" />
                                                 <span className="truncate first-letter:capitalize group-hover/language-button:pr-7">
                                                     {language.language}
                                                 </span>
