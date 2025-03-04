@@ -115,10 +115,10 @@ export const FolderCreateDialogSchema = z.object({
 
 /**
  * Profile settings related schemas
- * ProfileSettingsFormSchema: Validates profile settings form
+ * SettingsFormSchema: Validates profile settings form
  */
 
-export const ProfileSettingsFormSchema = z.object({
+export const SettingsFormSchema = z.object({
     newFullName: z
         .string()
         .min(2, { message: "Full name is required." })

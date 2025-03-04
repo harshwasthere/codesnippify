@@ -4,7 +4,7 @@ import {
     FolderRenameDialogSchema,
     ForgotPasswordFormSchema,
     LoginFormSchema,
-    ProfileSettingsFormSchema,
+    SettingsFormSchema,
     SignupFormSchema,
     SnippetCreateFormSchema,
     UpdateNameFormSchema,
@@ -33,8 +33,8 @@ export type FolderCreateDialogSchemaTypes = z.infer<
 >;
 
 // Profile settings related types
-export type ProfileSettingsFormSchemaTypes = z.infer<
-    typeof ProfileSettingsFormSchema
+export type SettingsFormSchemaTypes = z.infer<
+    typeof SettingsFormSchema
 >;
 
 // Snippet related types
