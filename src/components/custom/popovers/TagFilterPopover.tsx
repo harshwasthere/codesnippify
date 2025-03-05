@@ -62,7 +62,7 @@ export function TagFilterPopover() {
             <PopoverTrigger asChild>
                 <Button variant="secondary" className="h-8 flex-shrink-0 rounded-full gap-1 px-3">
                     <ListFilterIcon className="size-4" />
-                    <span className="max-2xs:hidden">Tags</span>
+                    <span className="max-2xs:hidden text-xs">Tags</span>
                     {selectedTags.length > 0 && (
                         <span className="text-primary bg-primary/10 group-hover:bg-primary/20 flex-shrink-0 p-1 px-1.5 h-5 min-w-5 rounded-full flex items-center justify-center">
                             {selectedTags.length}
@@ -103,6 +103,7 @@ export function TagFilterPopover() {
                     <Button
                         variant="secondary"
                         className="w-full"
+                        size="sm"
                         disabled={selectedTags.length === 0}
                         onClick={handleClearFilter}
                     >
@@ -110,6 +111,7 @@ export function TagFilterPopover() {
                     </Button>
                     <Button
                         className="w-full"
+                        size="sm"
                         disabled={selectedTags.length === 0}
                         onClick={handleApplyFilter}
                     >

@@ -60,7 +60,7 @@ export function ProfileShowDropdown({ profile }: ProfileShowDropdownProps) {
                     <SettingsDialog profile={profile} />
                     <DropdownMenuItem
                         onClick={() => mutateLogout()}
-                        className="group cursor-pointer text-destructive focus:bg-destructive/20 focus:text-destructive"
+                        className="group cursor-pointer text-destructive focus:bg-destructive/10 focus:text-destructive"
                     >
                         <LogOut className="mr-2 size-4" />
                         <span>Log out</span>

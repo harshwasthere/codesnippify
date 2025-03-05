@@ -10,24 +10,24 @@ import {
 } from "../responsive-dialog/ResponsiveDialog";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { useDeleteFolder } from "@/hooks/folder/useDeleteFolder";
+import { useDeleteSnippet } from "@/hooks/snippet/useDeleteSnippet";
 
-export function FolderDeleteDialog({ folderId }: { folderId: string }) {
+export function SnippetDeleteDialog({ snippetId }: { snippetId: string }) {
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
     const {
-        mutate: deleteFolderMutate,
-        isPending: deleteFolderPending,
-        error: deleteFolderError,
-    } = useDeleteFolder();
-    const isSubmitting = deleteFolderPending && !deleteFolderError;
+        mutate: deleteSnippetMutate,
+        isPending: deleteSnippetPending,
+        isError: deleteSnippetError,
+    } = useDeleteSnippet();
+    const isSubmitting = deleteSnippetPending && !deleteSnippetError;
 
     return (
         <ResponsiveDialog
             open={isOpen}
             onOpenChange={setIsOpen}
-            title="Delete Folder"
-            description="Are you sure you want to delete this folder? This action cannot be undone."
+            title="Delete Snippet"
+            description=" Are you sure you want to delete this snippet? This action cannot be undone."
             trigger={
                 <DropdownMenuItem
                     onSelect={(e) => e.preventDefault()}
@@ -46,7 +46,7 @@ export function FolderDeleteDialog({ folderId }: { folderId: string }) {
                     variant="destructive"
                     disabled={isSubmitting}
                     onClick={() =>
-                        deleteFolderMutate({ folderId }, { onSuccess: () => setIsOpen(false) })
+                        deleteSnippetMutate(snippetId, { onSuccess: () => setIsOpen(false) })
                     }
                 >
                     {isSubmitting && <Loader className="size-4 animate-spin" />}

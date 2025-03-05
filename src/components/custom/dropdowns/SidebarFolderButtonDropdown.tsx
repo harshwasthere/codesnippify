@@ -31,8 +31,7 @@ export function SidebarFolderButtonDropdown({
                         e.stopPropagation();
                     }}
                     className={cn(
-                        buttonVariants({ variant: "outline", size: "icon" }),
-                        "h-5 w-6 p-0 rounded-sm text-sidebar-foreground bg-muted-foreground/10 hover:bg-muted-foreground/15 cursor-pointer flex-shrink-0",
+                        "size-6 flex items-center justify-center text-sidebar-foreground cursor-pointer flex-shrink-0",
                         className,
                     )}
                 >
@@ -40,7 +39,6 @@ export function SidebarFolderButtonDropdown({
                 </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent
-                className="min-w-[6.5rem]"
                 side="right"
                 align="start"
                 onClick={(e) => {

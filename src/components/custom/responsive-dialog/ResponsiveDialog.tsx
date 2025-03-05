@@ -56,7 +56,7 @@ export function ResponsiveDialog({
             ) : (
                 <ResponsiveModalTrigger asChild>{trigger}</ResponsiveModalTrigger>
             )}
-            <ResponsiveModalContent>
+            <ResponsiveModalContent className="w-full flex flex-col">
                 <ResponsiveModalHeader>
                     <ResponsiveModalTitle>{title}</ResponsiveModalTitle>
                     <ResponsiveModalDescription>{description}</ResponsiveModalDescription>

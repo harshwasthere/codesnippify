@@ -15,7 +15,7 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Edit, Loader, X } from "lucide-react";
+import { Edit3, Loader, X } from "lucide-react";
 import {
     Form,
     FormControl,
@@ -113,7 +113,7 @@ export default function SnippetUpdateSheet({ snippet }: SnippetUpdateSheetProps)
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild onClick={(e) => e.stopPropagation()}>
                 <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="cursor-pointer">
-                    <Edit className="size-4" />
+                    <Edit3 className="size-4" />
                     <span>Update</span>
                 </DropdownMenuItem>
             </SheetTrigger>

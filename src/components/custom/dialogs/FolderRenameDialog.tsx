@@ -2,7 +2,7 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
-import { Edit, Loader } from "lucide-react";
+import { Edit3, Loader } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
     ResponsiveDialog,
@@ -60,7 +60,7 @@ export function FolderRenameDialog({ folderId, oldFolderName }: FolderRenameDial
             description="Enter a new name for this folder."
             trigger={
                 <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="cursor-pointer">
-                    <Edit className="size-4" />
+                    <Edit3 className="size-4" />
                     <span>Rename</span>
                 </DropdownMenuItem>
             }
