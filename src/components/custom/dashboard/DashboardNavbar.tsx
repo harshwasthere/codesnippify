@@ -9,9 +9,8 @@ import { useDebouncedCallback } from "use-debounce";
 import { ProfileShowDropdown } from "@/components/custom/dropdowns/ProfileShowDropdown";
 import { useGlobalStore } from "@/providers/GlobalStoreProvider";
 import { useShallow } from "zustand/react/shallow";
-import { Button } from "@/components/ui/button";
-import { ListFilterIcon } from "lucide-react";
 import SnippetCreateSheet from "@/components/custom/sheets/SnippetCreateSheet";
+import { TagFilterPopover } from "../popovers/TagFilterPopover";
 
 export function DashboardNavbar() {
     const { data: userProfile } = useFetchUserProfile();
@@ -33,18 +32,7 @@ export function DashboardNavbar() {
                 <DashboardSidebarTrigger />
                 <Separator orientation="vertical" className="mr-2 h-4" />
                 <div className="w-full flex items-center justify-center gap-2">
-                    <Button
-                        variant="secondary"
-                        className="h-8 flex-shrink-0 rounded-full gap-1 px-3"
-                    >
-                        <ListFilterIcon className="size-4" />
-                        <span className="max-2xs:hidden">Tags</span>
-                        {/* {selectedTags.length > 0 && (
-                            <span className="text-primary bg-primary/20 group-hover:bg-primary/30 flex-shrink-0 p-1 px-1.5 h-5 min-w-5 rounded-full flex items-center justify-center">
-                                {selectedTags.length}
-                            </span>
-                        )} */}
-                    </Button>
+                    <TagFilterPopover />
                     <div className="max-w-lg w-full">
                         <SearchInput
                             type="text"

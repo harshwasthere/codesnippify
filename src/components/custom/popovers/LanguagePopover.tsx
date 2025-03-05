@@ -24,7 +24,7 @@ interface LanguagePopoverProps {
     form: UseFormReturn<SnippetCreateUpdateFormSchemaTypes>;
 }
 
-export default function LanguagePopover({ disabled, field, form }: LanguagePopoverProps) {
+export function LanguagePopover({ disabled, field, form }: LanguagePopoverProps) {
     const langs = bundledLanguagesInfo.map((lang) => ({
         id: lang.id,
         name: lang.name,

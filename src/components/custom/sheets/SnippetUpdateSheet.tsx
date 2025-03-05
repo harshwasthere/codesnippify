@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import LanguagePopover from "@/components/custom/popovers/LanguagePopover";
+import { LanguagePopover } from "@/components/custom/popovers/LanguagePopover";
 import Editor from "@/components/custom/editor/Editor";
 import { BundledLanguage } from "shiki";
 import { useUpdateSnippet } from "@/hooks/snippet/useUpdateSnippet";
@@ -248,7 +248,7 @@ export default function SnippetUpdateSheet({ snippet }: SnippetUpdateSheetProps)
                             }}
                         />
 
-                        <SheetFooter>
+                        <SheetFooter className="max-sm:flex-row max-sm:justify-end gap-2">
                             <SheetClose className={cn(buttonVariants({ variant: "outline" }))}>
                                 Close
                             </SheetClose>
