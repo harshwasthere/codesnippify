@@ -127,10 +127,10 @@ export const SettingsFormSchema = z.object({
 
 /**
  * Snippet related schemas
- * SnippetCreateFormSchema: Validates snippet create form
+ * SnippetCreateUpdateFormSchema: Validates snippet create form
  */
 
-export const SnippetCreateFormSchema = z.object({
+export const SnippetCreateUpdateFormSchema = z.object({
     title: z
         .string()
         .min(3, { message: "Title is required." })

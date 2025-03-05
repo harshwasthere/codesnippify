@@ -3,6 +3,7 @@
 import React from "react";
 import { useTheme } from "next-themes";
 import { hookScroll } from "@/hooks/ui/use-scroll";
+import { cn } from "@/lib/utils";
 
 interface EditorProps {
     value: string;
@@ -11,6 +12,7 @@ interface EditorProps {
     darkTheme?: string;
     onChange: (value: string) => void;
     disabled?: boolean;
+    className?: string;
 }
 
 export default function Editor({
@@ -20,6 +22,7 @@ export default function Editor({
     darkTheme = "github-dark",
     onChange,
     disabled = false,
+    className,
 }: EditorProps) {
     const [highlightedHtml, setHighlightedHtml] = React.useState<string | null>(null);
     const { resolvedTheme } = useTheme();
@@ -73,9 +76,12 @@ export default function Editor({
 
     return (
         <div
-            className={`relative w-full h-full flex-grow min-h-[60px] rounded-md border border-input px-3 py-2 text-sm shadow-sm !bg-foreground/5 ${
-                isFocused ? "ring-1 ring-ring" : ""
-            } ${disabled ? "cursor-not-allowed opacity-50" : ""}`}
+            className={cn(
+                "relative w-full h-full flex-grow min-h-[60px] rounded-md border border-input px-3 py-2 text-sm shadow-sm !bg-foreground/5",
+                isFocused && "ring-1 ring-ring",
+                disabled && "cursor-not-allowed opacity-50",
+                className,
+            )}
         >
             <textarea
                 autoComplete="off"

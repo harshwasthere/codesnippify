@@ -6,7 +6,7 @@ import {
     LoginFormSchema,
     SettingsFormSchema,
     SignupFormSchema,
-    SnippetCreateFormSchema,
+    SnippetCreateUpdateFormSchema,
     UpdateNameFormSchema,
     UpdatePasswordFormSchema,
 } from "@/lib/schemas";
@@ -38,6 +38,6 @@ export type SettingsFormSchemaTypes = z.infer<
 >;
 
 // Snippet related types
-export type SnippetCreateFormSchemaTypes = z.infer<
-    typeof SnippetCreateFormSchema
+export type SnippetCreateUpdateFormSchemaTypes = z.infer<
+    typeof SnippetCreateUpdateFormSchema
 >;

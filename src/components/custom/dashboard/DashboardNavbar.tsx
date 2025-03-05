@@ -10,9 +10,8 @@ import { ProfileShowDropdown } from "@/components/custom/dropdowns/ProfileShowDr
 import { useGlobalStore } from "@/providers/GlobalStoreProvider";
 import { useShallow } from "zustand/react/shallow";
 import { Button } from "@/components/ui/button";
-import { ListFilterIcon, PlusIcon } from "lucide-react";
-// import SnippetCreateSheet from "@/components/custom/sheets/SnippetCreateSheet";
-// import { TagFilterPopover } from "@/components/custom/popover/TagFilterPopover";
+import { ListFilterIcon } from "lucide-react";
+import SnippetCreateSheet from "@/components/custom/sheets/SnippetCreateSheet";
 
 export function DashboardNavbar() {
     const { data: userProfile } = useFetchUserProfile();
@@ -55,10 +54,7 @@ export function DashboardNavbar() {
                             onChange={handleSnippetSearchTermChange}
                         />
                     </div>
-                    <Button size="sm" className="h-8 flex-shrink-0 gap-1 max-2xs:px-2">
-                        <PlusIcon className="size-4" />
-                        <span className="max-2xs:hidden">Snippet</span>
-                    </Button>
+                    <SnippetCreateSheet />
                 </div>
                 <Separator orientation="vertical" className="mr-2 h-4" />
                 <ProfileShowDropdown profile={userProfile} />
