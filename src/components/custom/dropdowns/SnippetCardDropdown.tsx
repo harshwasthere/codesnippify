@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -33,11 +33,10 @@ import {
     CommandInput,
     CommandItem,
     CommandList,
-    CommandSeparator,
 } from "@/components/ui/command";
 import React from "react";
 import { useFetchFolders } from "@/hooks/folder/useFetchFolders";
-import { Folder, Snippet } from "@/types/common.types";
+import { Folder } from "@/types/common.types";
 import { useRemoveSnippetFromFolder } from "@/hooks/snippet/useRemoveSnippetFromFolder";
 import { useAddSnippetToFolder } from "@/hooks/snippet/useAddSnippetToFolder";
 import { SnippetDeleteDialog } from "../dialogs/SnippetDeleteDialog";
@@ -66,42 +65,13 @@ export function SnippetCardDropdown({
     isDisabled,
     className,
 }: SnippetCardDropdownProps) {
-    const { mutate: toggleSnippetTrashMutate } = useToggleSnippetTrashStatus();
-
-    const {
-        mutate: toggleSnippetFavoriteMutate,
-        isPending: toggleSnippetFavoritePending,
-        isError: toggleSnippetFavoriteError,
-    } = useToggleSnippetFavoriteStatus();
-
-    const handleToggleSnippetFavoriteStatus = () => {
-        toggleSnippetFavoriteMutate({
-            snippetId: snippet.snippet_id,
-            currentFavoriteStatus: snippet.favorite,
-        });
-    };
-
     const {
         data: fetchedFolders,
         isLoading: fetchedFoldersLoading,
         isSuccess: fetchedFoldersSuccess,
     } = useFetchFolders();
 
-    const {
-        mutate: addSnippetToFolderMutate,
-        isPending: addSnippetToFolderPending,
-        isError: addSnippetToFolderError,
-    } = useAddSnippetToFolder();
-
-    const {
-        mutate: removeSnippetFromFolderMutate,
-        isPending: removeSnippetFromFolderPending,
-        isError: removeSnippetFromFolderError,
-    } = useRemoveSnippetFromFolder();
-
-    const folderActionDisabled =
-        (addSnippetToFolderPending && !addSnippetToFolderError) ||
-        (removeSnippetFromFolderPending && !removeSnippetFromFolderError);
+    const { mutate: addSnippetToFolderMutate } = useAddSnippetToFolder();
 
     return (
         <DropdownMenu modal={false}>
@@ -155,10 +125,7 @@ export function SnippetCardDropdown({
                                 <Command>
                                     <CommandInput
                                         placeholder="Search folder..."
-                                        disabled={
-                                            folderActionDisabled ||
-                                            (fetchedFoldersLoading && !fetchedFoldersSuccess)
-                                        }
+                                        disabled={fetchedFoldersLoading && !fetchedFoldersSuccess}
                                     />
                                     <CommandList>
                                         <CommandEmpty>No folder found.</CommandEmpty>
@@ -168,7 +135,7 @@ export function SnippetCardDropdown({
                                                     key={folder.id}
                                                     value={folder.id}
                                                     disabled={isDisabled}
-                                                    onSelect={(value) => {
+                                                    onSelect={() => {
                                                         addSnippetToFolderMutate({
                                                             folderId: folder.id,
                                                             snippetId: snippet.snippet_id,

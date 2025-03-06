@@ -5,7 +5,7 @@ import Fuse from "fuse.js";
 import Masonry from "react-layout-masonry";
 import { SnippetCard } from "@/components/custom/cards/SnippetCard";
 import BounceLoader from "@/components/ui/bounce-loader";
-import { CircleSlash2Icon, SparklesIcon } from "lucide-react";
+import { CircleSlash2Icon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { SearchInput } from "@/components/custom/inputs/SearchInput";
 import { useShallow } from "zustand/react/shallow";
