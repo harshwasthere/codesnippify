@@ -1,4 +1,4 @@
-const homeFeatureSectionCode = `// Create and save a snippet
+export const homeFeatureSectionCode = `// Create and save a snippet
 const snippet = {
   title: "Hello World",
   language: "JavaScript",
@@ -13,4 +13,9 @@ function saveSnippet(snippet) {
 }
 `;
 
-export { homeFeatureSectionCode };
+export const fuseOptions = {
+  threshold: 0.1,
+  ignoreLocation: true,
+  distance: 100,
+  keys: ["title", "description", "language", "code", "tags"],
+};

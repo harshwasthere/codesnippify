@@ -48,7 +48,9 @@ export function SnippetCard({ snippet, className, shared }: SnippetCardProps) {
             </CardHeader>
             <CardContent>
                 <CodeBlock
-                    className={cn("relative max-h-[300px] w-full h-full border-none overflow-auto")}
+                    className={cn(
+                        "relative max-h-[300px] w-full h-full border-none rounded-none bg-inherit overflow-auto",
+                    )}
                 >
                     <CodeBlockCode
                         className="home-feature-code-block"

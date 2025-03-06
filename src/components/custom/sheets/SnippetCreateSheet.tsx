@@ -29,13 +29,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { LanguagePopover } from "@/components/custom/popovers/LanguagePopover";
-import Editor from "@/components/custom/editor/Editor";
+import { Editor } from "@/components/custom/editor/Editor";
 import { BundledLanguage } from "shiki";
 import React from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
-export default function SnippetCreateSheet() {
+export function SnippetCreateSheet() {
     const [isOpen, setIsOpen] = React.useState(false);
 
     const form = useForm<SnippetCreateUpdateFormSchemaTypes>({

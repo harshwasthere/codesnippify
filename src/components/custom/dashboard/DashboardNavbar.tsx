@@ -9,7 +9,7 @@ import { useDebouncedCallback } from "use-debounce";
 import { ProfileShowDropdown } from "@/components/custom/dropdowns/ProfileShowDropdown";
 import { useGlobalStore } from "@/providers/GlobalStoreProvider";
 import { useShallow } from "zustand/react/shallow";
-import SnippetCreateSheet from "@/components/custom/sheets/SnippetCreateSheet";
+import { SnippetCreateSheet } from "@/components/custom/sheets/SnippetCreateSheet";
 import { TagFilterPopover } from "../popovers/TagFilterPopover";
 
 export function DashboardNavbar() {

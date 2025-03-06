@@ -28,7 +28,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { LanguagePopover } from "@/components/custom/popovers/LanguagePopover";
-import Editor from "@/components/custom/editor/Editor";
+import { Editor } from "@/components/custom/editor/Editor";
 import { BundledLanguage } from "shiki";
 import { useUpdateSnippet } from "@/hooks/snippet/useUpdateSnippet";
 import React from "react";
@@ -51,7 +51,7 @@ interface SnippetUpdateSheetProps {
     };
 }
 
-export default function SnippetUpdateSheet({ snippet }: SnippetUpdateSheetProps) {
+export function SnippetUpdateSheet({ snippet }: SnippetUpdateSheetProps) {
     const [isOpen, setIsOpen] = React.useState(false);
 
     const form = useForm<SnippetCreateUpdateFormSchemaTypes>({

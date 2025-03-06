@@ -10,12 +10,11 @@ import {
     DropdownMenuSub,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
-    DropdownMenuSeparator,
     DropdownMenuLabel,
     DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import SnippetUpdateSheet from "../sheets/SnippetUpdateSheet";
+import { SnippetUpdateSheet } from "../sheets/SnippetUpdateSheet";
 import { useToggleSnippetTrashStatus } from "@/hooks/snippet/useToggleSnippetTrashStatus";
 import {
     ArrowUpFromLine,
@@ -23,9 +22,6 @@ import {
     MoreHorizontal,
     Trash2,
     FolderIcon,
-    Loader,
-    FolderOutputIcon,
-    FolderUp,
     FolderUpIcon,
     FolderDownIcon,
 } from "lucide-react";

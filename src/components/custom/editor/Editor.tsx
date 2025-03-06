@@ -15,7 +15,7 @@ interface EditorProps {
     className?: string;
 }
 
-export default function Editor({
+export function Editor({
     value,
     language,
     lightTheme = "github-light",
