@@ -32,7 +32,7 @@ export function ProfileShowDropdown({ profile }: ProfileShowDropdownProps) {
                     <AvatarImage
                         src={
                             profile?.avatar_url ??
-                            "https://uraaathoipalxytekytg.supabase.co/storage/v1/object/public/avatars//default.png"
+                            `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars//default.png`
                         }
                         className="object-cover rounded-sm"
                         alt="profile-avatar"
@@ -93,7 +93,7 @@ export function ProfileHeader({ profile }: ProfileHeaderProps) {
                     <AvatarImage
                         src={
                             profile?.avatar_url ??
-                            "https://uraaathoipalxytekytg.supabase.co/storage/v1/object/public/avatars//default.png"
+                            `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars//default.png`
                         }
                         className="object-cover rounded-full"
                         alt="profile-picture"
