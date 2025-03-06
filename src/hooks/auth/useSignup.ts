@@ -13,7 +13,6 @@ export function useSignup() {
             toast.success("Verification link sent to your email");
         },
         onError: (error) => {
-            console.error(error);
             toast.error(errorMessage(error));
         },
     });

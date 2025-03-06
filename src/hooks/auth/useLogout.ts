@@ -13,7 +13,6 @@ export function useLogout() {
             toast.success("Logged out successfully");
         },
         onError: (error) => {
-            console.error(error);
             toast.error(errorMessage(error));
         },
     });

@@ -13,7 +13,6 @@ export function useLogin() {
             toast.success("Logged in successfully");
         },
         onError: (error) => {
-            console.error(error);
             toast.error(errorMessage(error));
         },
     });

@@ -20,7 +20,6 @@ export function useDeleteSnippet() {
             toast.success("Snippet deleted successfully");
         },
         onError: (error) => {
-            console.error(error);
             toast.error(errorMessage(error));
         },
     });

@@ -56,7 +56,6 @@ export function CodeBlockCode({
                 const html = await codeToHtml(code, { lang: language, theme });
                 setHighlightedHtml(html);
             } catch (error) {
-                console.error("Error highlighting code:", error);
                 // Fallback to plain text if highlighting fails
                 setHighlightedHtml(`<pre><code>${code}</code></pre>`);
             }

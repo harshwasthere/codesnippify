@@ -29,7 +29,6 @@ export function useUpdateSnippet() {
             toast.success("Snippet updated successfully");
         },
         onError: (error) => {
-            console.error(error);
             toast.error(errorMessage(error));
         },
     });

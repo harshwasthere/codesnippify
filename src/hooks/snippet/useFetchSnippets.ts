@@ -17,9 +17,6 @@ export async function fetchSnippets({
     folderIdToSearch?: string;
     showTrash: boolean;
 }) {
-    console.log("fetching snippets", filterTags, folderIdToSearch, showTrash);
-    const currTime = Date.now();
-    console.log(currTime);
     const supabase = createClient();
 
     const userId = (await supabase.auth.getUser()).data.user?.id;
@@ -33,8 +30,6 @@ export async function fetchSnippets({
     });
 
     if (error) throw error;
-    console.log("returned data", data);
-    console.log(Date.now(), Date.now() - currTime);
     return data;
 }
 

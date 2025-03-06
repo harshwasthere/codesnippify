@@ -41,7 +41,6 @@ export function Editor({
                 const html = await codeToHtml(codeForHighlighting, { lang: language, theme });
                 setHighlightedHtml(html);
             } catch (error) {
-                console.error("Error highlighting code:", error);
                 // Fallback to plain text if highlighting fails
                 setHighlightedHtml(`<pre><code>${value}</code></pre>`);
             }

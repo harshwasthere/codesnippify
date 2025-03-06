@@ -13,7 +13,6 @@ export function useUpdatePassword() {
             router.push("/login");
         },
         onError: (error) => {
-            console.error(error);
             toast.error(errorMessage(error));
         },
     });

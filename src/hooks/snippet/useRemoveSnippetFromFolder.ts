@@ -15,7 +15,6 @@ export function useRemoveSnippetFromFolder() {
             toast.success("Snippet removed from folder successfully");
         },
         onError: (error: Error) => {
-            console.log(error);
             toast.error(errorMessage(error));
         },
     });

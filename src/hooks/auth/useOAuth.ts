@@ -7,7 +7,6 @@ export function useOAuth() {
     return useMutation({
         mutationFn: authenticateWithOAuth,
         onError: (error) => {
-            console.error(error);
             toast.error(errorMessage(error));
         },
     });

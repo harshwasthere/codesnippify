@@ -11,7 +11,6 @@ export function useShareFolder({ folderId }: { folderId: string }) {
             await queryClient.invalidateQueries({ queryKey: ["folders"] });
         },
         onError: (error) => {
-            console.error(error);
             toast.error(errorMessage(error));
         },
     });

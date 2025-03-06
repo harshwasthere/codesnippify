@@ -13,7 +13,6 @@ export function useResetPassword() {
             toast.success("Reset password link sent successfully");
         },
         onError: (error) => {
-            console.error(error);
             toast.error(errorMessage(error));
         },
     });

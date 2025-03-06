@@ -31,7 +31,7 @@ export function handleCopyToClipboard(text: string) {
     .writeText(text)
     .then(() => toast.success("Copied to clipboard"))
     .catch((error) => {
-      console.error("Failed to copy text: ", error);
+      console.log("Failed to copy text: ", error);
     });
 }
 

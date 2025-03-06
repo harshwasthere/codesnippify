@@ -15,7 +15,6 @@ export function useAddSnippetToFolder() {
             toast.success("Snippet added to folder successfully");
         },
         onError: (error: Error) => {
-            console.log(error);
             toast.error(errorMessage(error));
         },
     });

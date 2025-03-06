@@ -15,7 +15,6 @@ export function useDeleteFolder() {
             toast.success("Folder deleted successfully");
         },
         onError: (error) => {
-            console.log(error);
             toast.error(errorMessage(error));
         },
     });

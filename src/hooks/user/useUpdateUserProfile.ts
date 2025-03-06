@@ -73,7 +73,6 @@ export function useUpdateUserProfile() {
             await queryClient.invalidateQueries({ queryKey: ["profile"] });
         },
         onError: (error) => {
-            console.log(error);
             toast.error(errorMessage(error));
         },
     });

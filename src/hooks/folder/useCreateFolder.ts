@@ -18,7 +18,6 @@ export function useCreateFolder() {
             toast.success("Folder created successfully");
         },
         onError: (error: Error) => {
-            console.log(error);
             toast.error(errorMessage(error));
         },
     });

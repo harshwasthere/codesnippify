@@ -15,7 +15,6 @@ export function useToggleSnippetTrashStatus() {
             await queryClient.invalidateQueries({ queryKey: ["tags"] });
         },
         onError: (error) => {
-            console.error(error);
             toast.error(errorMessage(error));
         },
     });

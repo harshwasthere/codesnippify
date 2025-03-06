@@ -28,7 +28,6 @@ export function useCreateNewSnippet() {
             toast.success("Snippet created successfully");
         },
         onError: (error) => {
-            console.error(error);
             toast.error(errorMessage(error));
         },
     });

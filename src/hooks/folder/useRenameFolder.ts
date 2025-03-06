@@ -13,7 +13,6 @@ export function useRenameFolder() {
             toast.success("Folder renamed successfully");
         },
         onError: (error) => {
-            console.log(error);
             toast.error(errorMessage(error));
         },
     });
