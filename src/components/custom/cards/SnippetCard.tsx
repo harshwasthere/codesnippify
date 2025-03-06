@@ -24,7 +24,7 @@ interface SnippetCardProps {
     shared?: boolean;
 }
 
-export function SnippetCard({ snippet, className, shared }: SnippetCardProps) {
+export function SnippetCard({ snippet, className, shared = false }: SnippetCardProps) {
     return (
         <Card className={cn("w-full max-w-2xl group relative", className)}>
             <CardHeader className="space-y-3 font-geist">
@@ -39,12 +39,14 @@ export function SnippetCard({ snippet, className, shared }: SnippetCardProps) {
                     ))}
                 </div>
 
-                <SnippetCardDropdown
-                    className="absolute top-0 right-4"
-                    snippet={snippet}
-                    isTrash={snippet.trash}
-                    isDisabled={false}
-                />
+                {!shared && (
+                    <SnippetCardDropdown
+                        className="absolute top-0 right-4"
+                        snippet={snippet}
+                        isTrash={snippet.trash}
+                        isDisabled={false}
+                    />
+                )}
             </CardHeader>
             <CardContent>
                 <CodeBlock
