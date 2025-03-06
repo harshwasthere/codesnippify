@@ -9,9 +9,11 @@ export function useCreateFolder() {
 
     return useMutation({
         mutationFn: async ({ folderName }: { folderName: string }) => {
-            const userId = (await fetchUser())?.id;
-            if (!userId) throw new Error("User not found");
-            await createFolder({ folderName, userId });
+            const user = await fetchUser();
+            if (!user) throw new Error("User not found");
+            if ("error" in user) throw new Error(user.error);
+            if (!user.id) throw new Error("User not found");
+            await createFolder({ folderName, userId: user.id });
         },
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ["folders"] });

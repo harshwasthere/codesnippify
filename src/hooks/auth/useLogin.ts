@@ -8,7 +8,12 @@ export function useLogin() {
     const router = useRouter();
     return useMutation({
         mutationFn: loginUser,
-        onSuccess: () => {
+        onSuccess: (data) => {
+            if (data?.error) {
+                toast.error(data.error);
+                return;
+            }
+
             router.push("/snippets");
             toast.success("Logged in successfully");
         },

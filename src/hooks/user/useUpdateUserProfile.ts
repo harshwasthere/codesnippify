@@ -18,11 +18,15 @@ export async function updateProfile({
     newName: string;
     newAvatar?: File | null;
 }) {
-    const userId = (await fetchUser())?.id;
-    if (!userId) throw new Error("User not found");
+    const user = await fetchUser();
+    if (!user) throw new Error("User not found");
+    if ("error" in user) throw new Error(user.error);
+    if (!user.id) throw new Error("User not found");
+    const userId = user.id;
 
     const profile = await fetchUserProfie({ userId });
     if (!profile) throw new Error("Profile not found");
+    if ("error" in profile) throw new Error(profile.error);
 
     // if newAvatar is provided then update the avatar where we will first upload the new avatar to the storage and then update the profile with the new avatar url and then delete the old avatar from the storage
     if (newAvatar) {

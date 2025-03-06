@@ -7,7 +7,12 @@ export function useUnshareFolder() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: unShareFolder,
-        onSuccess: async () => {
+        onSuccess: async (data) => {
+            if (data?.error) {
+                toast.error(data.error);
+                return;
+            }
+
             await queryClient.invalidateQueries({ queryKey: ["folders"] });
         },
         onError: (error) => {

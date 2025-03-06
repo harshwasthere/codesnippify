@@ -7,7 +7,12 @@ export function useShareFolder({ folderId }: { folderId: string }) {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: () => shareFolder({ folderId }),
-        onSuccess: async () => {
+        onSuccess: async (data) => {
+            if (data?.error) {
+                toast.error(data.error);
+                return;
+            }
+
             await queryClient.invalidateQueries({ queryKey: ["folders"] });
         },
         onError: (error) => {

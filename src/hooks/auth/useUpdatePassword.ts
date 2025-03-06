@@ -8,7 +8,12 @@ export function useUpdatePassword() {
     const router = useRouter();
     return useMutation({
         mutationFn: updatePasswordOfUser,
-        onSuccess: () => {
+        onSuccess: (data) => {
+            if (data?.error) {
+                toast.error(data.error);
+                return;
+            }
+
             toast.success("Password updated successfully");
             router.push("/login");
         },

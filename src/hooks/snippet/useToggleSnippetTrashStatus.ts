@@ -8,7 +8,12 @@ export function useToggleSnippetTrashStatus() {
 
     return useMutation({
         mutationFn: toggleSnippetTrashStatus,
-        onSuccess: async () => {
+        onSuccess: async (data) => {
+            if (data?.error) {
+                toast.error(data.error);
+                return;
+            }
+
             await queryClient.invalidateQueries({ queryKey: ["folders"] });
             await queryClient.invalidateQueries({ queryKey: ["snippets"] });
             await queryClient.invalidateQueries({ queryKey: ["languages"] });

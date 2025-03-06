@@ -8,7 +8,12 @@ export function useSignup() {
     const router = useRouter();
     return useMutation({
         mutationFn: signupUser,
-        onSuccess: () => {
+        onSuccess: (data) => {
+            if (data?.error) {
+                toast.error(data.error);
+                return;
+            }
+
             router.push("/login");
             toast.success("Verification link sent to your email");
         },

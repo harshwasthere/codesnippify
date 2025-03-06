@@ -18,9 +18,11 @@ export function useUpdateSnippet() {
 
     return useMutation({
         mutationFn: async (data: UpdateSnippetProps) => {
-            const userId = (await fetchUser())?.id;
-            if (!userId) throw new Error("User not found");
-            await updateSnippet({ userId, ...data });
+            const user = await fetchUser();
+            if (!user) throw new Error("User not found");
+            if ("error" in user) throw new Error(user.error);
+            if (!user.id) throw new Error("User not found");
+            await updateSnippet({ userId: user.id, ...data });
         },
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ["snippets"] });

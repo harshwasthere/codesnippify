@@ -8,7 +8,12 @@ export function useRemoveSnippetFromFolder() {
 
     return useMutation({
         mutationFn: removeSnippetFromFolder,
-        onSuccess: async () => {
+        onSuccess: async (data) => {
+            if (data?.error) {
+                toast.error(data.error);
+                return;
+            }
+
             await queryClient.invalidateQueries({ queryKey: ["folders"] });
             await queryClient.invalidateQueries({ queryKey: ["snippets"] });
             await queryClient.invalidateQueries({ queryKey: ["tags"] });

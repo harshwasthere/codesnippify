@@ -8,7 +8,12 @@ export function useResetPassword() {
     const router = useRouter();
     return useMutation({
         mutationFn: sendResetPasswordLink,
-        onSuccess: () => {
+        onSuccess: (data) => {
+            if (data?.error) {
+                toast.error(data.error);
+                return;
+            }
+
             router.push("/login");
             toast.success("Reset password link sent successfully");
         },
