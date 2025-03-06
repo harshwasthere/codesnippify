@@ -22,8 +22,16 @@ export function LoginForm() {
         },
     });
 
-    const { mutate: mutateOauthLogin, isPending: oauthLoginPending } = useOAuth();
-    const { mutate: mutatePasswordLogin, isPending: passwordLoginPending } = useLogin();
+    const {
+        mutate: mutateOauthLogin,
+        isPending: oauthLoginPending,
+        error: oauthLoginError,
+    } = useOAuth();
+    const {
+        mutate: mutatePasswordLogin,
+        isPending: passwordLoginPending,
+        error: passwordLoginError,
+    } = useLogin();
 
     const { isSubmitting, isValid } = form.formState;
     const isLoading = oauthLoginPending || passwordLoginPending || isSubmitting;
@@ -84,7 +92,9 @@ export function LoginForm() {
                     />
 
                     <Button type="submit" disabled={isSubmitDisabled} className="w-full">
-                        {isLoading && <Loader className="size-4 animate-spin" />}
+                        {passwordLoginPending && !passwordLoginError && (
+                            <Loader className="size-4 animate-spin" />
+                        )}
                         Login
                     </Button>
                 </form>
@@ -103,7 +113,7 @@ export function LoginForm() {
                 disabled={isLoading}
                 className="flex items-center w-full bg-foreground hover:bg-foreground/90 text-background"
             >
-                {isLoading ? (
+                {oauthLoginPending && !oauthLoginError ? (
                     <Loader className="size-4 animate-spin" />
                 ) : (
                     <Github className="size-4" />

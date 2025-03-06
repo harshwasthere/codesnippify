@@ -23,8 +23,16 @@ export function SignupForm() {
         },
     });
 
-    const { mutate: mutateOauthSignup, isPending: oauthSignupPending } = useOAuth();
-    const { mutate: mutatePasswordSignup, isPending: passwordSignupPending } = useSignup();
+    const {
+        mutate: mutateOauthSignup,
+        isPending: oauthSignupPending,
+        error: oauthSignupError,
+    } = useOAuth();
+    const {
+        mutate: mutatePasswordSignup,
+        isPending: passwordSignupPending,
+        error: passwordSignupError,
+    } = useSignup();
 
     const { isSubmitting, isValid } = form.formState;
     const isLoading = oauthSignupPending || passwordSignupPending || isSubmitting;
@@ -102,7 +110,9 @@ export function SignupForm() {
                     />
 
                     <Button type="submit" disabled={isSubmitDisabled} className="w-full">
-                        {isLoading && <Loader className="size-4 animate-spin" />}
+                        {passwordSignupPending && !passwordSignupError && (
+                            <Loader className="size-4 animate-spin" />
+                        )}
                         Signup
                     </Button>
                 </form>
@@ -121,7 +131,7 @@ export function SignupForm() {
                 disabled={isLoading}
                 className="flex items-center w-full bg-foreground hover:bg-foreground/90 text-background"
             >
-                {isLoading ? (
+                {oauthSignupPending && !oauthSignupError ? (
                     <Loader className="size-4 animate-spin" />
                 ) : (
                     <Github className="size-4" />
