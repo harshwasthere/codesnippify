@@ -33,7 +33,7 @@ export function HomePricingSection() {
                         { feature: "Public sharable folders" },
                         { feature: "AI Assistant", badgeText: "Coming Soon" },
                     ]}
-                    actionButton={{ text: "Get Pro", href: "/pricing" }}
+                    actionButton={{ text: "Get Pro", href: "/signup" }}
                 />
             </div>
         </section>

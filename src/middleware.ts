@@ -1,4 +1,4 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { updateSession } from "@/utils/supabase/middleware";
 
 export async function middleware(request: NextRequest) {
@@ -11,13 +11,21 @@ export async function middleware(request: NextRequest) {
     // add public, onbaording and protected routes
     const publicRoutes = ["/login", "/signup", "/forgot-password"];
     const onboardingRoutes = ["/update-password", "/update-name"];
-    const protectedRoutes = ["/snippets", "/favorites", "/folder", "/language", "/trash"];
+    const protectedRoutes = [
+        "/snippets",
+        "/favorites",
+        "/folder",
+        "/language",
+        "/trash",
+    ];
 
     const path = request.nextUrl.pathname;
 
     const isPublicRoute = publicRoutes.includes(path);
     const isOnboardingRoute = onboardingRoutes.includes(path);
-    const isProtectedRoute = protectedRoutes.some((route) => path.startsWith(route));
+    const isProtectedRoute = protectedRoutes.some((route) =>
+        path.startsWith(route)
+    );
 
     const isAuthenticated = user !== null && user !== undefined;
     const haveName = async () => {
@@ -43,11 +51,17 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL("/login", request.url));
     }
 
-    if (isOnboardingRoute && isAuthenticated && !(await haveName()) && path !== "/update-name") {
+    if (
+        isOnboardingRoute && isAuthenticated && !(await haveName()) &&
+        path !== "/update-name"
+    ) {
         return NextResponse.redirect(new URL("/update-name", request.url));
     }
 
-    if (isOnboardingRoute && isAuthenticated && (await haveName()) && path === "/update-name") {
+    if (
+        isOnboardingRoute && isAuthenticated && (await haveName()) &&
+        path === "/update-name"
+    ) {
         return NextResponse.redirect(new URL("/snippets", request.url));
     }
 
