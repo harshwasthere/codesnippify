@@ -34,6 +34,8 @@ export async function signupUser(
 
 // Authenticate a user with OAuth (GitHub by default) (currently only GitHub is supported)
 export async function authenticateWithOAuth(provider: Provider = "github") {
+    let redirectUrl: string | undefined;
+
     try {
         const origin = headers().get("origin");
         const supabase = createClient();
@@ -45,9 +47,13 @@ export async function authenticateWithOAuth(provider: Provider = "github") {
             },
         });
         if (error) throw error;
-        else redirect(data.url);
+        redirectUrl = data.url;
     } catch (error) {
         return { error: errorMessage(error) };
+    } finally {
+        if (redirectUrl) {
+            redirect(redirectUrl);
+        }
     }
 }
 
