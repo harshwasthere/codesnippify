@@ -10,13 +10,13 @@ import {
     CommandItem,
     CommandList,
 } from "@/components/ui/command";
-import { bundledLanguagesInfo } from "shiki";
 import { Button } from "@/components/ui/button";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { FormControl } from "@/components/ui/form";
 import { UseFormReturn } from "react-hook-form";
 import { FieldValues } from "react-hook-form";
 import { SnippetCreateUpdateFormSchemaTypes } from "@/types/zod.types";
+import { useState, useEffect } from "react";
 
 interface LanguagePopoverProps {
     disabled: boolean;
@@ -25,10 +25,18 @@ interface LanguagePopoverProps {
 }
 
 export function LanguagePopover({ disabled, field, form }: LanguagePopoverProps) {
-    const langs = bundledLanguagesInfo.map((lang) => ({
-        id: lang.id,
-        name: lang.name,
-    }));
+    const [languages, setLanguages] = useState<Array<{ id: string; name: string }>>([]);
+
+    useEffect(() => {
+        // Import bundledLanguagesInfo dynamically on the client side
+        import("shiki").then(({ bundledLanguagesInfo }) => {
+            const langs = bundledLanguagesInfo.map((lang) => ({
+                id: lang.id,
+                name: lang.name,
+            }));
+            setLanguages(langs);
+        });
+    }, []);
 
     return (
         <Popover>
@@ -44,7 +52,7 @@ export function LanguagePopover({ disabled, field, form }: LanguagePopoverProps)
                         disabled={disabled}
                     >
                         {field.value
-                            ? langs.find((lang) => lang.id === field.value)?.name
+                            ? languages.find((lang) => lang.id === field.value)?.name
                             : "Select language"}
                         <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
                     </Button>
@@ -56,7 +64,7 @@ export function LanguagePopover({ disabled, field, form }: LanguagePopoverProps)
                     <CommandList>
                         <CommandEmpty>No language found.</CommandEmpty>
                         <CommandGroup>
-                            {bundledLanguagesInfo.map((language) => (
+                            {languages.map((language) => (
                                 <CommandItem
                                     value={language.name}
                                     key={language.id}
