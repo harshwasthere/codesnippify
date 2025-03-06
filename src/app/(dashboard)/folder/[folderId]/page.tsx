@@ -9,10 +9,18 @@ import { useShallow } from "zustand/react/shallow";
 import Fuse from "fuse.js";
 import Masonry from "react-layout-masonry";
 import { SnippetCard } from "@/components/custom/cards/SnippetCard";
-import { SparklesIcon } from "lucide-react";
 import BounceLoader from "@/components/ui/bounce-loader";
+import { CircleSlash2Icon } from "lucide-react";
 
-export default function AllSnippetsPage() {
+interface FolderPageProps {
+    params: {
+        folderId: string;
+    };
+}
+
+export default function FolderPage({ params }: FolderPageProps) {
+    const { folderId } = params;
+
     const { filterTags, searchTerm } = useGlobalStore(
         useShallow((store) => ({
             filterTags: store.filterTags,
@@ -27,6 +35,7 @@ export default function AllSnippetsPage() {
     } = useFetchSnippets({
         filterTags: filterTags,
         showTrash: false,
+        folderIdToSearch: folderId,
     });
 
     const [snippets, setSnippets] = React.useState<FilteredSnippets>(fetchedSnippets || []);
@@ -54,9 +63,9 @@ export default function AllSnippetsPage() {
     if (snippets.length === 0) {
         return (
             <div className="h-full w-full flex flex-col flex-1 items-center justify-center p-4 text-foreground/50 gap-4">
-                <SparklesIcon className="size-12" />
+                <CircleSlash2Icon className="size-12" />
                 <span className="w-56 text-center text-sm">
-                    There are no snippets, add some to get started.
+                    This folder is empty, add some snippets to get started.
                 </span>
             </div>
         );

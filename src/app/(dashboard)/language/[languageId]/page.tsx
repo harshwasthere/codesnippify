@@ -9,10 +9,18 @@ import { useShallow } from "zustand/react/shallow";
 import Fuse from "fuse.js";
 import Masonry from "react-layout-masonry";
 import { SnippetCard } from "@/components/custom/cards/SnippetCard";
-import { SparklesIcon } from "lucide-react";
 import BounceLoader from "@/components/ui/bounce-loader";
+import { CircleSlash2Icon } from "lucide-react";
 
-export default function AllSnippetsPage() {
+interface LanguagePageProps {
+    params: {
+        languageId: string;
+    };
+}
+
+export default function LanguagePage({ params }: LanguagePageProps) {
+    const { languageId } = params;
+
     const { filterTags, searchTerm } = useGlobalStore(
         useShallow((store) => ({
             filterTags: store.filterTags,
@@ -33,15 +41,18 @@ export default function AllSnippetsPage() {
 
     React.useEffect(() => {
         if (fetchedSnippetsSuccess) {
+            const filteredSnippets = fetchedSnippets.filter(
+                (snippet) => snippet.language === languageId,
+            );
             if (!searchTerm) {
-                setSnippets(fetchedSnippets);
+                setSnippets(filteredSnippets);
                 return;
             }
-            const fuse = new Fuse(fetchedSnippets, fuseOptions);
+            const fuse = new Fuse(filteredSnippets, fuseOptions);
             const result = fuse.search(searchTerm);
             setSnippets(result.map((r) => r.item));
         }
-    }, [searchTerm, fetchedSnippetsSuccess, fetchedSnippets]);
+    }, [searchTerm, fetchedSnippetsSuccess, fetchedSnippets, languageId]);
 
     if (fetchedSnippetsLoading && !fetchedSnippetsSuccess) {
         return (
@@ -54,9 +65,9 @@ export default function AllSnippetsPage() {
     if (snippets.length === 0) {
         return (
             <div className="h-full w-full flex flex-col flex-1 items-center justify-center p-4 text-foreground/50 gap-4">
-                <SparklesIcon className="size-12" />
+                <CircleSlash2Icon className="size-12" />
                 <span className="w-56 text-center text-sm">
-                    There are no snippets, add some to get started.
+                    There are no snippets of this language, add some to get started.
                 </span>
             </div>
         );
